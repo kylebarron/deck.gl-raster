@@ -34,7 +34,6 @@ const vibranceEffect = new PostProcessEffect(vibrance, {
   amount: 1,
 });
 
-
 export default class App extends React.Component {
   state = {
     gl: null,
@@ -97,7 +96,7 @@ export default class App extends React.Component {
             image_g = data.then((result) => result && result[1]);
             image_b = data.then((result) => result && result[2]);
           }
-          
+
           return new BandsBitmapLayer(props, {
             data: null,
             image_r,
@@ -114,9 +113,7 @@ export default class App extends React.Component {
         onWebGLInitialized={(gl) => this.setState({ gl })}
         initialViewState={initialViewState}
         layers={layers}
-        effects={[
-          vibranceEffect,
-        ]}
+        effects={[vibranceEffect]}
         controller
       >
         <StaticMap
