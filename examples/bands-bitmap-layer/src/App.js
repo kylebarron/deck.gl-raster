@@ -97,7 +97,7 @@ export default class App extends React.Component {
             image_g = data.then((result) => result && result[1]);
             image_b = data.then((result) => result && result[2]);
           }
-
+          
           return new BandsBitmapLayer(props, {
             data: null,
             image_r,

@@ -108,8 +108,6 @@ export default class BandsBitmapLayer extends BitmapLayer {
       this.setState({ bitmapTexture_b });
     }
 
-    // console.log(this.state);
-
     const attributeManager = this.getAttributeManager();
 
     if (props.bounds !== oldProps.bounds) {
