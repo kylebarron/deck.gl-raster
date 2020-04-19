@@ -6,10 +6,12 @@ import { TileLayer } from "@deck.gl/geo-layers";
 
 import { StaticMap } from "react-map-gl";
 
-import { BandsBitmapLayer } from "@kylebarron/bands-bitmap-layer";
+import {
+  BandsBitmapLayer,
+  PanBandsBitmapLayer,
+} from "@kylebarron/bands-bitmap-layer";
 
-import { ImageLoader } from "@loaders.gl/images";
-import { load } from "@loaders.gl/core";
+import { loadImageArray } from "@loaders.gl/images";
 
 import { vibrance } from "@luma.gl/shadertools";
 import { Texture2D } from "@luma.gl/core";
@@ -48,53 +50,67 @@ export default class App extends React.Component {
         minZoom: 0,
         maxZoom: 12,
 
-        getTileData: async ({ url }) => {
+        getTileData: async ({ url, z }) => {
           const { gl } = this.state;
+          const pan = z >= 12;
+
           const urls = [
             url.replace("bands=", "bands=4"),
             url.replace("bands=", "bands=3"),
             url.replace("bands=", "bands=2"),
           ];
-          const images = await Promise.all([
-            load(urls[0], ImageLoader),
-            load(urls[1], ImageLoader),
-            load(urls[2], ImageLoader),
-          ]);
+          if (pan) {
+            urls.push(url.replace("bands=", "bands=8"));
+          }
+          const images = await loadImageArray(
+            urls.length,
+            ({ index }) => urls[index]
+          );
 
-          const texture_r = new Texture2D(gl, {
-            data: images[0],
-            parameters: DEFAULT_TEXTURE_PARAMETERS,
-            format: GL.RGB,
+          const textures = images.map((image) => {
+            return new Texture2D(gl, {
+              data: image,
+              parameters: DEFAULT_TEXTURE_PARAMETERS,
+              format: GL.RGB,
+            });
           });
-          const texture_g = new Texture2D(gl, {
-            data: images[1],
-            parameters: DEFAULT_TEXTURE_PARAMETERS,
-            format: GL.RGB,
-          });
-          const texture_b = new Texture2D(gl, {
-            data: images[2],
-            parameters: DEFAULT_TEXTURE_PARAMETERS,
-            format: GL.RGB,
-          });
-
-          return [texture_r, texture_g, texture_b];
+          return textures;
         },
 
         renderSubLayers: (props) => {
           const {
             bbox: { west, south, east, north },
+            z,
           } = props.tile;
           const { data } = props;
+          const pan = z >= 12;
 
-          let image_r, image_g, image_b;
+          let image_r, image_g, image_b, image_pan;
           if (Array.isArray(data)) {
             image_r = data[0];
             image_g = data[1];
             image_b = data[2];
+            if (pan) {
+              image_pan = data[3];
+            }
           } else if (data) {
             image_r = data.then((result) => result && result[0]);
             image_g = data.then((result) => result && result[1]);
             image_b = data.then((result) => result && result[2]);
+            if (pan) {
+              image_pan = data.then((result) => result && result[3]);
+            }
+          }
+
+          if (pan) {
+            return new PanBandsBitmapLayer(props, {
+              data: null,
+              image_r,
+              image_g,
+              image_b,
+              image_pan,
+              bounds: [west, south, east, north],
+            });
           }
 
           return new BandsBitmapLayer(props, {
