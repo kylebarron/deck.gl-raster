@@ -22,16 +22,6 @@ const DEFAULT_TEXTURE_PARAMETERS = {
   [GL.TEXTURE_WRAP_T]: GL.CLAMP_TO_EDGE,
 };
 
-/*
- * Convert image data into texture
- * @returns {Texture2D} texture
- */
-function getTextureFromData(gl, data, opts) {
-  if (data instanceof Texture2D) {
-    return data;
-  }
-  return new Texture2D(gl, Object.assign({ data }, opts));
-}
 
 function validateGeometryAttributes(attributes) {
   log.assert(
@@ -261,27 +251,6 @@ export default class BandsSimpleMeshLayer extends SimpleMeshLayer {
       };
     }
   }
-
-  // setTexture(image) {
-  //   const { gl } = this.context;
-  //   const { emptyTexture, model } = this.state;
-
-  //   if (this.state.texture) {
-  //     this.state.texture.delete();
-  //   }
-
-  //   const texture = image ? getTextureFromData(gl, image) : null;
-  //   this.setState({ texture });
-
-  //   if (model) {
-  //     // props.mesh may not be ready at this time.
-  //     // The sampler will be set when `getModel` is called
-  //     model.setUniforms({
-  //       sampler: texture || emptyTexture,
-  //       hasTexture: Boolean(texture),
-  //     });
-  //   }
-  // }
 }
 
 BandsSimpleMeshLayer.layerName = "BandsSimpleMeshLayer";

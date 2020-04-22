@@ -22,21 +22,20 @@ const DEFAULT_TEXTURE_PARAMETERS = {
   [GL.TEXTURE_WRAP_T]: GL.CLAMP_TO_EDGE,
 };
 
-const MESH_MAX_ERROR = 10;
+const MESH_MAX_ERROR = 5;
 const DUMMY_DATA = [1];
 
-export function TerrainTileLayer({ minZoom = 0, maxZoom = 17 }) {
+export function TerrainTileLayer({ gl, minZoom = 0, maxZoom = 17 } = {}) {
   return new TileLayer({
     id: "terrain-tiles",
     minZoom,
     maxZoom,
-    getTileData,
+    getTileData: args => getTileData(gl, args),
     renderSubLayers,
   });
 }
 
-async function getTileData({ x, y, z }) {
-  const { gl } = this.state;
+async function getTileData(gl, { x, y, z }) {
   const pan = z >= 12;
 
   // Load terrain
