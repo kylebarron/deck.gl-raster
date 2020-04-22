@@ -1,4 +1,5 @@
-const MOSAIC_URL =
+export const TERRAIN_IMAGE = `https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png`;
+export const MOSAIC_URL =
   "s3://kylebarron-landsat-test/mosaics/8113f57876010a63aadacef4eac6d010d10c9aafcf36a5ece064ea7f.json.gz";
 
 function colorStr(nBands) {
@@ -28,3 +29,10 @@ export function getLandsatUrl(options) {
 export function getTerrainUrl({ x, y, z }) {
   return TERRAIN_IMAGE.replace("{x}", x).replace("{y}", y).replace("{z}", z);
 }
+
+export const ELEVATION_DECODER = {
+  rScaler: 256,
+  gScaler: 1,
+  bScaler: 1 / 256,
+  offset: -32768,
+};

@@ -3,8 +3,24 @@ import { COORDINATE_SYSTEM } from "@deck.gl/core";
 import { load } from "@loaders.gl/core";
 import { TerrainLoader } from "@loaders.gl/terrain";
 import { TileLayer } from "@deck.gl/geo-layers";
-import { ELEVATION_DECODER } from "./util";
+import {
+  MOSAIC_URL,
+  ELEVATION_DECODER,
+  getLandsatUrl,
+  getTerrainUrl,
+} from "./util";
 import { Matrix4 } from "math.gl";
+import { BandsSimpleMeshLayer } from "@kylebarron/bands-simple-mesh-layer";
+import { loadImageArray } from "@loaders.gl/images";
+import GL from "@luma.gl/constants";
+import { Texture2D } from "@luma.gl/core";
+
+const DEFAULT_TEXTURE_PARAMETERS = {
+  [GL.TEXTURE_MIN_FILTER]: GL.LINEAR_MIPMAP_LINEAR,
+  [GL.TEXTURE_MAG_FILTER]: GL.LINEAR,
+  [GL.TEXTURE_WRAP_S]: GL.CLAMP_TO_EDGE,
+  [GL.TEXTURE_WRAP_T]: GL.CLAMP_TO_EDGE,
+};
 
 const MESH_MAX_ERROR = 10;
 const DUMMY_DATA = [1];
@@ -57,6 +73,8 @@ async function getTileData({ x, y, z }) {
 
 function renderSubLayers(props) {
   const { data, tile } = props;
+  const {z} = tile;
+  const pan = z >= 12;
 
   // Resolve (separate?) promises
   const textures = data.then((result) => result && result[0]);
