@@ -3,11 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@kylebarron/bands-simple-mesh-layer": "../../modules/bands-simple-mesh-layer/",
+    "@luma.gl/core": "^8.1.1",
+    "@luma.gl/webgl": "^8.1.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "deck.gl": "^8.1.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-map-gl": "^5.2.5",
     "react-scripts": "3.4.1"
   },
   "scripts": {
