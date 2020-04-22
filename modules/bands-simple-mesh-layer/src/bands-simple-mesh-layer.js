@@ -3,13 +3,6 @@ import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
 
 import fs from "./bands-simple-mesh-layer-fragment";
 
-const DEFAULT_TEXTURE_PARAMETERS = {
-  [GL.TEXTURE_MIN_FILTER]: GL.LINEAR_MIPMAP_LINEAR,
-  [GL.TEXTURE_MAG_FILTER]: GL.LINEAR,
-  [GL.TEXTURE_WRAP_S]: GL.CLAMP_TO_EDGE,
-  [GL.TEXTURE_WRAP_T]: GL.CLAMP_TO_EDGE,
-};
-
 import {
   Layer,
   project32,
@@ -21,6 +14,13 @@ import {
 import { Model, Geometry, Texture2D, isWebGL2 } from "@luma.gl/core";
 import { hasFeature, FEATURES } from "@luma.gl/webgl";
 import { shouldComposeModelMatrix } from "./matrix";
+
+const DEFAULT_TEXTURE_PARAMETERS = {
+  [GL.TEXTURE_MIN_FILTER]: GL.LINEAR_MIPMAP_LINEAR,
+  [GL.TEXTURE_MAG_FILTER]: GL.LINEAR,
+  [GL.TEXTURE_WRAP_S]: GL.CLAMP_TO_EDGE,
+  [GL.TEXTURE_WRAP_T]: GL.CLAMP_TO_EDGE,
+};
 
 /*
  * Convert image data into texture
@@ -195,14 +195,14 @@ export default class BandsSimpleMeshLayer extends SimpleMeshLayer {
       !bitmapTexture_r ||
       !bitmapTexture_g ||
       !bitmapTexture_b ||
-      !bitmapTexture_pan ||
       !model
     ) {
       return;
     }
 
     const { viewport } = this.context;
-    const { sizeScale, coordinateSystem, _instanced } = this.props;
+    const { sizeScale, coordinateSystem, _instanced, panWeight } = this.props;
+    const hasPan = Boolean(bitmapTexture_pan);
 
     model
       .setUniforms(
@@ -215,6 +215,7 @@ export default class BandsSimpleMeshLayer extends SimpleMeshLayer {
           bitmapTexture_g,
           bitmapTexture_b,
           bitmapTexture_pan,
+          hasPan,
           panWeight,
         })
       )
