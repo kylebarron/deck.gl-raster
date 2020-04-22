@@ -23,7 +23,7 @@ export default class App extends React.Component {
 
   render() {
     const {gl} = this.state;
-    const layers = gl ? TerrainTileLayer({gl}) : [];
+    const layers = gl ? TerrainTileLayer({gl, minZoom: 7, maxZoom: 12}) : [];
 
     return (
       <DeckGL

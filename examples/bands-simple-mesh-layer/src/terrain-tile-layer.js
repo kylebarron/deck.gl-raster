@@ -8,6 +8,7 @@ import {
   ELEVATION_DECODER,
   getLandsatUrl,
   getTerrainUrl,
+  getMeshMaxError,
 } from "./util";
 import { Matrix4 } from "math.gl";
 import { BandsSimpleMeshLayer } from "@kylebarron/bands-simple-mesh-layer";
@@ -22,7 +23,6 @@ const DEFAULT_TEXTURE_PARAMETERS = {
   [GL.TEXTURE_WRAP_T]: GL.CLAMP_TO_EDGE,
 };
 
-const MESH_MAX_ERROR = 5;
 const DUMMY_DATA = [1];
 
 export function TerrainTileLayer({ gl, minZoom = 0, maxZoom = 17 } = {}) {
@@ -45,7 +45,7 @@ async function getTileData(gl, { x, y, z }) {
     terrainImage: terrainUrl,
     bounds,
     elevationDecoder: ELEVATION_DECODER,
-    meshMaxError: MESH_MAX_ERROR,
+    meshMaxError: getMeshMaxError(z),
   });
 
   // Load landsat urls

@@ -36,3 +36,9 @@ export const ELEVATION_DECODER = {
   bScaler: 1 / 256,
   offset: -32768,
 };
+
+// Error suggestion from here
+// https://www.linkedin.com/pulse/fast-cesium-terrain-rendering-new-quantized-mesh-output-alvaro-huarte/
+export function getMeshMaxError(z) {
+  return 77067.34 / (1 << z)
+}
