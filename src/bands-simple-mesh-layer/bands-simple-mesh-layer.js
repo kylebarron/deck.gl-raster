@@ -3,16 +3,8 @@ import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
 
 import fs from "./bands-simple-mesh-layer-fragment";
 
-import {
-  Layer,
-  project32,
-  phongLighting,
-  picking,
-  COORDINATE_SYSTEM,
-  log,
-} from "@deck.gl/core";
+import { log } from "@deck.gl/core";
 import { Model, Geometry, Texture2D, isWebGL2 } from "@luma.gl/core";
-import { hasFeature, FEATURES } from "@luma.gl/webgl";
 import { shouldComposeModelMatrix } from "./matrix";
 
 const DEFAULT_TEXTURE_PARAMETERS = {
@@ -21,7 +13,6 @@ const DEFAULT_TEXTURE_PARAMETERS = {
   [GL.TEXTURE_WRAP_S]: GL.CLAMP_TO_EDGE,
   [GL.TEXTURE_WRAP_T]: GL.CLAMP_TO_EDGE,
 };
-
 
 function validateGeometryAttributes(attributes) {
   log.assert(
@@ -97,7 +88,7 @@ export default class BandsSimpleMeshLayer extends SimpleMeshLayer {
     // use object.assign to make sure we don't overwrite existing fields like `vs`, `modules`...
     return Object.assign({}, super.getShaders(), {
       fs,
-      transpileToGLSL100
+      transpileToGLSL100,
     });
   }
 
@@ -181,12 +172,7 @@ export default class BandsSimpleMeshLayer extends SimpleMeshLayer {
       model,
     } = this.state;
 
-    if (
-      !bitmapTexture_r ||
-      !bitmapTexture_g ||
-      !bitmapTexture_b ||
-      !model
-    ) {
+    if (!bitmapTexture_r || !bitmapTexture_g || !bitmapTexture_b || !model) {
       return;
     }
 
