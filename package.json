@@ -3,6 +3,9 @@
   "description": "A collection of custom Deck.gl layers",
   "license": "MIT",
   "version": "0.1.0",
+  "main": "./dist/deck.gl-extended-layers.js",
+  "unpkg": "./dist/deck.gl-extended-layers.min.js",
+  "module": "./src/index.js",
   "publishConfig": {
     "access": "public"
   },
@@ -17,25 +20,26 @@
     "type": "git",
     "url": "https://github.com/kylebarron/deck.gl-extended-layers.git"
   },
-  "main": "src/index.js",
   "files": [
     "dist",
-    "src",
-    "dist.min.js"
+    "src"
   ],
   "sideEffects": false,
   "scripts": {
-    "build-bundle": "webpack --config ../../scripts/bundle.config.js",
-    "prepublishOnly": "npm run build-bundle && npm run build-bundle -- --env.dev"
+    "build": "rollup -c"
   },
   "dependencies": {
     "@luma.gl/constants": "^8.1.0"
   },
   "peerDependencies": {
-    "@deck.gl/layers": "^8.1.0",
     "@deck.gl/core": "^8.1.0",
+    "@deck.gl/layers": "^8.1.0",
     "@deck.gl/mesh-layers": "^8.1.2",
     "@luma.gl/core": "^8.1.0",
     "@luma.gl/webgl": "^8.1.0"
+  },
+  "devDependencies": {
+    "rollup": "^2.7.2",
+    "rollup-plugin-terser": "^5.3.0"
   }
 }
