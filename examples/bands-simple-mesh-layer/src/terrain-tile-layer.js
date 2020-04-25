@@ -11,7 +11,7 @@ import {
   getMeshMaxError,
 } from "./util";
 import { Matrix4 } from "math.gl";
-import { BandsSimpleMeshLayer } from "@kylebarron/bands-simple-mesh-layer";
+import { BandsSimpleMeshLayer } from "@kylebarron/deck.gl-extended-layers";
 import { loadImageArray } from "@loaders.gl/images";
 import GL from "@luma.gl/constants";
 import { Texture2D } from "@luma.gl/core";

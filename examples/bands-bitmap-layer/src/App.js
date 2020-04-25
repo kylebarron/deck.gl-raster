@@ -9,7 +9,7 @@ import { StaticMap } from "react-map-gl";
 import {
   BandsBitmapLayer,
   PanBandsBitmapLayer,
-} from "@kylebarron/bands-bitmap-layer";
+} from "@kylebarron/deck.gl-extended-layers";
 
 import { loadImageArray } from "@loaders.gl/images";
 
