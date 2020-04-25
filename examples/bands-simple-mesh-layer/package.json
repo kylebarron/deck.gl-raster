@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@kylebarron/bands-simple-mesh-layer": "../../modules/bands-simple-mesh-layer/",
+    "@kylebarron/deck.gl-extended-layers": "../../",
     "@luma.gl/core": "^8.1.1",
     "@luma.gl/webgl": "^8.1.1",
     "@testing-library/jest-dom": "^4.2.4",
