@@ -1,6 +1,6 @@
 {
-  "name": "@kylebarron/bands-simple-mesh-layer",
-  "description": "Extension of SimpleMeshLayer to combine multiple image bands on the GPU.",
+  "name": "@kylebarron/deck.gl-extended-layers",
+  "description": "A collection of custom Deck.gl layers",
   "license": "MIT",
   "version": "0.1.0",
   "publishConfig": {
@@ -32,8 +32,8 @@
     "@luma.gl/constants": "^8.1.0"
   },
   "peerDependencies": {
-    "@deck.gl/core": "^8.1.0",
     "@deck.gl/layers": "^8.1.0",
+    "@deck.gl/core": "^8.1.0",
     "@deck.gl/mesh-layers": "^8.1.2",
     "@luma.gl/core": "^8.1.0",
     "@luma.gl/webgl": "^8.1.0"
