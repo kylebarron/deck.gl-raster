@@ -54,12 +54,13 @@ export default class BandsBitmapLayer extends BitmapLayer {
       band_combination,
     } = this.props;
 
-    let usePan,
-      useNdvi,
-      useRgb,
-      useEvi,
-      useSavi,
-      useMsavi = false;
+    let usePan = false;
+    let useNdvi = false;
+    let useRgb = false;
+    let useEvi = false;
+    let useSavi = false;
+    let useMsavi = false;
+
     switch (band_combination.toLowerCase()) {
       case "rgb":
         useRgb = true;
@@ -68,17 +69,17 @@ export default class BandsBitmapLayer extends BitmapLayer {
       case "normalized_difference":
         useNdvi = true;
         break;
-      case 'evi':
+      case "evi":
         useEvi = true;
         break;
-      case 'savi':
+      case "savi":
         useSavi = true;
-        break
-      case 'msavi':
+        break;
+      case "msavi":
         useMsavi = true;
-        break
+        break;
       default:
-        console.error(`Invalid band_combination: ${band_combination}`)
+        console.error(`Invalid band_combination: ${band_combination}`);
     }
 
     // // TODO fix zFighting

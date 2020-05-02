@@ -85,8 +85,8 @@ float soil_adjusted_vegetation_index(float band5, float band4) {
 // MSAVI = (2 * Band 5 + 1 – sqrt ((2 * Band 5 + 1)^2 – 8 * (Band 5 – Band 4))) / 2
 // https://www.usgs.gov/land-resources/nli/landsat/landsat-modified-soil-adjusted-vegetation-index
 float modified_soil_adjusted_vegetation_index(float band5, float band4) {
-  float to_sqrt = ((2. * band5 + 1) * (2. * band5 + 1)) - (8. * (band5 - band4));
-  return ((2. * band5) + 1 - sqrt(to_sqrt)) / 2.;
+  float to_sqrt = ((2. * band5 + 1.) * (2. * band5 + 1.)) - (8. * (band5 - band4));
+  return ((2. * band5) + 1. - sqrt(to_sqrt)) / 2.;
 }
 
 // Apply colormap texture given value
