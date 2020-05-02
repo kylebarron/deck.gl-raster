@@ -15,9 +15,13 @@ const defaultProps = {
   image_r: { type: "object", value: null, async: true },
   image_g: { type: "object", value: null, async: true },
   image_b: { type: "object", value: null, async: true },
+  image_pan: { type: "object", value: null, async: true },
   bounds: { type: "array", value: [1, 0, 0, 1], compare: true },
-
   desaturate: { type: "number", min: 0, max: 1, value: 0 },
+  // Weight of blue band
+  panWeight: { type: "number", min: 0, max: 1, value: 0.2 },
+  // Optionally turn off pansharpening
+  usePan: { type: "boolean", value: true },
   // More context: because of the blending mode we're using for ground imagery,
   // alpha is not effective when blending the bitmap layers with the base map.
   // Instead we need to manually dim/blend rgb values with a background color.
@@ -32,9 +36,11 @@ export default class BandsBitmapLayer extends BitmapLayer {
       bitmapTexture_r,
       bitmapTexture_g,
       bitmapTexture_b,
+      bitmapTexture_pan,
       model,
     } = this.state;
-    const { desaturate, transparentColor, tintColor } = this.props;
+    const { desaturate, transparentColor, tintColor, panWeight } = this.props;
+    const usePan = Boolean(bitmapTexture_pan) && this.props.usePan;
 
     // // TODO fix zFighting
     // Render the image
@@ -48,6 +54,11 @@ export default class BandsBitmapLayer extends BitmapLayer {
             desaturate,
             transparentColor: transparentColor.map((x) => x / 255),
             tintColor: tintColor.slice(0, 3).map((x) => x / 255),
+
+            // Pan options, pan texture may or may not exist
+            bitmapTexture_pan,
+            usePan,
+            panWeight,
           })
         )
         .draw();
@@ -65,6 +76,9 @@ export default class BandsBitmapLayer extends BitmapLayer {
     }
     if (this.state.bitmapTexture_b) {
       this.state.bitmapTexture_b.delete();
+    }
+    if (this.state.bitmapTexture_pan) {
+      this.state.bitmapTexture_pan.delete();
     }
   }
 
@@ -106,6 +120,13 @@ export default class BandsBitmapLayer extends BitmapLayer {
         this.state.bitmapTexture_b.delete();
       }
       this.setState({ bitmapTexture_b });
+    }
+    if (props.image_pan !== oldProps.image_pan) {
+      const bitmapTexture_pan = this.loadTexture(props.image_pan);
+      if (this.state.bitmapTexture_pan) {
+        this.state.bitmapTexture_pan.delete();
+      }
+      this.setState({ bitmapTexture_pan });
     }
 
     const attributeManager = this.getAttributeManager();
