@@ -16,6 +16,11 @@ const defaultProps = {
   image_g: { type: "object", value: null, async: true },
   image_b: { type: "object", value: null, async: true },
   image_pan: { type: "object", value: null, async: true },
+  colormap: { type: "object", value: null, async: true },
+
+  // Method of combining bands, for now just "rgb" or "normalized_difference"
+  band_combination: "rgb",
+
   bounds: { type: "array", value: [1, 0, 0, 1], compare: true },
   desaturate: { type: "number", min: 0, max: 1, value: 0 },
   // Weight of blue band
@@ -37,28 +42,53 @@ export default class BandsBitmapLayer extends BitmapLayer {
       bitmapTexture_g,
       bitmapTexture_b,
       bitmapTexture_pan,
+      bitmapTexture_colormap,
       model,
     } = this.state;
-    const { desaturate, transparentColor, tintColor, panWeight } = this.props;
-    const usePan = Boolean(bitmapTexture_pan) && this.props.usePan;
+    const {
+      desaturate,
+      transparentColor,
+      tintColor,
+      panWeight,
+      band_combination,
+    } = this.props;
+
+    let usePan, useNdvi, useRgb;
+    if (band_combination === "rgb") {
+      useRgb = true;
+      useNdvi = false;
+      usePan = Boolean(bitmapTexture_pan) && this.props.usePan;
+    } else if (band_combination === "normalized_difference") {
+      useRgb = false;
+      useNdvi = true;
+      usePan = false;
+    }
 
     // // TODO fix zFighting
     // Render the image
-    if (bitmapTexture_r && bitmapTexture_g && bitmapTexture_b && model) {
+    if (bitmapTexture_r && bitmapTexture_g && model) {
       model
         .setUniforms(
           Object.assign({}, uniforms, {
+            // Textures
             bitmapTexture_r,
             bitmapTexture_g,
             bitmapTexture_b,
+            bitmapTexture_colormap,
+
+            // General image options
             desaturate,
             transparentColor: transparentColor.map((x) => x / 255),
             tintColor: tintColor.slice(0, 3).map((x) => x / 255),
 
             // Pan options, pan texture may or may not exist
             bitmapTexture_pan,
-            usePan,
             panWeight,
+
+            // Image operations
+            useRgb,
+            useNdvi,
+            usePan,
           })
         )
         .draw();
@@ -79,6 +109,9 @@ export default class BandsBitmapLayer extends BitmapLayer {
     }
     if (this.state.bitmapTexture_pan) {
       this.state.bitmapTexture_pan.delete();
+    }
+    if (this.state.bitmapTexture_colormap) {
+      this.state.bitmapTexture_colormap.delete();
     }
   }
 
@@ -127,6 +160,13 @@ export default class BandsBitmapLayer extends BitmapLayer {
         this.state.bitmapTexture_pan.delete();
       }
       this.setState({ bitmapTexture_pan });
+    }
+    if (props.colormap !== oldProps.colormap) {
+      const bitmapTexture_colormap = this.loadTexture(props.colormap);
+      if (this.state.bitmapTexture_colormap) {
+        this.state.bitmapTexture_colormap.delete();
+      }
+      this.setState({ bitmapTexture_colormap });
     }
 
     const attributeManager = this.getAttributeManager();

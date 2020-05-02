@@ -9,10 +9,13 @@ uniform sampler2D bitmapTexture_r;
 uniform sampler2D bitmapTexture_g;
 uniform sampler2D bitmapTexture_b;
 uniform sampler2D bitmapTexture_pan;
+uniform sampler2D bitmapTexture_colormap;
 
 varying vec2 vTexCoord;
 
 uniform bool usePan;
+uniform bool useRgb;
+uniform bool useNdvi;
 uniform float panWeight;
 
 uniform float desaturate;
@@ -52,13 +55,31 @@ vec4 apply_opacity(vec3 color, float alpha) {
   return mix(transparentColor, vec4(color, 1.0), alpha);
 }
 
+float normalized_difference(float band1, float band2) {
+  return ((band1 - band2) / (band1 + band2));
+}
+
+// Apply colormap texture given value
+// Since the texture only varies in the x direction, setting v to 0.5 as a
+// constant is fine
+vec3 apply_colormap(sampler2D colormap, float value) {
+  vec2 uv = vec2(0.5 * value + 0.5, 0.5);
+  return texture2D(colormap, uv).rgb;
+}
+
 void main(void) {
   float r_band = texture2D(bitmapTexture_r, vTexCoord).r;
   float g_band = texture2D(bitmapTexture_g, vTexCoord).r;
   float b_band = texture2D(bitmapTexture_b, vTexCoord).r;
   float pan_band = texture2D(bitmapTexture_pan, vTexCoord).r;
 
-  vec3 image = vec3(r_band, g_band, b_band);
+  vec3 image;
+  if (useNdvi) {
+    float norm_diff = normalized_difference(r_band, g_band);
+    image = apply_colormap(bitmapTexture_colormap, norm_diff);
+  } else if (useRgb) {
+    image = vec3(r_band, g_band, b_band);
+  }
 
   if (usePan) {
     image = pansharpen(image, pan_band, panWeight);
