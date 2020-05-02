@@ -18,7 +18,8 @@ const defaultProps = {
   image_pan: { type: "object", value: null, async: true },
   colormap: { type: "object", value: null, async: true },
 
-  // Method of combining bands, for now just "rgb" or "normalized_difference"
+  // Method of combining bands, one of:
+  // "rgb", "normalized_difference", 'evi', 'savi', 'msavi'
   band_combination: "rgb",
 
   bounds: { type: "array", value: [1, 0, 0, 1], compare: true },
@@ -53,15 +54,31 @@ export default class BandsBitmapLayer extends BitmapLayer {
       band_combination,
     } = this.props;
 
-    let usePan, useNdvi, useRgb;
-    if (band_combination === "rgb") {
-      useRgb = true;
-      useNdvi = false;
-      usePan = Boolean(bitmapTexture_pan) && this.props.usePan;
-    } else if (band_combination === "normalized_difference") {
-      useRgb = false;
-      useNdvi = true;
-      usePan = false;
+    let usePan,
+      useNdvi,
+      useRgb,
+      useEvi,
+      useSavi,
+      useMsavi = false;
+    switch (band_combination.toLowerCase()) {
+      case "rgb":
+        useRgb = true;
+        usePan = Boolean(bitmapTexture_pan) && this.props.usePan;
+        break;
+      case "normalized_difference":
+        useNdvi = true;
+        break;
+      case 'evi':
+        useEvi = true;
+        break;
+      case 'savi':
+        useSavi = true;
+        break
+      case 'msavi':
+        useMsavi = true;
+        break
+      default:
+        console.error(`Invalid band_combination: ${band_combination}`)
     }
 
     // // TODO fix zFighting
@@ -86,9 +103,12 @@ export default class BandsBitmapLayer extends BitmapLayer {
             panWeight,
 
             // Image operations
-            useRgb,
-            useNdvi,
             usePan,
+            useNdvi,
+            useRgb,
+            useEvi,
+            useSavi,
+            useMsavi,
           })
         )
         .draw();
