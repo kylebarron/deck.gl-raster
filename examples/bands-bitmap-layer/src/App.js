@@ -126,22 +126,12 @@ export default class App extends React.Component {
             }
           }
 
-          if (pan) {
-            return new PanBandsBitmapLayer(props, {
-              data: null,
-              image_r,
-              image_g,
-              image_b,
-              image_pan,
-              bounds: [west, south, east, north],
-            });
-          }
-
           return new BandsBitmapLayer(props, {
             data: null,
             image_r,
             image_g,
             image_b,
+            image_pan,
             bounds: [west, south, east, north],
           });
         },
