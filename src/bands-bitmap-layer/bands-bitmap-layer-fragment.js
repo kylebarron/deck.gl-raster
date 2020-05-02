@@ -92,6 +92,7 @@ float modified_soil_adjusted_vegetation_index(float band5, float band4) {
 // Apply colormap texture given value
 // Since the texture only varies in the x direction, setting v to 0.5 as a
 // constant is fine
+// Assumes the input range of value is -1 to 1
 vec3 apply_colormap(sampler2D colormap, float value) {
   vec2 uv = vec2(0.5 * value + 0.5, 0.5);
   return texture2D(colormap, uv).rgb;
