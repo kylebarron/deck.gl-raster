@@ -2,7 +2,7 @@
   "name": "@kylebarron/deck.gl-extended-layers",
   "description": "A collection of custom Deck.gl layers",
   "license": "MIT",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "./dist/deck.gl-extended-layers.js",
   "unpkg": "./dist/deck.gl-extended-layers.min.js",
   "module": "./src/index.js",
