@@ -47,7 +47,10 @@ Images to render in the layer. All of these **must be passed to the class as `Te
   https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-extended-layers/assets/colormaps/{colormap_name}.png
   ```
 
+  To visualize them, see [colormap documentation from rio-tiler][rio-tiler-colormap-docs].
+
 [rio-tiler]: https://github.com/cogeotiff/rio-tiler
+[rio-tiler-colormap-docs]: https://github.com/cogeotiff/rio-tiler/pull/176
 
 **Band options**:
 
