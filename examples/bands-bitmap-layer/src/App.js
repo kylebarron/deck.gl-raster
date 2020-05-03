@@ -6,10 +6,7 @@ import { TileLayer } from "@deck.gl/geo-layers";
 
 import { StaticMap } from "react-map-gl";
 
-import {
-  BandsBitmapLayer,
-  PanBandsBitmapLayer,
-} from "@kylebarron/deck.gl-extended-layers";
+import { BandsBitmapLayer } from "@kylebarron/deck.gl-extended-layers";
 
 import { loadImageArray } from "@loaders.gl/images";
 
@@ -27,7 +24,7 @@ const DEFAULT_TEXTURE_PARAMETERS = {
 const initialViewState = {
   longitude: -112.1861,
   latitude: 36.1284,
-  zoom: 12.1,
+  zoom: 11.5,
   pitch: 0,
   bearing: 0,
 };
@@ -86,6 +83,10 @@ export default class App extends React.Component {
           if (pan) {
             urls.push(landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }));
           }
+          const colormapUrl =
+            "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-extended-layers/assets/colormaps/cfastie.png";
+          urls.push(colormapUrl);
+
           const images = await loadImageArray(
             urls.length,
             ({ index }) => urls[index]
@@ -109,13 +110,16 @@ export default class App extends React.Component {
           const { data } = props;
           const pan = z >= 12;
 
-          let image_r, image_g, image_b, image_pan;
+          let image_r, image_g, image_b, image_pan, colormap;
           if (Array.isArray(data)) {
             image_r = data[0];
             image_g = data[1];
             image_b = data[2];
             if (pan) {
               image_pan = data[3];
+              colormap = data[4];
+            } else {
+              colormap = data[3];
             }
           } else if (data) {
             image_r = data.then((result) => result && result[0]);
@@ -123,6 +127,9 @@ export default class App extends React.Component {
             image_b = data.then((result) => result && result[2]);
             if (pan) {
               image_pan = data.then((result) => result && result[3]);
+              colormap = data.then((result) => result && result[4]);
+            } else {
+              colormap = data.then((result) => result && result[3]);
             }
           }
 
@@ -132,6 +139,8 @@ export default class App extends React.Component {
             image_g,
             image_b,
             image_pan,
+            band_combination: 'rgb',
+            colormap,
             bounds: [west, south, east, north],
           });
         },
