@@ -54,11 +54,11 @@ Images to render in the layer. All of these **must be passed to the class as `Te
 - `band_combination`: (`String`) Method of combining bands. Must be one of the following. Default is `rgb`. Any option other than `rgb` must provide a `colormap` texture.
 
   - `rgb`: Combines `image_r`, `image_g`, and `image_b` on the GPU in that order. If you pass red, green, and blue bands, a true color image will be rendered. You can alternatively pass other band combinations to create false color images.
-  - `normalized_difference`: Computes the [normalized difference][normalized_difference] -- `(x - y) / (x + y)` -- of two bands. `normalized_difference` always uses `image_r` and `image_g` in that order (as `x` and `y`). It then applies the `colormap` texture to the output. Other bands are ignored.
+  - `normalized_difference`: Computes the normalized difference of two bands: `(x - y) / (x + y)`. `normalized_difference` always uses `image_r` and `image_g` in that order (as `x` and `y`). It then applies the `colormap` texture to the output. Other bands are ignored.
 
-    To create the Normalized difference vegetation index (NDVI), for example,
-    you would pass the near-infrared band as `image_r` and the red band as
-    `image_g`.
+    To create the [Normalized difference vegetation index
+    (NDVI)][normalized_difference], for example, you would pass the
+    near-infrared band as `image_r` and the red band as `image_g`.
 
   - `evi`: Computes the [Enhanced Vegetation Index (EVI)][evi]. Layers must be passed as **near-infrared, red, and blue** as `image_r`, `image_g` and `image_b`, respectively.
   - `savi`: Computes the [Soil Adjusted Vegetation Index (SAVI)][savi]. Layers must be passed as **near-infrared and red** as `image_r` and `image_g`, respectively.
