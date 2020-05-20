@@ -10,7 +10,8 @@ such, small variations of the pre-built layers can do amazing new things, while
 not being fit for inclusion in the standard layer library.
 
 This repository is a handful of custom layers I've created for my own use, which
-I've put into a single repository.
+I've put into a single repository. **This repository is public for reference,
+and should not be considered stable.**
 
 ## Install
 
