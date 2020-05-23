@@ -1,12 +1,12 @@
 function getUniforms(opts = {}) {
-  const { image_colormap } = opts;
+  const { imageColormap } = opts;
 
-  if (!image_colormap) {
+  if (!imageColormap) {
     return;
   }
 
   return {
-    bitmapTexture_colormap: image_colormap,
+    bitmapTexture_colormap: imageColormap,
   };
 }
 

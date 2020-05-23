@@ -1,6 +1,6 @@
 function getUniforms(opts = {}) {
-  const { images } = opts;
-  if (!images || images.length === 0) {
+  const { imageBands } = opts;
+  if (!imageBands || imageBands.length === 0) {
     return;
   }
 
@@ -9,7 +9,7 @@ function getUniforms(opts = {}) {
     bitmapTexture_g,
     bitmapTexture_b,
     bitmapTexture_a,
-  ] = images;
+  ] = imageBands;
 
   return {
     bitmapTexture_r,

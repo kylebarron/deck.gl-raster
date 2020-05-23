@@ -6,14 +6,18 @@ import { TileLayer } from "@deck.gl/geo-layers";
 
 import { StaticMap } from "react-map-gl";
 
-import { BandsBitmapLayer } from "./bands-bitmap-layer";
+import {
+  BandsBitmapLayer,
+  combineBands,
+  promiseAllObject,
+  pansharpenBrovey,
+} from "@kylebarron/deck.gl-extended-layers";
 
 import { loadImageArray } from "@loaders.gl/images";
 
 import { vibrance } from "@luma.gl/shadertools";
 import { Texture2D } from "@luma.gl/core";
 import GL from "@luma.gl/constants";
-import combineBands from "./bands-bitmap-layer/combine-bands";
 
 const DEFAULT_TEXTURE_PARAMETERS = {
   [GL.TEXTURE_MIN_FILTER]: GL.LINEAR_MIPMAP_LINEAR,
@@ -102,20 +106,28 @@ export default class App extends React.Component {
             });
           });
 
-          return promiseAllObj({
-            images: textures,
+          return promiseAllObject({
+            imageBands: textures.slice(0, 3),
+            imagePan: textures[3],
           });
         },
 
         renderSubLayers: (props) => {
           const {
             bbox: { west, south, east, north },
+            z
           } = props.tile;
           const { data } = props;
+          const modules = [combineBands]
+          if (z >= 12) {
+            modules.push(pansharpenBrovey)
+          }
+          console.log(modules)
 
           return new BandsBitmapLayer(props, {
-            modules: [combineBands],
+            modules: modules,
             asyncModuleProps: data,
+            moduleProps: {panWeight: 100},
             bounds: [west, south, east, north],
           });
         },

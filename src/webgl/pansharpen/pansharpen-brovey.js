@@ -1,5 +1,5 @@
 function getUniforms(opts = {}) {
-  const { image_pan, panWeight = 0.2 } = opts;
+  const { imagePan, panWeight = 0.2 } = opts;
   
   if (!image_pan) {
     return;
@@ -25,7 +25,7 @@ float pansharpen_brovey_ratio(vec4 rgb, float pan, float weight) {
 // panchromatic pixel intensity to the sum of all the
 // multispectral intensities.
 // Original code from https://github.com/mapbox/rio-pansharpen
-vec4 pansharpen_brovey(vec4 rgb, float pan, float weight) {
+vec4 pansharpen_brovey_calc(vec4 rgb, float pan, float weight) {
     float ratio = pansharpen_brovey_ratio(rgb, pan, weight);
     vec4 alteredRGB = ratio * rgb;
     return clamp(alteredRGB, 0., 1.);
@@ -33,13 +33,13 @@ vec4 pansharpen_brovey(vec4 rgb, float pan, float weight) {
 `;
 
 export default {
-  name: "pansharpen",
+  name: "pansharpen_brovey",
   fs,
   getUniforms,
   inject: {
     "fs:DECKGL_MUTATE_COLOR": `
     float pan_band = texture2D(bitmapTexture_pan, coord).r;
-    image = pansharpen_brovey(image, pan_band, panWeight);
+    image = pansharpen_brovey_calc(image, pan_band, panWeight);
     `,
   },
 };
