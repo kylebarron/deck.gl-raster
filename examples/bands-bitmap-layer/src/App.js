@@ -6,9 +6,15 @@ import { TileLayer } from "@deck.gl/geo-layers";
 
 import { StaticMap } from "react-map-gl";
 
-import { BandsBitmapLayer } from "@kylebarron/deck.gl-extended-layers";
+import {
+  BandsBitmapLayer,
+  combineBands,
+  promiseAllObject,
+  pansharpenBrovey,
+} from "@kylebarron/deck.gl-extended-layers";
 
-import { loadImageArray } from "@loaders.gl/images";
+import { load, parse } from "@loaders.gl/core";
+import { loadImageArray, ImageLoader } from "@loaders.gl/images";
 
 import { vibrance } from "@luma.gl/shadertools";
 import { Texture2D } from "@luma.gl/core";
@@ -74,32 +80,28 @@ export default class App extends React.Component {
         getTileData: async ({ x, y, z }) => {
           const { gl } = this.state;
           const pan = z >= 12;
+          const colormap = false;
+          const colormapUrl =
+            "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-extended-layers/assets/colormaps/cfastie.png";
 
           const urls = [
+            pan ? landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
+            colormap ? colormapUrl : null,
             landsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
             landsatUrl({ x, y, z, bands: 3, url: MOSAIC_URL }),
             landsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
           ];
-          if (pan) {
-            urls.push(landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }));
-          }
-          const colormapUrl =
-            "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-extended-layers/assets/colormaps/cfastie.png";
-          urls.push(colormapUrl);
 
-          const images = await loadImageArray(
-            urls.length,
-            ({ index }) => urls[index]
-          );
-
-          const textures = images.map((image) => {
-            return new Texture2D(gl, {
-              data: image,
-              parameters: DEFAULT_TEXTURE_PARAMETERS,
-              format: GL.RGB,
-            });
+          const [
+            imagePan,
+            imageColormap,
+            ...imageBands
+          ] = await imageUrlsToTextures(gl, urls);
+          return promiseAllObject({
+            imageBands,
+            imageColormap,
+            imagePan,
           });
-          return textures;
         },
 
         renderSubLayers: (props) => {
@@ -108,39 +110,14 @@ export default class App extends React.Component {
             z,
           } = props.tile;
           const { data } = props;
-          const pan = z >= 12;
-
-          let image_r, image_g, image_b, image_pan, colormap;
-          if (Array.isArray(data)) {
-            image_r = data[0];
-            image_g = data[1];
-            image_b = data[2];
-            if (pan) {
-              image_pan = data[3];
-              colormap = data[4];
-            } else {
-              colormap = data[3];
-            }
-          } else if (data) {
-            image_r = data.then((result) => result && result[0]);
-            image_g = data.then((result) => result && result[1]);
-            image_b = data.then((result) => result && result[2]);
-            if (pan) {
-              image_pan = data.then((result) => result && result[3]);
-              colormap = data.then((result) => result && result[4]);
-            } else {
-              colormap = data.then((result) => result && result[3]);
-            }
+          const modules = [combineBands];
+          if (z >= 12) {
+            modules.push(pansharpenBrovey);
           }
 
           return new BandsBitmapLayer(props, {
-            data: null,
-            image_r,
-            image_g,
-            image_b,
-            image_pan,
-            band_combination: 'rgb',
-            colormap,
+            modules: modules,
+            asyncModuleProps: data,
             bounds: [west, south, east, north],
           });
         },
@@ -162,4 +139,27 @@ export default class App extends React.Component {
       </DeckGL>
     );
   }
+}
+
+export async function imageUrlsToTextures(gl, urls) {
+  const images = await Promise.all(urls.map((url) => loadImageUrl(url)));
+  const textures = images.map((image) => {
+    return new Texture2D(gl, {
+      data: image,
+      parameters: DEFAULT_TEXTURE_PARAMETERS,
+      format: GL.LUMINANCE,
+    });
+  });
+  return textures;
+}
+
+async function loadImageUrl(url) {
+  if (!url) {
+    return;
+  }
+
+  const res = await fetch(url);
+  const header = JSON.parse(res.headers.get("x-assets") || "[]");
+  const imageOptions = { image: { type: "imagebitmap" } };
+  return await parse(res.arrayBuffer(), ImageLoader, imageOptions);
 }

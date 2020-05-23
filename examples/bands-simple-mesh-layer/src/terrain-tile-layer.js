@@ -57,13 +57,18 @@ async function getTileData(gl, { x, y, z }) {
   if (pan) {
     urls.push(getLandsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }));
   }
-  const images = await loadImageArray(urls.length, ({ index }) => urls[index]);
+  const imageOptions = { image: { type: "imagebitmap" } };
+  const images = await loadImageArray(
+    urls.length,
+    ({ index }) => urls[index],
+    imageOptions
+  );
 
   const textures = images.map((image) => {
     return new Texture2D(gl, {
       data: image,
       parameters: DEFAULT_TEXTURE_PARAMETERS,
-      format: GL.RGB,
+      format: GL.LUMINANCE,
     });
   });
 
