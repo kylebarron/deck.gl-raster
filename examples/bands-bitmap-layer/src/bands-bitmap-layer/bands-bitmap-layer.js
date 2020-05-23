@@ -109,8 +109,7 @@ export default class BandsBitmapLayer extends BitmapLayer {
     // use object.assign to make sure we don't overwrite existing fields like `vs`, `modules`...
     return Object.assign({}, super.getShaders(), {
       fs,
-      modules: [project32, picking, pansharpen],
-      // hookFunctions: ["fs:MUTATE_COLOR(inout vec3 image)"],
+      modules: [project32, picking, combine_bands, pansharpen],
     });
   }
 
