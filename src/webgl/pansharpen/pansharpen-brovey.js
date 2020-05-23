@@ -1,12 +1,12 @@
 function getUniforms(opts = {}) {
   const { imagePan, panWeight = 0.2 } = opts;
   
-  if (!image_pan) {
+  if (!imagePan) {
     return;
   }
   
   return {
-    bitmapTexture_pan: image_pan,
+    bitmapTexture_pan: imagePan,
     panWeight,
   };
 }
