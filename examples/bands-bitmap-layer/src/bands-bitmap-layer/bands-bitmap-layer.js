@@ -72,7 +72,7 @@ export default class BandsBitmapLayer extends BitmapLayer {
 
   updateState({ props, oldProps, changeFlags }) {
     // setup model first
-    if (changeFlags.extensionsChanged) {
+    if (changeFlags.extensionsChanged || props.modules !== oldProps.modules) {
       const { gl } = this.context;
       if (this.state.model) {
         this.state.model.delete();
