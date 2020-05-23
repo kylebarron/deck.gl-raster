@@ -12,7 +12,7 @@ uniform sampler2D bitmapTexture_pan;
 uniform float panWeight;
 
 // calculate pansharpen ratio
-float pansharpen_brovey_ratio(vec3 rgb, float pan, float weight) {
+float pansharpen_brovey_ratio(vec4 rgb, float pan, float weight) {
     return pan / ((rgb.r + rgb.g + rgb.b * weight) / (2. + weight));
 }
 
@@ -21,9 +21,9 @@ float pansharpen_brovey_ratio(vec3 rgb, float pan, float weight) {
 // panchromatic pixel intensity to the sum of all the
 // multispectral intensities.
 // Original code from https://github.com/mapbox/rio-pansharpen
-vec3 pansharpen_brovey(vec3 rgb, float pan, float weight) {
+vec4 pansharpen_brovey(vec4 rgb, float pan, float weight) {
     float ratio = pansharpen_brovey_ratio(rgb, pan, weight);
-    vec3 alteredRGB = ratio * rgb;
+    vec4 alteredRGB = ratio * rgb;
     return clamp(alteredRGB, 0., 1.);
 }
 `;

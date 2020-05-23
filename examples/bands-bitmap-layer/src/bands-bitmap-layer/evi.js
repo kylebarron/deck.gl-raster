@@ -2,7 +2,7 @@ const fs = `\
 // Calculate enhanced vegetation index
 // EVI = 2.5 * ((Band 5 – Band 4) / (Band 5 + 6 * Band 4 – 7.5 * Band 2 + 1))
 // https://www.usgs.gov/land-resources/nli/landsat/landsat-enhanced-vegetation-index
-float enhanced_vegetation_index_calc(vec3 image) {
+float enhanced_vegetation_index_calc(vec4 image) {
   float band5 = image.r;
   float band4 = image.g;
   float band2 = image.b;
@@ -18,7 +18,7 @@ export default {
   fs,
   inject: {
     "fs:MUTATE_COLOR": `
-    image = vec3(enhanced_vegetation_index_calc(image), 0., 0.);
+    image = vec4(enhanced_vegetation_index_calc(image), 0., 0., 0.);
     `,
   },
 };

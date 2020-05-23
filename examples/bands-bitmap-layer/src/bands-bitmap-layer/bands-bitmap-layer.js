@@ -58,39 +58,9 @@ export default class BandsBitmapLayer extends BitmapLayer {
       band_combination,
     } = this.props;
 
-    let usePan = false;
-    let useNdvi = false;
-    let useRgb = false;
-    let useEvi = false;
-    let useSavi = false;
-    let useMsavi = false;
-
-    switch (band_combination.toLowerCase()) {
-      case "rgb":
-        useRgb = true;
-        usePan = Boolean(bitmapTexture_pan) && this.props.usePan;
-        break;
-      case "normalized_difference":
-        useNdvi = true;
-        break;
-      case "evi":
-        useEvi = true;
-        break;
-      case "savi":
-        useSavi = true;
-        break;
-      case "msavi":
-        useMsavi = true;
-        break;
-      default:
-        console.error(`Invalid band_combination: ${band_combination}`);
-    }
-
     // // TODO fix zFighting
     // Render the image
     if (bitmapTexture_r && bitmapTexture_g && model) {
-      // console.log(model.getUniforms());
-
       model
         .setUniforms(
           Object.assign({}, uniforms, {
@@ -108,18 +78,9 @@ export default class BandsBitmapLayer extends BitmapLayer {
             // Pan options, pan texture may or may not exist
             bitmapTexture_pan,
             panWeight,
-
-            // Image operations
-            usePan,
-            useNdvi,
-            useRgb,
-            useEvi,
-            useSavi,
-            useMsavi,
           })
         )
         .draw();
-      // console.log(model.getUniforms())
     }
   }
 
@@ -211,7 +172,7 @@ export default class BandsBitmapLayer extends BitmapLayer {
       return null;
     }
     ProgramManager.getDefaultProgramManager(gl).addShaderHook(
-      "fs:MUTATE_COLOR(inout vec3 image, in vec2 coord)"
+      "fs:MUTATE_COLOR(inout vec4 image, in vec2 coord)"
     );
 
     /*

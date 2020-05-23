@@ -1,6 +1,6 @@
 const fs = `\
 // Calculate standard normalized difference
-float normalized_difference_calc(vec3 image) {
+float normalized_difference_calc(vec4 image) {
   return ((image.r - image.g) / (image.r + image.g));
 }
 `;
@@ -10,7 +10,7 @@ export default {
   fs,
   inject: {
     "fs:MUTATE_COLOR": `
-    image = vec3(normalized_difference_calc(image), 0., 0.);
+    image = vec4(normalized_difference_calc(image), 0., 0., 0.);
     `,
   },
 };
