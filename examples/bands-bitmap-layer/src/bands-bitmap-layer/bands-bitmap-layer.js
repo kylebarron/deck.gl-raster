@@ -7,6 +7,7 @@ import fs from "./bands-bitmap-layer-fragment";
 import { ProgramManager } from "@luma.gl/engine";
 
 const defaultProps = {
+  ...BitmapLayer.defaultProps,
   modules: { type: "array", value: [], compare: true },
   asyncModuleUniforms: {
     type: "object",
@@ -15,14 +16,6 @@ const defaultProps = {
     async: true,
   },
   moduleUniforms: { type: "object", value: {}, compare: true },
-
-  bounds: { type: "array", value: [1, 0, 0, 1], compare: true },
-  desaturate: { type: "number", min: 0, max: 1, value: 0 },
-  // More context: because of the blending mode we're using for ground imagery,
-  // alpha is not effective when blending the bitmap layers with the base map.
-  // Instead we need to manually dim/blend rgb values with a background color.
-  transparentColor: { type: "color", value: [0, 0, 0, 0] },
-  tintColor: { type: "color", value: [255, 255, 255] },
 };
 
 export default class BandsBitmapLayer extends BitmapLayer {
@@ -37,8 +30,8 @@ export default class BandsBitmapLayer extends BitmapLayer {
       asyncModuleUniforms,
     } = this.props;
 
-    // // TODO fix zFighting
     // Render the image
+    //
     // Wait for asyncModuleUniforms to have >=1 truthy key before rendering
     // Important to prevent both flickering and "instanced rendering of wrong
     // data". Without this check, sometimes when panning to a new area, new
