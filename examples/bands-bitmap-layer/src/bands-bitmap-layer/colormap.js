@@ -1,3 +1,15 @@
+function getUniforms(opts = {}) {
+  const { image_colormap } = opts;
+
+  if (!image_colormap) {
+    return;
+  }
+
+  return {
+    bitmapTexture_colormap: image_colormap,
+  };
+}
+
 const fs = `\
 uniform sampler2D bitmapTexture_colormap;
 
@@ -14,6 +26,7 @@ vec4 colormap_apply(sampler2D colormap, vec4 image) {
 export default {
   name: "colormap",
   fs,
+  getUniforms,
   inject: {
     "fs:MUTATE_COLOR": `
     image = colormap_apply(bitmapTexture_colormap, image);

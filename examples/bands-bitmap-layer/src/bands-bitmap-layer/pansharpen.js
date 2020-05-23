@@ -1,6 +1,10 @@
-// Can't figure this out, it overwrites uniforms with null
 function getUniforms(opts = {}) {
-  const { image_pan, panWeight = 0 } = opts;
+  const { image_pan, panWeight = 0.2 } = opts;
+  
+  if (!image_pan) {
+    return;
+  }
+  
   return {
     bitmapTexture_pan: image_pan,
     panWeight,
@@ -31,7 +35,7 @@ vec4 pansharpen_brovey(vec4 rgb, float pan, float weight) {
 export default {
   name: "pansharpen",
   fs,
-  // getUniforms,
+  getUniforms,
   inject: {
     "fs:MUTATE_COLOR": `
     float pan_band = texture2D(bitmapTexture_pan, coord).r;

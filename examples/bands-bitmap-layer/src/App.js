@@ -13,6 +13,7 @@ import { loadImageArray } from "@loaders.gl/images";
 import { vibrance } from "@luma.gl/shadertools";
 import { Texture2D } from "@luma.gl/core";
 import GL from "@luma.gl/constants";
+import combineBands from "./bands-bitmap-layer/combine-bands";
 
 const DEFAULT_TEXTURE_PARAMETERS = {
   [GL.TEXTURE_MIN_FILTER]: GL.LINEAR_MIPMAP_LINEAR,
@@ -96,51 +97,25 @@ export default class App extends React.Component {
             return new Texture2D(gl, {
               data: image,
               parameters: DEFAULT_TEXTURE_PARAMETERS,
-              format: GL.RGB,
+              format: GL.LUMINANCE,
+              mipmaps: true,
             });
           });
-          return textures;
+
+          return promiseAllObj({
+            images: textures,
+          });
         },
 
         renderSubLayers: (props) => {
           const {
             bbox: { west, south, east, north },
-            z,
           } = props.tile;
           const { data } = props;
-          const pan = z >= 12;
-
-          let image_r, image_g, image_b, image_pan, colormap;
-          if (Array.isArray(data)) {
-            image_r = data[0];
-            image_g = data[1];
-            image_b = data[2];
-            if (pan) {
-              image_pan = data[3];
-              colormap = data[4];
-            } else {
-              colormap = data[3];
-            }
-          } else if (data) {
-            image_r = data.then((result) => result && result[0]);
-            image_g = data.then((result) => result && result[1]);
-            image_b = data.then((result) => result && result[2]);
-            if (pan) {
-              image_pan = data.then((result) => result && result[3]);
-              colormap = data.then((result) => result && result[4]);
-            } else {
-              colormap = data.then((result) => result && result[3]);
-            }
-          }
 
           return new BandsBitmapLayer(props, {
-            data: null,
-            image_r,
-            image_g,
-            image_b,
-            image_pan,
-            band_combination: 'rgb',
-            colormap,
+            modules: [combineBands],
+            asyncModuleUniforms: data,
             bounds: [west, south, east, north],
           });
         },
@@ -163,3 +138,18 @@ export default class App extends React.Component {
     );
   }
 }
+
+// https://lowrey.me/lodash-zipobject-in-es6-javascript/
+const zipObject = (props, values) => {
+  return props.reduce((prev, prop, i) => {
+    return Object.assign(prev, { [prop]: values[i] });
+  }, {});
+};
+
+// https://stackoverflow.com/a/50437423
+const promiseAllObj = async (object) => {
+  return zipObject(
+    Object.keys(object),
+    await Promise.all(Object.values(object))
+  );
+};

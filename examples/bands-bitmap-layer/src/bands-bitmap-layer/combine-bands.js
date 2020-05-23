@@ -1,9 +1,21 @@
-// Can't figure this out, it overwrites uniforms with null
 function getUniforms(opts = {}) {
-  const { image_pan, panWeight = 0 } = opts;
+  const { images } = opts;
+  if (!images || images.length === 0) {
+    return;
+  }
+
+  const [
+    bitmapTexture_r,
+    bitmapTexture_g,
+    bitmapTexture_b,
+    bitmapTexture_a,
+  ] = images;
+
   return {
-    bitmapTexture_pan: image_pan,
-    panWeight,
+    bitmapTexture_r,
+    bitmapTexture_g,
+    bitmapTexture_b,
+    bitmapTexture_a,
   };
 }
 
@@ -17,7 +29,7 @@ uniform sampler2D bitmapTexture_a;
 export default {
   name: "combine-bands",
   fs,
-  // getUniforms,
+  getUniforms,
   inject: {
     "fs:DECKGL_CREATE_COLOR": `
     float r_band = texture2D(bitmapTexture_r, coord).r;
