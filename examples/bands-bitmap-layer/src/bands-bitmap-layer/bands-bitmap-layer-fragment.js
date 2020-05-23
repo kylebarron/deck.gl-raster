@@ -5,11 +5,6 @@ export default `
 precision highp float;
 #endif
 
-uniform sampler2D bitmapTexture_r;
-uniform sampler2D bitmapTexture_g;
-uniform sampler2D bitmapTexture_b;
-uniform sampler2D bitmapTexture_a;
-
 varying vec2 vTexCoord;
 
 uniform float desaturate;
@@ -34,12 +29,8 @@ vec4 apply_opacity(vec3 color, float alpha) {
 }
 
 void main(void) {
-  float r_band = texture2D(bitmapTexture_r, vTexCoord).r;
-  float g_band = texture2D(bitmapTexture_g, vTexCoord).r;
-  float b_band = texture2D(bitmapTexture_b, vTexCoord).r;
-  float a_band = texture2D(bitmapTexture_a, vTexCoord).r;
-
-  vec4 image = vec4(r_band, g_band, b_band, a_band);
+  vec4 image;
+  DECKGL_CREATE_COLOR(image, vTexCoord);
 
   MUTATE_COLOR(image, vTexCoord);
 

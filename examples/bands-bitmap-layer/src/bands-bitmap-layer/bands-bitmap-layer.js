@@ -6,6 +6,7 @@ import { project32, picking } from "@deck.gl/core";
 import fs from "./bands-bitmap-layer-fragment";
 import pansharpen from "./pansharpen";
 import {ProgramManager} from "@luma.gl/engine";
+import combine_bands from "./combine-bands";
 
 const DEFAULT_TEXTURE_PARAMETERS = {
   [GL.TEXTURE_MIN_FILTER]: GL.LINEAR_MIPMAP_LINEAR,
@@ -173,6 +174,10 @@ export default class BandsBitmapLayer extends BitmapLayer {
     }
     ProgramManager.getDefaultProgramManager(gl).addShaderHook(
       "fs:MUTATE_COLOR(inout vec4 image, in vec2 coord)"
+    );
+
+    ProgramManager.getDefaultProgramManager(gl).addShaderHook(
+      "fs:DECKGL_CREATE_COLOR(inout vec4 image, in vec2 coord)"
     );
 
     /*
