@@ -87,7 +87,7 @@ export default class BandsBitmapLayer extends BitmapLayer {
       return null;
     }
     ProgramManager.getDefaultProgramManager(gl).addShaderHook(
-      "fs:MUTATE_COLOR(inout vec4 image, in vec2 coord)"
+      "fs:DECKGL_MUTATE_COLOR(inout vec4 image, in vec2 coord)"
     );
 
     ProgramManager.getDefaultProgramManager(gl).addShaderHook(

@@ -37,7 +37,7 @@ export default {
   fs,
   getUniforms,
   inject: {
-    "fs:MUTATE_COLOR": `
+    "fs:DECKGL_MUTATE_COLOR": `
     float pan_band = texture2D(bitmapTexture_pan, coord).r;
     image = pansharpen_brovey(image, pan_band, panWeight);
     `,

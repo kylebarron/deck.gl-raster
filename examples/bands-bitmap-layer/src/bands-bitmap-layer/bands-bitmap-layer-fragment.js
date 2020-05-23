@@ -32,7 +32,7 @@ void main(void) {
   vec4 image;
   DECKGL_CREATE_COLOR(image, vTexCoord);
 
-  MUTATE_COLOR(image, vTexCoord);
+  DECKGL_MUTATE_COLOR(image, vTexCoord);
 
   gl_FragColor = apply_opacity(color_tint(color_desaturate(image.rgb)), opacity);
 

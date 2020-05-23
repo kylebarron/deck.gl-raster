@@ -9,7 +9,7 @@ export default {
   name: "normalized_difference",
   fs,
   inject: {
-    "fs:MUTATE_COLOR": `
+    "fs:DECKGL_MUTATE_COLOR": `
     image = vec4(normalized_difference_calc(image), 0., 0., 0.);
     `,
   },

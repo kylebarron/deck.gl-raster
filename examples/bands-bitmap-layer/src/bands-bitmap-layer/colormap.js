@@ -28,7 +28,7 @@ export default {
   fs,
   getUniforms,
   inject: {
-    "fs:MUTATE_COLOR": `
+    "fs:DECKGL_MUTATE_COLOR": `
     image = colormap_apply(bitmapTexture_colormap, image);
     `,
   },
