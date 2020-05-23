@@ -26,10 +26,16 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "dev": "docz dev",
     "build": "rollup -c"
   },
   "dependencies": {
-    "@luma.gl/constants": "^8.1.0"
+    "@deck.gl/core": "^8.1.7",
+    "@deck.gl/layers": "^8.1.7",
+    "@deck.gl/mesh-layers": "^8.1.7",
+    "@luma.gl/constants": "^8.1.0",
+    "@luma.gl/core": "^8.1.2",
+    "@luma.gl/webgl": "^8.1.2"
   },
   "peerDependencies": {
     "@deck.gl/core": "^8.1.0",
@@ -39,6 +45,9 @@
     "@luma.gl/webgl": "^8.1.0"
   },
   "devDependencies": {
+    "docz": "^2.3.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "rollup": "^2.7.2",
     "rollup-plugin-terser": "^5.3.0"
   }
