@@ -19,8 +19,7 @@ const defaultProps = {
 };
 
 export default class BandsBitmapLayer extends BitmapLayer {
-  draw(opts) {
-    const { uniforms } = opts;
+  draw({ uniforms }) {
     const { model } = this.state;
     const {
       desaturate,
@@ -38,21 +37,23 @@ export default class BandsBitmapLayer extends BitmapLayer {
     // tiles will be a checkerboard of one existing tile while waiting for the
     // new textures to load.
     if (
-      model &&
-      Object.keys(asyncModuleUniforms).length !== 0 &&
-      Object.values(asyncModuleUniforms).every((item) => item)
+      !model ||
+      Object.keys(asyncModuleUniforms).length === 0 ||
+      !Object.values(asyncModuleUniforms).every((item) => item)
     ) {
-      model
-        .setUniforms(
-          Object.assign({}, uniforms, {
-            desaturate,
-            transparentColor: transparentColor.map((x) => x / 255),
-            tintColor: tintColor.slice(0, 3).map((x) => x / 255),
-          })
-        )
-        .updateModuleSettings({ ...asyncModuleUniforms, ...moduleUniforms })
-        .draw();
+      return;
     }
+
+    model
+      .setUniforms(
+        Object.assign({}, uniforms, {
+          desaturate,
+          transparentColor: transparentColor.map((x) => x / 255),
+          tintColor: tintColor.slice(0, 3).map((x) => x / 255),
+        })
+      )
+      .updateModuleSettings({ ...asyncModuleUniforms, ...moduleUniforms })
+      .draw();
   }
 
   getShaders() {
