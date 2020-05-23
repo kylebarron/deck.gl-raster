@@ -6,7 +6,7 @@ import { TileLayer } from "@deck.gl/geo-layers";
 
 import { StaticMap } from "react-map-gl";
 
-import { BandsBitmapLayer } from "@kylebarron/deck.gl-extended-layers";
+import { BandsBitmapLayer } from "./bands-bitmap-layer";
 
 import { loadImageArray } from "@loaders.gl/images";
 

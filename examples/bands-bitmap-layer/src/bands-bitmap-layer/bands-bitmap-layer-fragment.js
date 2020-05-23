@@ -8,7 +8,6 @@ precision highp float;
 uniform sampler2D bitmapTexture_r;
 uniform sampler2D bitmapTexture_g;
 uniform sampler2D bitmapTexture_b;
-// uniform sampler2D bitmapTexture_pan;
 uniform sampler2D bitmapTexture_colormap;
 
 varying vec2 vTexCoord;
@@ -19,28 +18,11 @@ uniform bool useNdvi;
 uniform bool useEvi;
 uniform bool useSavi;
 uniform bool useMsavi;
-// uniform float panWeight;
 
 uniform float desaturate;
 uniform vec4 transparentColor;
 uniform vec3 tintColor;
 uniform float opacity;
-
-// // calculate pansharpen ratio
-// float pansharpen_ratio(vec3 rgb, float pan, float weight) {
-//     return pan / ((rgb.r + rgb.g + rgb.b * weight) / (2. + weight));
-// }
-
-// // Brovey Method: Each resampled, multispectral pixel is
-// // multiplied by the ratio of the corresponding
-// // panchromatic pixel intensity to the sum of all the
-// // multispectral intensities.
-// // Original code from https://github.com/mapbox/rio-pansharpen
-// vec3 pansharpen(vec3 rgb, float pan, float weight) {
-//     float ratio = pansharpen_ratio(rgb, pan, weight);
-//     vec3 alteredRGB = ratio * rgb;
-//     return clamp(alteredRGB, 0., 1.);
-// }
 
 // apply desaturation
 vec3 color_desaturate(vec3 color) {

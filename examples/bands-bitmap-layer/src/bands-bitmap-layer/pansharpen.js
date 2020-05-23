@@ -1,5 +1,5 @@
+// Can't figure this out, it overwrites uniforms with null
 function getUniforms(opts = {}) {
-  // console.log(opts)
   const { image_pan, panWeight = 0 } = opts;
   return {
     bitmapTexture_pan: image_pan,
