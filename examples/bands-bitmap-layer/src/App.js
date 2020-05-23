@@ -13,7 +13,8 @@ import {
   pansharpenBrovey,
 } from "@kylebarron/deck.gl-extended-layers";
 
-import { loadImageArray } from "@loaders.gl/images";
+import { load, parse } from "@loaders.gl/core";
+import { loadImageArray, ImageLoader } from "@loaders.gl/images";
 
 import { vibrance } from "@luma.gl/shadertools";
 import { Texture2D } from "@luma.gl/core";
@@ -79,55 +80,44 @@ export default class App extends React.Component {
         getTileData: async ({ x, y, z }) => {
           const { gl } = this.state;
           const pan = z >= 12;
+          const colormap = false;
+          const colormapUrl =
+            "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-extended-layers/assets/colormaps/cfastie.png";
 
           const urls = [
+            pan ? landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
+            colormap ? colormapUrl : null,
             landsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
             landsatUrl({ x, y, z, bands: 3, url: MOSAIC_URL }),
             landsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
           ];
-          if (pan) {
-            urls.push(landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }));
-          }
-          const colormapUrl =
-            "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-extended-layers/assets/colormaps/cfastie.png";
-          urls.push(colormapUrl);
 
-          const images = await loadImageArray(
-            urls.length,
-            ({ index }) => urls[index]
-          );
-
-          const textures = images.map((image) => {
-            return new Texture2D(gl, {
-              data: image,
-              parameters: DEFAULT_TEXTURE_PARAMETERS,
-              format: GL.LUMINANCE,
-              mipmaps: true,
-            });
-          });
-
+          const [
+            imagePan,
+            imageColormap,
+            ...imageBands
+          ] = await imageUrlsToTextures(gl, urls);
           return promiseAllObject({
-            imageBands: textures.slice(0, 3),
-            imagePan: textures[3],
+            imageBands,
+            imageColormap,
+            imagePan,
           });
         },
 
         renderSubLayers: (props) => {
           const {
             bbox: { west, south, east, north },
-            z
+            z,
           } = props.tile;
           const { data } = props;
-          const modules = [combineBands]
+          const modules = [combineBands];
           if (z >= 12) {
-            modules.push(pansharpenBrovey)
+            modules.push(pansharpenBrovey);
           }
-          console.log(modules)
 
           return new BandsBitmapLayer(props, {
             modules: modules,
             asyncModuleProps: data,
-            moduleProps: {panWeight: 100},
             bounds: [west, south, east, north],
           });
         },
@@ -149,4 +139,27 @@ export default class App extends React.Component {
       </DeckGL>
     );
   }
+}
+
+export async function imageUrlsToTextures(gl, urls) {
+  const images = await Promise.all(urls.map((url) => loadImageUrl(url)));
+  const textures = images.map((image) => {
+    return new Texture2D(gl, {
+      data: image,
+      parameters: DEFAULT_TEXTURE_PARAMETERS,
+      format: GL.LUMINANCE,
+    });
+  });
+  return textures;
+}
+
+async function loadImageUrl(url) {
+  if (!url) {
+    return;
+  }
+
+  const res = await fetch(url);
+  const header = JSON.parse(res.headers.get("x-assets") || "[]");
+  const imageOptions = { image: { type: "imagebitmap" } };
+  return await parse(res.arrayBuffer(), ImageLoader, imageOptions);
 }
