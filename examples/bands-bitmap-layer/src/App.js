@@ -115,7 +115,7 @@ export default class App extends React.Component {
 
           return new BandsBitmapLayer(props, {
             modules: [combineBands],
-            asyncModuleUniforms: data,
+            asyncModuleProps: data,
             bounds: [west, south, east, north],
           });
         },

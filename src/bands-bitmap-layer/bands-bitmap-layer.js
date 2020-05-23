@@ -9,13 +9,13 @@ import { ProgramManager } from "@luma.gl/engine";
 const defaultProps = {
   ...BitmapLayer.defaultProps,
   modules: { type: "array", value: [], compare: true },
-  asyncModuleUniforms: {
+  asyncModuleProps: {
     type: "object",
     value: {},
     compare: true,
     async: true,
   },
-  moduleUniforms: { type: "object", value: {}, compare: true },
+  moduleProps: { type: "object", value: {}, compare: true },
 };
 
 export default class BandsBitmapLayer extends BitmapLayer {
@@ -25,21 +25,21 @@ export default class BandsBitmapLayer extends BitmapLayer {
       desaturate,
       transparentColor,
       tintColor,
-      moduleUniforms,
-      asyncModuleUniforms,
+      moduleProps,
+      asyncModuleProps,
     } = this.props;
 
     // Render the image
     //
-    // Wait for asyncModuleUniforms to have >=1 truthy key before rendering
+    // Wait for asyncModuleProps to have >=1 truthy key before rendering
     // Important to prevent both flickering and "instanced rendering of wrong
     // data". Without this check, sometimes when panning to a new area, new
     // tiles will be a checkerboard of one existing tile while waiting for the
     // new textures to load.
     if (
       !model ||
-      Object.keys(asyncModuleUniforms).length === 0 ||
-      !Object.values(asyncModuleUniforms).every((item) => item)
+      Object.keys(asyncModuleProps).length === 0 ||
+      !Object.values(asyncModuleProps).every((item) => item)
     ) {
       return;
     }
@@ -52,7 +52,7 @@ export default class BandsBitmapLayer extends BitmapLayer {
           tintColor: tintColor.slice(0, 3).map((x) => x / 255),
         })
       )
-      .updateModuleSettings({ ...asyncModuleUniforms, ...moduleUniforms })
+      .updateModuleSettings({ ...asyncModuleProps, ...moduleProps })
       .draw();
   }
 

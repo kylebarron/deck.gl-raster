@@ -39,13 +39,13 @@ const DEFAULT_COLOR = [0, 0, 0, 255];
 const defaultProps = {
   ...SimpleMeshLayer.defaultProps,
   modules: { type: "array", value: [], compare: true },
-  asyncModuleUniforms: {
+  asyncModuleProps: {
     type: "object",
     value: {},
     compare: true,
     async: true,
   },
-  moduleUniforms: { type: "object", value: {}, compare: true },
+  moduleProps: { type: "object", value: {}, compare: true },
 };
 
 export default class BandsSimpleMeshLayer extends SimpleMeshLayer {
@@ -92,17 +92,17 @@ export default class BandsSimpleMeshLayer extends SimpleMeshLayer {
 
   draw({ uniforms }) {
     const { model } = this.state;
-    const { moduleUniforms, asyncModuleUniforms } = this.props;
+    const { moduleProps, asyncModuleProps } = this.props;
 
-    // Wait for asyncModuleUniforms to have >=1 truthy key before rendering
+    // Wait for asyncModuleProps to have >=1 truthy key before rendering
     // Important to prevent both flickering and "instanced rendering of wrong
     // data". Without this check, sometimes when panning to a new area, new
     // tiles will be a checkerboard of one existing tile while waiting for the
     // new textures to load.
     if (
       !model ||
-      Object.keys(asyncModuleUniforms).length === 0 ||
-      !Object.values(asyncModuleUniforms).every((item) => item)
+      Object.keys(asyncModuleProps).length === 0 ||
+      !Object.values(asyncModuleProps).every((item) => item)
     ) {
       return;
     }
@@ -119,7 +119,7 @@ export default class BandsSimpleMeshLayer extends SimpleMeshLayer {
           flatShading: !this.state.hasNormals,
         })
       )
-      .updateModuleSettings({ ...asyncModuleUniforms, ...moduleUniforms })
+      .updateModuleSettings({ ...asyncModuleProps, ...moduleProps })
       .draw();
   }
 
