@@ -1,5 +1,5 @@
 export default `
-#define SHADER_NAME bands-bitmap-layer-fragment-shader
+#define SHADER_NAME raster-layer-fragment-shader
 
 #ifdef GL_ES
 precision highp float;

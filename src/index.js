@@ -1,5 +1,5 @@
-export { default as BandsBitmapLayer } from "./bands-bitmap-layer/bands-bitmap-layer";
-export { default as BandsSimpleMeshLayer } from "./bands-simple-mesh-layer/bands-simple-mesh-layer";
+export { default as RasterLayer } from "./raster-layer/raster-layer";
+export { default as RasterMeshLayer } from "./raster-mesh-layer/raster-mesh-layer";
 
 export * from "./util";
 export * from "./webgl";

@@ -3,7 +3,7 @@ import { BitmapLayer } from "@deck.gl/layers";
 import { Model, Geometry } from "@luma.gl/core";
 import { project32, picking } from "@deck.gl/core";
 
-import fs from "./bands-bitmap-layer-fragment";
+import fs from "./raster-layer-fragment";
 import { ProgramManager } from "@luma.gl/engine";
 
 const defaultProps = {
@@ -18,7 +18,7 @@ const defaultProps = {
   moduleProps: { type: "object", value: {}, compare: true },
 };
 
-export default class BandsBitmapLayer extends BitmapLayer {
+export default class RasterLayer extends BitmapLayer {
   draw({ uniforms }) {
     const { model } = this.state;
     const {
@@ -116,5 +116,5 @@ export default class BandsBitmapLayer extends BitmapLayer {
   }
 }
 
-BandsBitmapLayer.defaultProps = defaultProps;
-BandsBitmapLayer.layerName = "BandsBitmapLayer";
+RasterLayer.defaultProps = defaultProps;
+RasterLayer.layerName = "RasterLayer";

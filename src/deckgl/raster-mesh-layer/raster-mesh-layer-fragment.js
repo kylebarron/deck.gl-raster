@@ -1,5 +1,5 @@
 export default `#version 300 es
-#define SHADER_NAME bands-simple-mesh-layer-fs
+#define SHADER_NAME raster-mesh-layer-fs
 
 precision highp float;
 

@@ -1,6 +1,6 @@
 import GL from "@luma.gl/constants";
 import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
-import fs from "./bands-simple-mesh-layer-fragment";
+import fs from "./raster-mesh-layer-fragment";
 import { Model, Geometry, isWebGL2 } from "@luma.gl/core";
 import { shouldComposeModelMatrix } from "./matrix";
 import { project32, phongLighting, picking, log } from "@deck.gl/core";
@@ -48,7 +48,7 @@ const defaultProps = {
   moduleProps: { type: "object", value: {}, compare: true },
 };
 
-export default class BandsSimpleMeshLayer extends SimpleMeshLayer {
+export default class RasterMeshLayer extends SimpleMeshLayer {
   getShaders() {
     const transpileToGLSL100 = !isWebGL2(this.context.gl);
     const { modules = [] } = this.props;
@@ -147,5 +147,5 @@ export default class BandsSimpleMeshLayer extends SimpleMeshLayer {
   }
 }
 
-BandsSimpleMeshLayer.layerName = "BandsSimpleMeshLayer";
-BandsSimpleMeshLayer.defaultProps = defaultProps;
+RasterMeshLayer.layerName = "RasterMeshLayer";
+RasterMeshLayer.defaultProps = defaultProps;
