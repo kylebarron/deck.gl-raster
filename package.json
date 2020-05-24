@@ -1,10 +1,10 @@
 {
-  "name": "@kylebarron/deck.gl-extended-layers",
+  "name": "@kylebarron/deck.gl-raster",
   "description": "A collection of custom Deck.gl layers",
   "license": "MIT",
   "version": "0.2.0",
-  "main": "./dist/deck.gl-extended-layers.js",
-  "unpkg": "./dist/deck.gl-extended-layers.min.js",
+  "main": "./dist/deck.gl-raster.js",
+  "unpkg": "./dist/deck.gl-raster.min.js",
   "module": "./src/index.js",
   "publishConfig": {
     "access": "public"
@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/kylebarron/deck.gl-extended-layers.git"
+    "url": "https://github.com/kylebarron/deck.gl-raster.git"
   },
   "files": [
     "dist",

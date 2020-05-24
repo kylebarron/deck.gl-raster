@@ -3,7 +3,7 @@ import { terser } from "rollup-plugin-terser";
 const config = (file, plugins = []) => ({
   input: "src/index.js",
   output: {
-    name: "deck.gl-extended-layers",
+    name: "deck.gl-raster",
     format: "umd",
     indent: false,
     file,
@@ -12,6 +12,6 @@ const config = (file, plugins = []) => ({
 });
 
 export default [
-  config("dist/deck.gl-extended-layers.js"),
-  config("dist/deck.gl-extended-layers.min.js", [terser()]),
+  config("dist/deck.gl-raster.js"),
+  config("dist/deck.gl-raster.min.js", [terser()]),
 ];
