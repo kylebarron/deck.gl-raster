@@ -11,23 +11,23 @@
         <meta name="description" content="Deck.gl layers and WebGL modules for client-side satellite imagery processing">
       
       
-        <link rel="canonical" href="https://kylebarron.dev/deck.gl-raster/">
+        <link rel="canonical" href="https://kylebarron.dev/deck.gl-raster/webgl-modules/pansharpen/">
       
       
         <meta name="author" content="Kyle Barron">
       
-      <link rel="shortcut icon" href="assets/images/favicon.png">
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-5.2.1">
     
     
       
-        <title>deck.gl-raster</title>
+        <title>Pansharpen - deck.gl-raster</title>
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.71dfd922.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.71dfd922.min.css">
       
-        <link rel="stylesheet" href="assets/stylesheets/palette.616af814.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.616af814.min.css">
       
       
         
@@ -63,7 +63,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#deckgl-raster" class="md-skip">
+        <a href="#color-operations" class="md-skip">
           Skip to content
         </a>
       
@@ -91,7 +91,7 @@
           </span>
           <span class="md-header-nav__topic md-ellipsis">
             
-              Home
+              Pansharpen
             
           </span>
         </div>
@@ -189,60 +189,11 @@
       
       
 
-  
 
-
-  <li class="md-nav__item md-nav__item--active">
-    
-    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    
-      
-    
-    
-      <label class="md-nav__link md-nav__link--active" for="__toc">
-        Home
-        <span class="md-nav__icon md-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
-        </span>
-      </label>
-    
-    <a href="." title="Home" class="md-nav__link md-nav__link--active">
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
       Home
     </a>
-    
-      
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
-      </span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    Overview
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#install" class="md-nav__link">
-    Install
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-    
   </li>
 
     
@@ -277,7 +228,7 @@
 
 
   <li class="md-nav__item">
-    <a href="layers/raster-layer/" title="RasterLayer" class="md-nav__link">
+    <a href="../../layers/raster-layer/" title="RasterLayer" class="md-nav__link">
       RasterLayer
     </a>
   </li>
@@ -289,7 +240,7 @@
 
 
   <li class="md-nav__item">
-    <a href="layers/raster-mesh-layer/" title="RasterMeshLayer" class="md-nav__link">
+    <a href="../../layers/raster-mesh-layer/" title="RasterMeshLayer" class="md-nav__link">
       RasterMeshLayer
     </a>
   </li>
@@ -304,10 +255,12 @@
       
       
 
+  
 
-  <li class="md-nav__item md-nav__item--nested">
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
     
-      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+      <input class="md-nav__toggle md-toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
     
     <label class="md-nav__link" for="nav-3">
       WebGL Modules
@@ -331,7 +284,7 @@
 
 
   <li class="md-nav__item">
-    <a href="webgl-modules/overview/" title="Overview" class="md-nav__link">
+    <a href="../overview/" title="Overview" class="md-nav__link">
       Overview
     </a>
   </li>
@@ -343,7 +296,7 @@
 
 
   <li class="md-nav__item">
-    <a href="webgl-modules/color/" title="Color" class="md-nav__link">
+    <a href="../color/" title="Color" class="md-nav__link">
       Color
     </a>
   </li>
@@ -355,7 +308,7 @@
 
 
   <li class="md-nav__item">
-    <a href="webgl-modules/create-image/" title="Create Image" class="md-nav__link">
+    <a href="../create-image/" title="Create Image" class="md-nav__link">
       Create Image
     </a>
   </li>
@@ -365,11 +318,93 @@
           
           
 
+  
 
-  <li class="md-nav__item">
-    <a href="webgl-modules/pansharpen/" title="Pansharpen" class="md-nav__link">
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Pansharpen
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
+    
+    <a href="./" title="Pansharpen" class="md-nav__link md-nav__link--active">
       Pansharpen
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pansharpenbrovey" class="md-nav__link">
+    pansharpenBrovey
+  </a>
+  
+    <nav class="md-nav" aria-label="pansharpenBrovey">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#props" class="md-nav__link">
+    Props
+  </a>
+  
+    <nav class="md-nav" aria-label="Props">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#imagepan" class="md-nav__link">
+    imagePan
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#panweight" class="md-nav__link">
+    panWeight
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credits" class="md-nav__link">
+    Credits
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+    
   </li>
 
         
@@ -379,7 +414,7 @@
 
 
   <li class="md-nav__item">
-    <a href="webgl-modules/spectral-indices/" title="Spectral Indices" class="md-nav__link">
+    <a href="../spectral-indices/" title="Spectral Indices" class="md-nav__link">
       Spectral Indices
     </a>
   </li>
@@ -391,7 +426,7 @@
 
 
   <li class="md-nav__item">
-    <a href="webgl-modules/custom-modules/" title="Custom Modules" class="md-nav__link">
+    <a href="../custom-modules/" title="Custom Modules" class="md-nav__link">
       Custom Modules
     </a>
   </li>
@@ -408,7 +443,7 @@
 
 
   <li class="md-nav__item">
-    <a href="colormaps/" title="Colormaps" class="md-nav__link">
+    <a href="../../colormaps/" title="Colormaps" class="md-nav__link">
       Colormaps
     </a>
   </li>
@@ -440,16 +475,49 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview" class="md-nav__link">
-    Overview
+  <a href="#pansharpenbrovey" class="md-nav__link">
+    pansharpenBrovey
+  </a>
+  
+    <nav class="md-nav" aria-label="pansharpenBrovey">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#props" class="md-nav__link">
+    Props
+  </a>
+  
+    <nav class="md-nav" aria-label="Props">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#imagepan" class="md-nav__link">
+    imagePan
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#install" class="md-nav__link">
-    Install
+        
+          <li class="md-nav__item">
+  <a href="#panweight" class="md-nav__link">
+    panWeight
   </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#credits" class="md-nav__link">
+    Credits
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -465,7 +533,7 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/kylebarron/deck.gl-raster/blob/master/docs/src/index.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/kylebarron/deck.gl-raster/blob/master/docs/src/webgl-modules/pansharpen.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
@@ -473,22 +541,36 @@
                   
                 
                 
-                <h1 id="deckgl-raster">deck.gl-raster<a class="headerlink" href="#deckgl-raster" title="Permanent link">&para;</a></h1>
-<p>deck.gl layers and WebGL modules for client-side satellite imagery processing</p>
-<p><img alt="" src="assets/images/msavi_grca_cfastie.jpg" /></p>
-<p>Landsat <a href="https://www.usgs.gov/land-resources/nli/landsat/landsat-modified-soil-adjusted-vegetation-index">Modified Soil Adjusted Vegetation Index</a> over the Grand Canyon and Kaibab Plateau, with the <a href="assets/colormaps/cfastie.png"><code>cfastie</code> colormap</a>.</p>
-<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
-<p><a href="https://deck.gl">deck.gl</a> is a great geospatial rendering engine for the
-browser. deck.gl layers are designed to be composable and easy to extend. As
-such, small variations of the pre-built layers can do amazing new things, while
-not being fit for inclusion in the standard layer library.</p>
-<p>This repository contains deck.gl layers and reusable WebGL modules for rendering
-and computation on rasters, especially satellite imagery. </p>
-<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code>yarn add @kylebarron/deck.gl-raster
-</code></pre></div>
-
-<p><a href="https://kylebarron.dev/deck.gl-raster">Full Documentation</a></p>
+                <h1 id="color-operations">Color operations<a class="headerlink" href="#color-operations" title="Permanent link">&para;</a></h1>
+<p>Modules to perform pansharpening on an existing image.</p>
+<h2 id="pansharpenbrovey"><code>pansharpenBrovey</code><a class="headerlink" href="#pansharpenbrovey" title="Permanent link">&para;</a></h2>
+<p>Use the <a href="https://github.com/mapbox/rio-pansharpen/blob/master/docs/pansharpening_methods.rst#weighted-brovey">Weighted Brovey</a> method to pansharpen an image.</p>
+<p>This is expected to be used on a true-color three-band RGB image.</p>
+<h3 id="props">Props<a class="headerlink" href="#props" title="Permanent link">&para;</a></h3>
+<h4 id="imagepan"><code>imagePan</code><a class="headerlink" href="#imagepan" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>Texture2D</code>, required</li>
+</ul>
+<p>A <a href="https://luma.gl/docs/api-reference/webgl/texture-2d"><code>Texture2D</code></a> object representing the panchromatic band of a
+satellite image scene.</p>
+<h4 id="panweight"><code>panWeight</code><a class="headerlink" href="#panweight" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>Number</code>, default <code>0.2</code></li>
+</ul>
+<p>Weight of blue band. <code>0.2</code> is suitable for Landsat imagery. To perform
+non-weighted Brovey pansharpening, pass <code>panWeight: 1</code>. From
+<a href="https://github.com/mapbox/rio-pansharpen/blob/master/docs/pansharpening_methods.rst#weighted-brovey">here</a>:</p>
+<blockquote>
+<p>Particularly for Landsat 8 imagery data, we know that the pan-band does not
+include the full blue band, so we take a fraction of blue (optimal weight
+computed in this sprint) in the pan-band and use this weight to compute the
+sudo_pan_band, which is a weighted average of the three bands. We then compute
+the ratio between the pan-band and the sudo-band and adjust each of the three
+bands by this ratio.</p>
+</blockquote>
+<h3 id="credits">Credits<a class="headerlink" href="#credits" title="Permanent link">&para;</a></h3>
+<p><code>pansharpenBrovey</code> is ported from <a href="https://github.com/mapbox/rio-pansharpen"><code>rio-pansharpen</code></a> under the
+MIT license.</p>
                 
               
               
@@ -507,14 +589,28 @@ and computation on rasters, especially satellite imagery. </p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
+          <a href="../create-image/" title="Create Image" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Create Image
+              </div>
+            </div>
+          </a>
         
-          <a href="layers/raster-layer/" title="RasterLayer" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+        
+          <a href="../spectral-indices/" title="Spectral Indices" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                RasterLayer
+                Spectral Indices
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
@@ -563,15 +659,15 @@ and computation on rasters, especially satellite imagery. </p>
       
     </div>
     
-      <script src="assets/javascripts/vendor.d710d30a.min.js"></script>
-      <script src="assets/javascripts/bundle.5f27aba8.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
+      <script src="../../assets/javascripts/vendor.d710d30a.min.js"></script>
+      <script src="../../assets/javascripts/bundle.5f27aba8.min.js"></script><script id="__lang" type="application/json">{"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents"}</script>
       
       <script>
         app = initialize({
-          base: ".",
+          base: "../..",
           features: [],
           search: Object.assign({
-            worker: "assets/javascripts/worker/search.27c6a5e6.min.js"
+            worker: "../../assets/javascripts/worker/search.27c6a5e6.min.js"
           }, typeof search !== "undefined" && search)
         })
       </script>
