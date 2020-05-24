@@ -9,7 +9,7 @@ import { ProgramManager } from "@luma.gl/engine";
 function validateGeometryAttributes(attributes) {
   log.assert(
     attributes.positions || attributes.POSITION,
-    'SimpleMeshLayer requires "postions" or "POSITION" attribute in mesh property.'
+    'RasterMeshLayer requires "postions" or "POSITION" attribute in mesh property.'
   );
 }
 
@@ -33,8 +33,6 @@ function getGeometry(data) {
   }
   throw Error("Invalid mesh");
 }
-
-const DEFAULT_COLOR = [0, 0, 0, 255];
 
 const defaultProps = {
   ...SimpleMeshLayer.defaultProps,
