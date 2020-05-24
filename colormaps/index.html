@@ -62,6 +62,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#colormaps" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -359,10 +364,58 @@
     
     <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
     
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Colormaps
+        <span class="md-nav__icon md-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 9h14V7H3v2m0 4h14v-2H3v2m0 4h14v-2H3v2m16 0h2v-2h-2v2m0-10v2h2V7h-2m0 6h2v-2h-2v2z"/></svg>
+        </span>
+      </label>
     
     <a href="./" title="Colormaps" class="md-nav__link md-nav__link--active">
       Colormaps
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#included-colormaps" class="md-nav__link">
+    Included Colormaps
+  </a>
+  
+    <nav class="md-nav" aria-label="Included Colormaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#referencess" class="md-nav__link">
+    Referencess
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -373,6 +426,51 @@
                 </div>
               </div>
             
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#included-colormaps" class="md-nav__link">
+    Included Colormaps
+  </a>
+  
+    <nav class="md-nav" aria-label="Included Colormaps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#referencess" class="md-nav__link">
+    Referencess
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
             
           
           <div class="md-content">
@@ -387,9 +485,31 @@
                   
                 
                 
-                  <h1>Colormaps</h1>
-                
-                
+                <h1 id="colormaps">Colormaps<a class="headerlink" href="#colormaps" title="Permanent link">&para;</a></h1>
+<p><code>deck.gl-raster</code> includes some public colormaps in the Github repository. These
+generally come from <a href="https://github.com/cogeotiff/rio-tiler"><code>rio-tiler</code></a>, which were themselves mostly
+derived from Matplotlib. A few custom colormaps that are commonly-used with
+raster data are included.</p>
+<p>To use them, you can load the PNG via the jsdelivr CDN, e.g.:</p>
+<div class="highlight"><pre><span></span><code>https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/{colormap_name}.png
+</code></pre></div>
+
+<h2 id="included-colormaps">Included Colormaps<a class="headerlink" href="#included-colormaps" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/custom.png" />
+<img alt="" src="https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/perceptually_uniform_sequential.png" />
+<img alt="" src="https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/sequential.png" />
+<img alt="" src="https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/sequential_(2).png" />
+<img alt="" src="https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/diverging.png" />
+<img alt="" src="https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/cyclic.png" />
+<img alt="" src="https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/qualitative.png" />
+<img alt="" src="https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/miscellaneous.png" /></p>
+<h3 id="referencess">Referencess<a class="headerlink" href="#referencess" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Matplotlib: <a href="https://matplotlib.org/3.1.0/tutorials/colors/colormaps.html">matplotlib.org/3.1.0/tutorials/colors/colormaps.html</a></li>
+<li>cfastie: <a href="http://publiclab.org/notes/cfastie/08-26-2014/new-ndvi-colormap">publiclab.org/notes/cfastie/08-26-2014/new-ndvi-colormap</a></li>
+<li>rplumbo: <a class="magiclink magiclink-github magiclink-pull" href="https://github.com/cogeotiff/rio-tiler/pull/90" title="GitHub Pull Request: cogeotiff/rio-tiler!90">cogeotiff/rio-tiler!90</a></li>
+<li>schwarzwald: <a href="http://soliton.vm.bytemark.co.uk/pub/cpt-city/wkp/schwarzwald/tn/wiki-schwarzwald-cont.png.index.html">soliton.vm.bytemark.co.uk/pub/cpt-city/wkp/schwarzwald/tn/wiki-schwarzwald-cont.png.index.html</a></li>
+</ul>
                 
               
               
