@@ -23,11 +23,17 @@ extra:
 # Layout
 nav:
   - Home: 'index.md'
-  # - Install: 'install.md'
-  # - Examples:
-  #   - Global Basemap: 'examples/global.md'
-  #   - STAC Features: 'examples/stac.md'
-  # - CLI: 'cli.md'
+  - Layers:
+    - RasterLayer: 'layers/raster-layer.md'
+    - RasterMeshLayer: 'layers/raster-mesh-layer.md'
+  - WebGL Modules: 
+    - Overview: 'webgl-modules/overview.md'
+    - Color: 'webgl-modules/color.md'
+    - Create Image: 'webgl-modules/create-image.md'
+    - Pansharpen: 'webgl-modules/pansharpen.md'
+    - Spectral Indices: 'webgl-modules/spectral-indices.md'
+    - Custom Modules: 'webgl-modules/custom-modules.md'
+  - Colormaps: 'colormaps.md'
 
 # Theme
 theme:
