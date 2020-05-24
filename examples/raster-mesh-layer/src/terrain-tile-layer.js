@@ -11,7 +11,7 @@ import {
   getMeshMaxError,
 } from "./util";
 import { Matrix4 } from "math.gl";
-import { BandsSimpleMeshLayer } from "@kylebarron/deck.gl-extended-layers";
+import { RasterMeshLayer } from "@kylebarron/deck.gl-raster";
 import { loadImageArray } from "@loaders.gl/images";
 import GL from "@luma.gl/constants";
 import { Texture2D } from "@luma.gl/core";
@@ -92,7 +92,7 @@ function renderSubLayers(props) {
   const mesh = data.then((result) => result && result[1]);
 
   return [
-    new BandsSimpleMeshLayer(props, {
+    new RasterMeshLayer(props, {
       // NOTE: currently you need to set each sublayer id so they don't conflict
       id: `terrain-simple-mesh-layer-${tile.x}-${tile.y}-${tile.z}`,
       data: DUMMY_DATA,

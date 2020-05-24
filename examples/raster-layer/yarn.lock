@@ -1242,8 +1242,8 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@kylebarron/deck.gl-extended-layers@../../":
-  version "0.1.0"
+"@kylebarron/deck.gl-raster@../../":
+  version "0.2.0"
   dependencies:
     "@luma.gl/constants" "^8.1.0"
 

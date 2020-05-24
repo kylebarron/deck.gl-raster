@@ -7,11 +7,11 @@ import { TileLayer } from "@deck.gl/geo-layers";
 import { StaticMap } from "react-map-gl";
 
 import {
-  BandsBitmapLayer,
+  RasterLayer,
   combineBands,
   promiseAllObject,
   pansharpenBrovey,
-} from "@kylebarron/deck.gl-extended-layers";
+} from "@kylebarron/deck.gl-raster";
 
 import { load, parse } from "@loaders.gl/core";
 import { loadImageArray, ImageLoader } from "@loaders.gl/images";
@@ -82,7 +82,7 @@ export default class App extends React.Component {
           const pan = z >= 12;
           const colormap = false;
           const colormapUrl =
-            "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-extended-layers/assets/colormaps/cfastie.png";
+            "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/cfastie.png";
 
           const urls = [
             pan ? landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
@@ -115,7 +115,7 @@ export default class App extends React.Component {
             modules.push(pansharpenBrovey);
           }
 
-          return new BandsBitmapLayer(props, {
+          return new RasterLayer(props, {
             modules: modules,
             asyncModuleProps: data,
             bounds: [west, south, east, north],
