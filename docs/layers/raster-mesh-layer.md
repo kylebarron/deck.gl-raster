@@ -1,5 +1,11 @@
 # `RasterMeshLayer`
 
+![](../assets/images/ir_false_color_st_helens.jpg)
+
+Landsat infrared false-color composite of Mt. St. Helens.
+
+## Overview
+
 The `RasterMeshLayer` is a subclass of deck.gl's built-in `SimpleMeshLayer` that
 enables image operations on satellite image bands, _overlaid onto 3D terrain_.
 All image operations are done on the GPU for best performance.
