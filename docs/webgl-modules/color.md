@@ -35,7 +35,7 @@ Many colormaps are in `assets/colormaps` in PNG format, derived from Matplotlib 
 To use them, you can use the jsdelivr CDN, e.g.:
 
 ```
-https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-extended-layers/assets/colormaps/{colormap_name}.png
+https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/{colormap_name}.png
 ```
 
 To visualize them, see [colormap documentation from rio-tiler][rio-tiler-colormap-docs].
