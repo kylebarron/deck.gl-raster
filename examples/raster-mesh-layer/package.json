@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@kylebarron/deck.gl-raster": "^0.2.0",
     "@luma.gl/core": "^8.1.1",
     "@luma.gl/webgl": "^8.1.1",
     "@testing-library/jest-dom": "^4.2.4",

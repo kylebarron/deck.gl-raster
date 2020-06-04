@@ -1242,8 +1242,10 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@kylebarron/deck.gl-extended-layers@../../":
-  version "0.1.0"
+"@kylebarron/deck.gl-raster@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@kylebarron/deck.gl-raster/-/deck.gl-raster-0.2.0.tgz#63b83629ade1f92902b1c142574caf9d0805bdf3"
+  integrity sha512-O/DwyZ+7gIqQjdA9evVSLQNvAPmIp17UARTPD5w31UzXL93mtdEPibBlrGG83FOXVkgUDBicIC1BrG7IwpsVyg==
   dependencies:
     "@luma.gl/constants" "^8.1.0"
 
