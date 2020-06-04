@@ -19,6 +19,27 @@ const defaultProps = {
 };
 
 export default class RasterLayer extends BitmapLayer {
+  initializeState() {
+    const { gl } = this.context;
+    const programManager = ProgramManager.getDefaultProgramManager(gl);
+
+    const fsStr1 = "fs:DECKGL_MUTATE_COLOR(inout vec4 image, in vec2 coord)";
+    const fsStr2 = "fs:DECKGL_CREATE_COLOR(inout vec4 image, in vec2 coord)";
+
+    // Only initialize shader hook functions _once globally_
+    // Since the program manager is shared across all layers, but many layers
+    // might be created, this solves the performance issue of always adding new
+    // hook functions. See #22
+    if (!programManager._hookFunctions.includes(fsStr1)) {
+      programManager.addShaderHook(fsStr1);
+    }
+    if (!programManager._hookFunctions.includes(fsStr2)) {
+      programManager.addShaderHook(fsStr2);
+    }
+
+    super.initializeState();
+  }
+
   draw({ uniforms }) {
     const { model } = this.state;
     const {
@@ -80,39 +101,6 @@ export default class RasterLayer extends BitmapLayer {
     if (props.bounds !== oldProps.bounds) {
       attributeManager.invalidate("positions");
     }
-  }
-
-  _getModel(gl) {
-    if (!gl) {
-      return null;
-    }
-    ProgramManager.getDefaultProgramManager(gl).addShaderHook(
-      "fs:DECKGL_MUTATE_COLOR(inout vec4 image, in vec2 coord)"
-    );
-
-    ProgramManager.getDefaultProgramManager(gl).addShaderHook(
-      "fs:DECKGL_CREATE_COLOR(inout vec4 image, in vec2 coord)"
-    );
-
-    /*
-      0,0 --- 1,0
-       |       |
-      0,1 --- 1,1
-    */
-    return new Model(
-      gl,
-      Object.assign({}, this.getShaders(), {
-        id: this.props.id,
-        geometry: new Geometry({
-          drawMode: GL.TRIANGLE_FAN,
-          vertexCount: 4,
-          attributes: {
-            texCoords: new Float32Array([0, 1, 0, 0, 1, 0, 1, 1]),
-          },
-        }),
-        isInstanced: false,
-      })
-    );
   }
 }
 
