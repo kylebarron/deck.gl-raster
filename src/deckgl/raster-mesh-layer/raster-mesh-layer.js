@@ -47,6 +47,27 @@ const defaultProps = {
 };
 
 export default class RasterMeshLayer extends SimpleMeshLayer {
+  initializeState() {
+    const { gl } = this.context;
+    const programManager = ProgramManager.getDefaultProgramManager(gl);
+
+    const fsStr1 = "fs:DECKGL_MUTATE_COLOR(inout vec4 image, in vec2 coord)";
+    const fsStr2 = "fs:DECKGL_CREATE_COLOR(inout vec4 image, in vec2 coord)";
+
+    // Only initialize shader hook functions _once globally_
+    // Since the program manager is shared across all layers, but many layers
+    // might be created, this solves the performance issue of always adding new
+    // hook functions. See #22
+    if (!programManager._hookFunctions.includes(fsStr1)) {
+      programManager.addShaderHook(fsStr1);
+    }
+    if (!programManager._hookFunctions.includes(fsStr2)) {
+      programManager.addShaderHook(fsStr2);
+    }
+
+    super.initializeState();
+  }
+
   getShaders() {
     const transpileToGLSL100 = !isWebGL2(this.context.gl);
     const { modules = [] } = this.props;
@@ -123,14 +144,6 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
 
   getModel(mesh) {
     const { gl } = this.context;
-
-    ProgramManager.getDefaultProgramManager(gl).addShaderHook(
-      "fs:DECKGL_MUTATE_COLOR(inout vec4 image, in vec2 coord)"
-    );
-
-    ProgramManager.getDefaultProgramManager(gl).addShaderHook(
-      "fs:DECKGL_CREATE_COLOR(inout vec4 image, in vec2 coord)"
-    );
 
     const model = new Model(
       gl,
