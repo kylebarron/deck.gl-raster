@@ -81,7 +81,7 @@ vec2 compute_deriv(sampler2D terrain) {
 `;
 
 export default {
-  name: "slope",
+  name: "terrain-deriv",
   fs,
   getUniforms,
   inject: {
