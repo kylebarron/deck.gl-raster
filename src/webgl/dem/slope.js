@@ -24,9 +24,8 @@ float compute_mercator_scale_factor(float latitude) {
 float compute_slope(vec2 deriv, float scaleFactor) {
   // Divide by web mercator latitude scale factor.
   // Computed as cos(latitude in radians)
-  float hypot = sqrt(pow(deriv.x, 2.0) + pow(deriv.y, 2.0));
-  float scaled = hypot / scaleFactor;
-  return degrees(atan(key / 8.0));
+  float hypot = length(deriv) / scaleFactor;
+  return degrees(atan(hypot / 8.0));
 }
 
 `;
