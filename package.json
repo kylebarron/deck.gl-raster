@@ -28,13 +28,12 @@
   "scripts": {
     "build": "rollup -c"
   },
-  "dependencies": {
-    "@luma.gl/constants": "^8.1.0"
-  },
+  "dependencies": {},
   "peerDependencies": {
     "@deck.gl/core": "^8.1.0",
     "@deck.gl/layers": "^8.1.0",
     "@deck.gl/mesh-layers": "^8.1.2",
+    "@luma.gl/constants": "^8.1.0",
     "@luma.gl/core": "^8.1.0",
     "@luma.gl/webgl": "^8.1.0"
   },

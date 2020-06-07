@@ -23,11 +23,6 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@luma.gl/constants@^8.1.0":
-  version "8.1.1"
-  resolved "https://registry.yarnpkg.com/@luma.gl/constants/-/constants-8.1.1.tgz#75ad54d9ccbb92e21e12d8b16619f94da6661204"
-  integrity sha512-QasDQorHeggwLCsyaBUZd58hUjWX0785dIjb8YPJto22d/Swcg2j4SAvNOq9aD5c0MUkzXoBWvrhThLIzxn8qA==
-
 ansi-styles@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"

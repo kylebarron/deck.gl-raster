@@ -11,6 +11,9 @@ import {
   combineBands,
   promiseAllObject,
   pansharpenBrovey,
+  modifiedSoilAdjustedVegetationIndex,
+  normalizedDifference,
+  colormap
 } from "@kylebarron/deck.gl-raster";
 
 import { load, parse } from "@loaders.gl/core";
@@ -35,8 +38,7 @@ const initialViewState = {
   bearing: 0,
 };
 
-const MOSAIC_URL =
-  "s3://kylebarron-landsat-test/mosaics/8113f57876010a63aadacef4eac6d010d10c9aafcf36a5ece064ea7f.json.gz";
+const MOSAIC_URL = "dynamodb://us-west-2/landsat8-2019-spring";
 
 function colorStr(nBands) {
   const colorBands = "RGB".slice(0, nBands);
@@ -82,7 +84,7 @@ export default class App extends React.Component {
           const pan = z >= 12;
           const colormap = false;
           const colormapUrl =
-            "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/cfastie.png";
+            "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/spectral.png";
 
           const urls = [
             pan ? landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
@@ -110,6 +112,7 @@ export default class App extends React.Component {
             z,
           } = props.tile;
           const { data } = props;
+          // const modules = [combineBands, normalizedDifference, colormap];
           const modules = [combineBands];
           if (z >= 12) {
             modules.push(pansharpenBrovey);
@@ -118,6 +121,7 @@ export default class App extends React.Component {
           return new RasterLayer(props, {
             modules: modules,
             asyncModuleProps: data,
+            moduleProps: {},
             bounds: [west, south, east, north],
           });
         },
@@ -147,7 +151,9 @@ export async function imageUrlsToTextures(gl, urls) {
     return new Texture2D(gl, {
       data: image,
       parameters: DEFAULT_TEXTURE_PARAMETERS,
-      format: GL.LUMINANCE,
+      // Colormaps are 10 pixels high
+      // Load colormaps as RGB; all others as LUMINANCE
+      format: image && image.height === 10 ? GL.RGB : GL.LUMINANCE,
     });
   });
   return textures;
@@ -163,3 +169,9 @@ async function loadImageUrl(url) {
   const imageOptions = { image: { type: "imagebitmap" } };
   return await parse(res.arrayBuffer(), ImageLoader, imageOptions);
 }
+
+// new Texture2D(gl, {
+//   data: image,
+//   parameters: DEFAULT_TEXTURE_PARAMETERS,
+//   format: GL.LUMINANCE,
+// })
