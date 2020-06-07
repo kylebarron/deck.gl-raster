@@ -77,6 +77,7 @@ vec2 compute_deriv(sampler2D terrain) {
       (g + h + h + i) - (a + b + b + c)
   ) /  pow(2.0, (u_zoom - u_maxzoom) * exaggeration + 19.2562 - u_zoom);
   return deriv;
+}
 `;
 
 export default {
