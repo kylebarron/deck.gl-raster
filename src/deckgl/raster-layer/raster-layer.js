@@ -52,15 +52,15 @@ export default class RasterLayer extends BitmapLayer {
 
     // Render the image
     //
-    // Wait for asyncModuleProps to have >=1 truthy key before rendering
-    // Important to prevent both flickering and "instanced rendering of wrong
-    // data". Without this check, sometimes when panning to a new area, new
-    // tiles will be a checkerboard of one existing tile while waiting for the
-    // new textures to load.
+    // If asyncModuleProps has at least one key, wait for it to have >=1 truthy
+    // key before rendering Important to prevent both flickering and "instanced
+    // rendering of wrong data". Without this check, sometimes when panning to a
+    // new area, new tiles will be a checkerboard of one existing tile while
+    // waiting for the new textures to load.
     if (
       !model ||
-      Object.keys(asyncModuleProps).length === 0 ||
-      !Object.values(asyncModuleProps).every((item) => item)
+      (Object.keys(asyncModuleProps).length > 0 &&
+        !Object.values(asyncModuleProps).every((item) => item))
     ) {
       return;
     }
