@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://kylebarron.dev/deck.gl-raster/</loc>
-     <lastmod>2020-06-07</lastmod>
+     <lastmod>2020-06-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kylebarron.dev/deck.gl-raster/layers/raster-layer/</loc>
-     <lastmod>2020-06-07</lastmod>
+     <lastmod>2020-06-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kylebarron.dev/deck.gl-raster/layers/raster-mesh-layer/</loc>
-     <lastmod>2020-06-07</lastmod>
+     <lastmod>2020-06-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kylebarron.dev/deck.gl-raster/webgl-modules/overview/</loc>
-     <lastmod>2020-06-07</lastmod>
+     <lastmod>2020-06-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kylebarron.dev/deck.gl-raster/webgl-modules/color/</loc>
-     <lastmod>2020-06-07</lastmod>
+     <lastmod>2020-06-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kylebarron.dev/deck.gl-raster/webgl-modules/create-image/</loc>
-     <lastmod>2020-06-07</lastmod>
+     <lastmod>2020-06-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kylebarron.dev/deck.gl-raster/webgl-modules/pansharpen/</loc>
-     <lastmod>2020-06-07</lastmod>
+     <lastmod>2020-06-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kylebarron.dev/deck.gl-raster/webgl-modules/spectral-indices/</loc>
-     <lastmod>2020-06-07</lastmod>
+     <lastmod>2020-06-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kylebarron.dev/deck.gl-raster/webgl-modules/custom-modules/</loc>
-     <lastmod>2020-06-07</lastmod>
+     <lastmod>2020-06-13</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://kylebarron.dev/deck.gl-raster/colormaps/</loc>
-     <lastmod>2020-06-07</lastmod>
+     <lastmod>2020-06-13</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
