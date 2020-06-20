@@ -30,12 +30,12 @@
   },
   "dependencies": {},
   "peerDependencies": {
-    "@deck.gl/core": "^8.1.0",
-    "@deck.gl/layers": "^8.1.0",
-    "@deck.gl/mesh-layers": "^8.1.2",
-    "@luma.gl/constants": "^8.1.0",
-    "@luma.gl/core": "^8.1.0",
-    "@luma.gl/webgl": "^8.1.0"
+    "@deck.gl/core": "8.2.0-alpha.3",
+    "@deck.gl/layers": "8.2.0-alpha.3",
+    "@deck.gl/mesh-layers": "8.2.0-alpha.3",
+    "@luma.gl/constants": "8.1.3",
+    "@luma.gl/core": "8.1.3",
+    "@luma.gl/webgl": "8.1.3"
   },
   "devDependencies": {
     "rollup": "^2.7.2",
