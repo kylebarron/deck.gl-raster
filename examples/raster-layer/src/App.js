@@ -74,37 +74,14 @@ export default class App extends React.Component {
   };
 
   render() {
+    const {gl} = this.state;
+
     const layers = [
       new TileLayer({
         minZoom: 0,
         maxZoom: 12,
 
-        getTileData: async ({ x, y, z }) => {
-          const { gl } = this.state;
-          const pan = z >= 12;
-          const colormap = false;
-          const colormapUrl =
-            "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/spectral.png";
-
-          const urls = [
-            pan ? landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
-            colormap ? colormapUrl : null,
-            landsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
-            landsatUrl({ x, y, z, bands: 3, url: MOSAIC_URL }),
-            landsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
-          ];
-
-          const [
-            imagePan,
-            imageColormap,
-            ...imageBands
-          ] = await imageUrlsToTextures(gl, urls);
-          return promiseAllObject({
-            imageBands,
-            imageColormap,
-            imagePan,
-          });
-        },
+        getTileData: args => getTileData(gl, args),
 
         renderSubLayers: (props) => {
           const {
@@ -120,8 +97,7 @@ export default class App extends React.Component {
 
           return new RasterLayer(props, {
             modules: modules,
-            asyncModuleProps: data,
-            moduleProps: {},
+            moduleProps: data,
             bounds: [west, south, east, north],
           });
         },
@@ -143,6 +119,32 @@ export default class App extends React.Component {
       </DeckGL>
     );
   }
+}
+
+async function getTileData(gl, {x, y, z}) {
+  const pan = z >= 12;
+  const colormap = false;
+  const colormapUrl =
+    "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/spectral.png";
+
+  const urls = [
+    pan ? landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
+    colormap ? colormapUrl : null,
+    landsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
+    landsatUrl({ x, y, z, bands: 3, url: MOSAIC_URL }),
+    landsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
+  ];
+
+  const [
+    imagePan,
+    imageColormap,
+    ...imageBands
+  ] = await imageUrlsToTextures(gl, urls);
+  return promiseAllObject({
+    imageBands,
+    imageColormap,
+    imagePan,
+  });
 }
 
 export async function imageUrlsToTextures(gl, urls) {
@@ -169,9 +171,3 @@ async function loadImageUrl(url) {
   const imageOptions = { image: { type: "imagebitmap" } };
   return await parse(res.arrayBuffer(), ImageLoader, imageOptions);
 }
-
-// new Texture2D(gl, {
-//   data: image,
-//   parameters: DEFAULT_TEXTURE_PARAMETERS,
-//   format: GL.LUMINANCE,
-// })
