@@ -1,6 +1,4 @@
-import GL from "@luma.gl/constants";
 import { BitmapLayer } from "@deck.gl/layers";
-import { Model, Geometry } from "@luma.gl/core";
 import { project32, picking } from "@deck.gl/core";
 
 import fs from "./raster-layer-fragment";
@@ -57,6 +55,9 @@ export default class RasterLayer extends BitmapLayer {
     // rendering of wrong data". Without this check, sometimes when panning to a
     // new area, new tiles will be a checkerboard of one existing tile while
     // waiting for the new textures to load.
+
+    // NOTE this is broken because the default value is used while the tile is
+    // loading
     if (
       !model ||
       (Object.keys(asyncModuleProps).length > 0 &&
@@ -79,28 +80,13 @@ export default class RasterLayer extends BitmapLayer {
 
   getShaders() {
     const { modules } = this.props;
-    return Object.assign({}, super.getShaders(), {
-      fs,
-      modules: [project32, picking, ...modules],
-    });
-  }
-
-  updateState({ props, oldProps, changeFlags }) {
-    // setup model first
-    if (changeFlags.extensionsChanged || props.modules !== oldProps.modules) {
-      const { gl } = this.context;
-      if (this.state.model) {
-        this.state.model.delete();
-      }
-      this.setState({ model: this._getModel(gl) });
-      this.getAttributeManager().invalidateAll();
-    }
-
-    const attributeManager = this.getAttributeManager();
-
-    if (props.bounds !== oldProps.bounds) {
-      attributeManager.invalidate("positions");
-    }
+    return {
+      ...super.getShaders(),
+      ...{
+        fs,
+        modules: [project32, picking, ...modules],
+      },
+    };
   }
 }
 
