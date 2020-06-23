@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.1] - 2020-06-22
+
+- Update `RasterLayer` for use with deck.gl 8.2 (since `BitmapLayer` changes to use a mesh to support `GlobeView`)
+
 ## [0.2.0] - 2020-05-02
 
 - Remove `PanBandsBitmapLayer` and include pansharpening into the `BandsBitmapLayer`.
