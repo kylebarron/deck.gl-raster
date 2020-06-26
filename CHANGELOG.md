@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.2] - 2020-06-25
+
+- Relax peerDependency version requirements
+
 ## [0.2.1] - 2020-06-22
 
 - Update `RasterLayer` for use with deck.gl 8.2 (since `BitmapLayer` changes to use a mesh to support `GlobeView`)
