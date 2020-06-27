@@ -1,5 +1,6 @@
 export { default as colormap } from "./color/colormap";
 export { default as combineBands } from "./color/combine-bands";
+export { default as rgbaImage } from "./color/rgba-image";
 
 export { default as pansharpenBrovey } from "./pansharpen/pansharpen-brovey";
 
