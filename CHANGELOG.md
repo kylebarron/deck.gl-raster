@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.3] - 2020-06-27
+
+- Add `imageRgba` module where the input is a 3 or 4 band image.
+
 ## [0.2.2] - 2020-06-25
 
 - Relax peerDependency version requirements
