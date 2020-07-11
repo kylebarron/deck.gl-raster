@@ -3,21 +3,19 @@ import DeckGL from "@deck.gl/react";
 
 import { PostProcessEffect } from "@deck.gl/core";
 import { TileLayer } from "@deck.gl/geo-layers";
-
 import { StaticMap } from "react-map-gl";
 
 import {
   RasterLayer,
   combineBands,
-  promiseAllObject,
   pansharpenBrovey,
   modifiedSoilAdjustedVegetationIndex,
   normalizedDifference,
-  colormap
+  colormap,
 } from "@kylebarron/deck.gl-raster";
 
-import { load, parse } from "@loaders.gl/core";
-import { loadImageArray, ImageLoader } from "@loaders.gl/images";
+import { load } from "@loaders.gl/core";
+import { ImageLoader } from "@loaders.gl/images";
 
 import { vibrance } from "@luma.gl/shadertools";
 import { Texture2D } from "@luma.gl/core";
@@ -74,7 +72,7 @@ export default class App extends React.Component {
   };
 
   render() {
-    const {gl} = this.state;
+    const { gl } = this.state;
 
     const layers = [
       new TileLayer({
@@ -82,23 +80,17 @@ export default class App extends React.Component {
         maxZoom: 12,
         tileSize: 256,
 
-        getTileData: args => getTileData(gl, args),
+        getTileData: (args) => getTileData(gl, args),
 
         renderSubLayers: (props) => {
           const {
             bbox: { west, south, east, north },
-            z,
           } = props.tile;
           const { data } = props;
-          // const modules = [combineBands, normalizedDifference, colormap];
-          const modules = [combineBands];
-          if (z >= 12) {
-            modules.push(pansharpenBrovey);
-          }
-
+          const { modules, ...moduleProps } = data;
           return new RasterLayer(props, {
-            modules: modules,
-            moduleProps: data,
+            modules,
+            moduleProps,
             bounds: [west, south, east, north],
           });
         },
@@ -122,53 +114,55 @@ export default class App extends React.Component {
   }
 }
 
-async function getTileData(gl, {x, y, z}) {
-  const pan = z >= 12;
-  const colormap = false;
+async function getTileData(gl, { x, y, z }) {
+  const usePan = z >= 12;
+  const useColormap = true;
   const colormapUrl =
-    "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/spectral.png";
+    "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/cfastie.png";
+  const modules = [combineBands, normalizedDifference];
 
-  const urls = [
-    pan ? landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
-    colormap ? colormapUrl : null,
+  const bandsUrls = [
+    landsatUrl({ x, y, z, bands: 5, url: MOSAIC_URL }),
     landsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
-    landsatUrl({ x, y, z, bands: 3, url: MOSAIC_URL }),
-    landsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
+    // landsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
   ];
 
-  const [
-    imagePan,
-    imageColormap,
-    ...imageBands
-  ] = await imageUrlsToTextures(gl, urls);
-  return promiseAllObject({
-    imageBands,
-    imageColormap,
-    imagePan,
-  });
-}
+  let imagePan;
+  const imageBands = bandsUrls.map((url) => imageUrlToTextures(gl, url));
 
-export async function imageUrlsToTextures(gl, urls) {
-  const images = await Promise.all(urls.map((url) => loadImageUrl(url)));
-  const textures = images.map((image) => {
-    return new Texture2D(gl, {
-      data: image,
-      parameters: DEFAULT_TEXTURE_PARAMETERS,
-      // Colormaps are 10 pixels high
-      // Load colormaps as RGB; all others as LUMINANCE
-      format: image && image.height === 10 ? GL.RGB : GL.LUMINANCE,
-    });
-  });
-  return textures;
-}
-
-async function loadImageUrl(url) {
-  if (!url) {
-    return;
+  // Load colormap
+  // Only load if landsatBandCombination is not RGB
+  let imageColormap;
+  if (useColormap) {
+    imageColormap = imageUrlToTextures(gl, colormapUrl);
+    modules.push(colormap);
   }
 
-  const res = await fetch(url);
-  const header = JSON.parse(res.headers.get("x-assets") || "[]");
-  const imageOptions = { image: { type: "imagebitmap" } };
-  return await parse(res.arrayBuffer(), ImageLoader, imageOptions);
+  // Await all images together
+  await Promise.all([imagePan, imageBands, imageColormap]);
+
+  // pan ? landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
+
+  // console.log(imageBands);
+  return {
+    imageBands: await Promise.all(imageBands),
+    imageColormap: await imageColormap,
+    imagePan: await imagePan,
+    modules,
+  };
+}
+
+export async function imageUrlToTextures(gl, url) {
+  if (!url) {
+    return null;
+  }
+
+  const image = await load(url, ImageLoader);
+  return new Texture2D(gl, {
+    data: image,
+    parameters: DEFAULT_TEXTURE_PARAMETERS,
+    // Colormaps are 10 pixels high
+    // Load colormaps as RGB; all others as LUMINANCE
+    format: image && image.height === 10 ? GL.RGB : GL.LUMINANCE,
+  });
 }
