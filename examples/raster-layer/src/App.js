@@ -86,8 +86,7 @@ export default class App extends React.Component {
           const {
             bbox: { west, south, east, north },
           } = props.tile;
-          const { data } = props;
-          const { modules, ...moduleProps } = data;
+          const { modules, ...moduleProps } = props.data;
           return new RasterLayer(props, {
             modules,
             moduleProps,
@@ -115,7 +114,12 @@ export default class App extends React.Component {
 }
 
 async function getTileData(gl, { x, y, z }) {
-  const usePan = z >= 12;
+  const landsatBands = [5, 4];
+  const usePan =
+    z >= 12 &&
+    landsatBands[0] === 4 &&
+    landsatBands[1] === 3 &&
+    landsatBands[2] === 2;
   const useColormap = true;
   const colormapUrl =
     "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/cfastie.png";
@@ -126,9 +130,14 @@ async function getTileData(gl, { x, y, z }) {
     landsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
     // landsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
   ];
+  const imageBands = bandsUrls.map((url) => imageUrlToTextures(gl, url));
 
   let imagePan;
-  const imageBands = bandsUrls.map((url) => imageUrlToTextures(gl, url));
+  if (usePan) {
+    const panUrl = landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL });
+    imagePan = imageUrlToTextures(gl, panUrl);
+    modules.push(pansharpenBrovey);
+  }
 
   // Load colormap
   // Only load if landsatBandCombination is not RGB
@@ -141,9 +150,6 @@ async function getTileData(gl, { x, y, z }) {
   // Await all images together
   await Promise.all([imagePan, imageBands, imageColormap]);
 
-  // pan ? landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
-
-  // console.log(imageBands);
   return {
     imageBands: await Promise.all(imageBands),
     imageColormap: await imageColormap,
