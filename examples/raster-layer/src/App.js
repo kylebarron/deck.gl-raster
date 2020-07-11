@@ -59,7 +59,7 @@ function landsatUrl(options) {
     color_ops: colorStr(bandsArray.length),
   };
   const searchParams = new URLSearchParams(params);
-  let baseUrl = `https://landsat-lambda.kylebarron.dev/tiles/${z}/${x}/${y}@2x.jpg?`;
+  let baseUrl = `https://us-west-2-lambda.kylebarron.dev/landsat/tiles/${z}/${x}/${y}.jpg?`;
   baseUrl += searchParams.toString();
   return baseUrl;
 }
@@ -80,6 +80,7 @@ export default class App extends React.Component {
       new TileLayer({
         minZoom: 0,
         maxZoom: 12,
+        tileSize: 256,
 
         getTileData: args => getTileData(gl, args),
 
