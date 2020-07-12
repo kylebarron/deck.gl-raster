@@ -33,30 +33,6 @@ const DUMMY_DATA = [1];
 
 const MOSAIC_URL = "dynamodb://us-west-2/landsat8-2019-spring";
 
-function colorStr(nBands) {
-  const colorBands = "RGB".slice(0, nBands);
-  let colorStr = `gamma ${colorBands} 3.5, sigmoidal ${colorBands} 15 0.35`;
-
-  if (nBands === 3) {
-    colorStr += ", saturation 1.7";
-  }
-  return colorStr;
-}
-
-function landsatUrl(options) {
-  const { bands, url, x, y, z } = options;
-  const bandsArray = Array.isArray(bands) ? bands : [bands];
-  const params = {
-    url,
-    bands: bandsArray.join(","),
-    color_ops: colorStr(bandsArray.length),
-  };
-  const searchParams = new URLSearchParams(params);
-  let baseUrl = `https://landsat-lambda.kylebarron.dev/tiles/${z}/${x}/${y}@2x.jpg?`;
-  baseUrl += searchParams.toString();
-  return baseUrl;
-}
-
 export function TerrainTileLayer({ gl, minZoom = 0, maxZoom = 17 } = {}) {
   return new TileLayer({
     id: "terrain-tiles",
@@ -85,11 +61,11 @@ async function getTileData(gl, { x, y, z }) {
     "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/spectral.png";
 
   const urls = [
-    pan ? landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
+    pan ? getLandsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
     colormap ? colormapUrl : null,
-    landsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
-    landsatUrl({ x, y, z, bands: 3, url: MOSAIC_URL }),
-    landsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
+    getLandsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
+    getLandsatUrl({ x, y, z, bands: 3, url: MOSAIC_URL }),
+    getLandsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
   ];
 
   const [imagePan, imageColormap, ...imageBands] = await imageUrlsToTextures(
@@ -111,10 +87,7 @@ function renderSubLayers(props) {
   const { z } = tile;
   const pan = z >= 12;
   const modules = [combineBands];
-
-  // Resolve (separate?) promises
-  const textures = data.then((result) => result && result[0]);
-  const mesh = data.then((result) => result && result[1]);
+  const [textures, mesh] = data;
 
   return [
     new RasterMeshLayer(props, {

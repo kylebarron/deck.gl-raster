@@ -21,7 +21,7 @@ export function getLandsatUrl(options) {
     color_ops: colorStr(bandsArray.length),
   };
   const searchParams = new URLSearchParams(params);
-  let baseUrl = `https://landsat-lambda.kylebarron.dev/tiles/${z}/${x}/${y}@2x.jpg?`;
+  let baseUrl = `https://us-west-2-lambda.kylebarron.dev/landsat/tiles/${z}/${x}/${y}@2x.jpg?`;
   baseUrl += searchParams.toString();
   return baseUrl;
 }
