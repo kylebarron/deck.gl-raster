@@ -38,6 +38,8 @@ export function TerrainTileLayer({ gl, minZoom = 0, maxZoom = 17 } = {}) {
     id: "terrain-tiles",
     minZoom,
     maxZoom,
+    tileSize: 256,
+    maxRequests: 12,
     getTileData: (args) => getTileData(gl, args),
     renderSubLayers,
   });
@@ -91,8 +93,6 @@ function renderSubLayers(props) {
 
   return [
     new RasterMeshLayer(props, {
-      // NOTE: currently you need to set each sublayer id so they don't conflict
-      id: `terrain-simple-mesh-layer-${tile.x}-${tile.y}-${tile.z}`,
       data: DUMMY_DATA,
       mesh,
       modules: modules,
