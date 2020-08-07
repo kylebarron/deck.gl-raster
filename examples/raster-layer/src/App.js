@@ -18,15 +18,7 @@ import { load } from "@loaders.gl/core";
 import { ImageLoader } from "@loaders.gl/images";
 
 import { vibrance } from "@luma.gl/shadertools";
-import { Texture2D } from "@luma.gl/core";
 import GL from "@luma.gl/constants";
-
-const DEFAULT_TEXTURE_PARAMETERS = {
-  [GL.TEXTURE_MIN_FILTER]: GL.LINEAR_MIPMAP_LINEAR,
-  [GL.TEXTURE_MAG_FILTER]: GL.LINEAR,
-  [GL.TEXTURE_WRAP_S]: GL.CLAMP_TO_EDGE,
-  [GL.TEXTURE_WRAP_T]: GL.CLAMP_TO_EDGE,
-};
 
 const initialViewState = {
   longitude: -112.1861,
@@ -67,27 +59,20 @@ const vibranceEffect = new PostProcessEffect(vibrance, {
 });
 
 export default class App extends React.Component {
-  state = {
-    gl: null,
-  };
-
   render() {
-    const { gl } = this.state;
-
     const layers = [
       new TileLayer({
         minZoom: 0,
         maxZoom: 12,
         tileSize: 256,
-
-        getTileData: (args) => getTileData(gl, args),
-
+        getTileData,
         renderSubLayers: (props) => {
           const {
             bbox: { west, south, east, north },
           } = props.tile;
-          const { modules, ...moduleProps } = props.data;
+          const { modules, images, ...moduleProps } = props.data;
           return new RasterLayer(props, {
+            images,
             modules,
             moduleProps,
             bounds: [west, south, east, north],
@@ -98,7 +83,6 @@ export default class App extends React.Component {
 
     return (
       <DeckGL
-        onWebGLInitialized={(gl) => this.setState({ gl })}
         initialViewState={initialViewState}
         layers={layers}
         effects={[vibranceEffect]}
@@ -113,7 +97,7 @@ export default class App extends React.Component {
   }
 }
 
-async function getTileData(gl, { x, y, z }) {
+async function getTileData({ x, y, z }) {
   const landsatBands = [5, 4];
   const usePan =
     z >= 12 &&
@@ -130,12 +114,12 @@ async function getTileData(gl, { x, y, z }) {
     landsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
     // landsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
   ];
-  const imageBands = bandsUrls.map((url) => imageUrlToTextures(gl, url));
+  const imageBands = bandsUrls.map((url) => loadImage(url));
 
   let imagePan;
   if (usePan) {
     const panUrl = landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL });
-    imagePan = imageUrlToTextures(gl, panUrl);
+    imagePan = loadImage(panUrl);
     modules.push(pansharpenBrovey);
   }
 
@@ -143,32 +127,29 @@ async function getTileData(gl, { x, y, z }) {
   // Only load if landsatBandCombination is not RGB
   let imageColormap;
   if (useColormap) {
-    imageColormap = imageUrlToTextures(gl, colormapUrl);
+    imageColormap = loadImage(colormapUrl);
     modules.push(colormap);
   }
 
   // Await all images together
   await Promise.all([imagePan, imageBands, imageColormap]);
 
-  return {
+  const images = {
     imageBands: await Promise.all(imageBands),
     imageColormap: await imageColormap,
     imagePan: await imagePan,
+  };
+
+  return {
+    images,
     modules,
   };
 }
 
-export async function imageUrlToTextures(gl, url) {
-  if (!url) {
-    return null;
-  }
-
+export async function loadImage(url) {
   const image = await load(url, ImageLoader);
-  return new Texture2D(gl, {
+  return {
     data: image,
-    parameters: DEFAULT_TEXTURE_PARAMETERS,
-    // Colormaps are 10 pixels high
-    // Load colormaps as RGB; all others as LUMINANCE
     format: image && image.height === 10 ? GL.RGB : GL.LUMINANCE,
-  });
+  };
 }
