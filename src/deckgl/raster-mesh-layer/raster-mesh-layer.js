@@ -1,10 +1,12 @@
 import GL from "@luma.gl/constants";
 import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
-import fs from "./raster-mesh-layer-fragment";
 import { Model, Geometry, isWebGL2 } from "@luma.gl/core";
-import { shouldComposeModelMatrix } from "./matrix";
 import { project32, phongLighting, picking, log } from "@deck.gl/core";
 import { ProgramManager } from "@luma.gl/engine";
+
+import { shouldComposeModelMatrix } from "./matrix";
+import { loadImages } from "../images";
+import fs from "./raster-mesh-layer-fragment";
 
 function validateGeometryAttributes(attributes) {
   log.assert(
@@ -37,12 +39,7 @@ function getGeometry(data) {
 const defaultProps = {
   ...SimpleMeshLayer.defaultProps,
   modules: { type: "array", value: [], compare: true },
-  asyncModuleProps: {
-    type: "object",
-    value: {},
-    compare: true,
-    async: true,
-  },
+  images: { type: "object", value: {}, compare: true },
   moduleProps: { type: "object", value: {}, compare: true },
 };
 
@@ -64,6 +61,10 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
     if (!programManager._hookFunctions.includes(fsStr2)) {
       programManager.addShaderHook(fsStr2);
     }
+
+    // images is a mapping from keys to Texture2D objects. The keys should match
+    // names of uniforms in shader modules
+    this.setState({ images: {} });
 
     super.initializeState();
   }
@@ -102,6 +103,10 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
       this.getAttributeManager().invalidateAll();
     }
 
+    if (props && props.images) {
+      this.updateImages({ props, oldProps });
+    }
+
     if (this.state.model) {
       this.state.model.setDrawMode(
         this.props.wireframe ? GL.LINE_STRIP : GL.TRIANGLES
@@ -109,19 +114,32 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
     }
   }
 
-  draw({ uniforms }) {
-    const { model } = this.state;
-    const { moduleProps, asyncModuleProps } = this.props;
+  updateImages({ props, oldProps }) {
+    const { images } = this.state;
+    const { gl } = this.context;
 
-    // If asyncModuleProps has at least one key, wait for it to have >=1 truthy
-    // key before rendering Important to prevent both flickering and "instanced
-    // rendering of wrong data". Without this check, sometimes when panning to a
-    // new area, new tiles will be a checkerboard of one existing tile while
-    // waiting for the new textures to load.
+    const newImages = loadImages({
+      gl,
+      images,
+      props,
+      oldProps,
+    });
+
+    if (newImages) {
+      this.setState({ images: newImages });
+    }
+  }
+
+  draw({ uniforms }) {
+    const { model, images } = this.state;
+    const { moduleProps } = this.props;
+
+    // Render the image
     if (
       !model ||
-      (Object.keys(asyncModuleProps).length > 0 &&
-        !Object.values(asyncModuleProps).every((item) => item))
+      !images ||
+      Object.keys(images).length === 0 ||
+      !Object.values(images).every((item) => item)
     ) {
       return;
     }
@@ -138,8 +156,25 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
           flatShading: !this.state.hasNormals,
         })
       )
-      .updateModuleSettings({ ...asyncModuleProps, ...moduleProps })
+      .updateModuleSettings({
+        ...moduleProps,
+        ...images,
+      })
       .draw();
+  }
+
+  finalizeState() {
+    super.finalizeState();
+
+    if (this.state.images) {
+      for (const image of Object.values(this.state.images)) {
+        if (Array.isArray(image)) {
+          image.map((x) => x.delete());
+        } else {
+          image.delete();
+        }
+      }
+    }
   }
 
   getModel(mesh) {

@@ -1,31 +1,24 @@
+import GL from "@luma.gl/constants";
 import { COORDINATE_SYSTEM } from "@deck.gl/core";
 import { load, registerLoaders } from "@loaders.gl/core";
-import { TerrainLoader, QuantizedMeshLoader } from "@loaders.gl/terrain";
+import { TerrainLoader } from "@loaders.gl/terrain";
+import { ImageLoader } from "@loaders.gl/images";
 import { TileLayer } from "@deck.gl/geo-layers";
+import { Matrix4 } from "math.gl";
+import {
+  RasterMeshLayer,
+  combineBands,
+  pansharpenBrovey,
+  normalizedDifference,
+  colormap,
+} from "@kylebarron/deck.gl-raster";
+
 import {
   ELEVATION_DECODER,
   getLandsatUrl,
   getTerrainUrl,
   getMeshMaxError,
 } from "./util";
-import { Matrix4 } from "math.gl";
-import {
-  RasterMeshLayer,
-  combineBands,
-  promiseAllObject,
-  pansharpenBrovey,
-} from "@kylebarron/deck.gl-raster";
-import { parse } from "@loaders.gl/core";
-import { loadImageArray, ImageLoader } from "@loaders.gl/images";
-import GL from "@luma.gl/constants";
-import { Texture2D } from "@luma.gl/core";
-
-const DEFAULT_TEXTURE_PARAMETERS = {
-  [GL.TEXTURE_MIN_FILTER]: GL.LINEAR_MIPMAP_LINEAR,
-  [GL.TEXTURE_MAG_FILTER]: GL.LINEAR,
-  [GL.TEXTURE_WRAP_S]: GL.CLAMP_TO_EDGE,
-  [GL.TEXTURE_WRAP_T]: GL.CLAMP_TO_EDGE,
-};
 
 registerLoaders([ImageLoader]);
 
@@ -33,20 +26,25 @@ const DUMMY_DATA = [1];
 
 const MOSAIC_URL = "dynamodb://us-west-2/landsat8-2019-spring";
 
-export function TerrainTileLayer({ gl, minZoom = 0, maxZoom = 17 } = {}) {
+export function TerrainTileLayer({ minZoom = 0, maxZoom = 17 } = {}) {
   return new TileLayer({
     id: "terrain-tiles",
     minZoom,
     maxZoom,
     tileSize: 256,
     maxRequests: 12,
-    getTileData: (args) => getTileData(gl, args),
+    getTileData,
     renderSubLayers,
   });
 }
 
-async function getTileData(gl, { x, y, z }) {
-  const pan = z >= 12;
+async function getTileData({ x, y, z }) {
+  const landsatBands = [5, 4];
+  const usePan =
+    z >= 12 &&
+    landsatBands[0] === 4 &&
+    landsatBands[1] === 3 &&
+    landsatBands[2] === 2;
 
   // Load terrain
   const terrainUrl = getTerrainUrl({ x, y, z });
@@ -58,45 +56,65 @@ async function getTileData(gl, { x, y, z }) {
     meshMaxError: getMeshMaxError(z),
   });
 
-  const colormap = true;
+  const useColormap = true;
   const colormapUrl =
     "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/spectral.png";
 
-  const urls = [
-    pan ? getLandsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL }) : null,
-    colormap ? colormapUrl : null,
-    getLandsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
-    getLandsatUrl({ x, y, z, bands: 3, url: MOSAIC_URL }),
-    getLandsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
-  ];
+  const modules = [combineBands, normalizedDifference];
 
-  const [imagePan, imageColormap, ...imageBands] = await imageUrlsToTextures(
-    gl,
-    urls
-  );
-  return Promise.all([
-    promiseAllObject({
-      imageBands,
-      imageColormap,
-      imagePan,
-    }),
-    terrain,
-  ]);
+  const bandsUrls = [
+    getLandsatUrl({ x, y, z, bands: 5, url: MOSAIC_URL }),
+    getLandsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
+    // getLandsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
+  ];
+  const imageBands = bandsUrls.map((url) => loadImage(url));
+
+  let imagePan;
+  if (usePan) {
+    const panUrl = getLandsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL });
+    imagePan = loadImage(panUrl);
+    modules.push(pansharpenBrovey);
+  }
+
+  // Load colormap
+  // Only load if landsatBandCombination is not RGB
+  let imageColormap;
+  if (useColormap) {
+    imageColormap = loadImage(colormapUrl);
+    modules.push(colormap);
+  }
+
+  // Await all images together
+  await Promise.all([imagePan, imageBands, imageColormap]);
+
+  const images = {
+    imageBands: await Promise.all(imageBands),
+    imageColormap: await imageColormap,
+    imagePan: await imagePan,
+  };
+
+  return {
+    images,
+    modules,
+    terrain: await terrain,
+  };
 }
 
 function renderSubLayers(props) {
   const { data, tile } = props;
-  const { z } = tile;
-  const pan = z >= 12;
-  const modules = [combineBands];
-  const [textures, mesh] = data;
+
+  if (!data) {
+    return null;
+  }
+
+  const { images, modules, terrain } = data;
 
   return [
     new RasterMeshLayer(props, {
       data: DUMMY_DATA,
-      mesh,
-      modules: modules,
-      asyncModuleProps: textures,
+      mesh: terrain,
+      modules,
+      images,
       getPolygonOffset: null,
       coordinateSystem: COORDINATE_SYSTEM.CARTESIAN,
       modelMatrix: getModelMatrix(tile),
@@ -146,27 +164,10 @@ function loadTerrain({
   return load(terrainImage, TerrainLoader, options);
 }
 
-export async function imageUrlsToTextures(gl, urls) {
-  const images = await Promise.all(urls.map((url) => loadImageUrl(url)));
-  const textures = images.map((image) => {
-    return new Texture2D(gl, {
-      data: image,
-      parameters: DEFAULT_TEXTURE_PARAMETERS,
-      // Colormaps are 10 pixels high
-      // Load colormaps as RGB; all others as LUMINANCE
-      format: image && image.height === 10 ? GL.RGB : GL.LUMINANCE,
-    });
-  });
-  return textures;
-}
-
-async function loadImageUrl(url) {
-  if (!url) {
-    return;
-  }
-
-  const res = await fetch(url);
-  const header = JSON.parse(res.headers.get("x-assets") || "[]");
-  const imageOptions = { image: { type: "imagebitmap" } };
-  return await parse(res.arrayBuffer(), ImageLoader, imageOptions);
+export async function loadImage(url) {
+  const image = await load(url, ImageLoader);
+  return {
+    data: image,
+    format: image && image.height === 10 ? GL.RGB : GL.LUMINANCE,
+  };
 }

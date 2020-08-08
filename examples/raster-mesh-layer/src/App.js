@@ -1,32 +1,21 @@
-/* eslint-disable max-statements */
-import React from 'react';
-import DeckGL from '@deck.gl/react';
-import {TerrainTileLayer} from './terrain-tile-layer';
+import React from "react";
+import DeckGL from "@deck.gl/react";
+import { TerrainTileLayer } from "./terrain-tile-layer";
 
 const INITIAL_VIEW_STATE = {
   latitude: 46.21,
   longitude: -122.18,
   zoom: 11.5,
   bearing: 140,
-  pitch: 60
+  pitch: 60,
 };
 
 export default class App extends React.Component {
-  state = {
-    gl: null,
-  };
-
-  _initializeWebGL = (gl) => {
-    this.setState({gl})
-  }
-
   render() {
-    const {gl} = this.state;
-    const layers = gl ? TerrainTileLayer({gl, minZoom: 7, maxZoom: 12}) : [];
+    const layers = TerrainTileLayer({ minZoom: 7, maxZoom: 12 });
 
     return (
       <DeckGL
-        onWebGLInitialized={this._initializeWebGL}
         initialViewState={INITIAL_VIEW_STATE}
         controller={true}
         layers={layers}
