@@ -98,6 +98,8 @@ export default class App extends React.Component {
 }
 
 async function getTileData({ x, y, z }) {
+  // BAND CONFIGURATION
+  // In a real application the following would come from props
   const landsatBands = [5, 4];
   const usePan =
     z >= 12 &&
@@ -109,11 +111,9 @@ async function getTileData({ x, y, z }) {
     "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/cfastie.png";
   const modules = [combineBands, normalizedDifference];
 
-  const bandsUrls = [
-    landsatUrl({ x, y, z, bands: 5, url: MOSAIC_URL }),
-    landsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
-    // landsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
-  ];
+  const bandsUrls = landsatBands.map((band) =>
+    landsatUrl({ x, y, z, bands: band, url: MOSAIC_URL })
+  );
   const imageBands = bandsUrls.map((url) => loadImage(url));
 
   let imagePan;

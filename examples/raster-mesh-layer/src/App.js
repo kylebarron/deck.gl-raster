@@ -8,6 +8,7 @@ const INITIAL_VIEW_STATE = {
   zoom: 11.5,
   bearing: 140,
   pitch: 60,
+  maxPitch: 80,
 };
 
 export default class App extends React.Component {

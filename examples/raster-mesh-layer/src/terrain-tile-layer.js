@@ -39,12 +39,18 @@ export function TerrainTileLayer({ minZoom = 0, maxZoom = 17 } = {}) {
 }
 
 async function getTileData({ x, y, z }) {
+  // BAND CONFIGURATION
+  // In a real application the following would come from props
   const landsatBands = [5, 4];
   const usePan =
     z >= 12 &&
     landsatBands[0] === 4 &&
     landsatBands[1] === 3 &&
     landsatBands[2] === 2;
+  const useColormap = true;
+  const colormapUrl =
+    "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/spectral.png";
+  const modules = [combineBands, normalizedDifference];
 
   // Load terrain
   const terrainUrl = getTerrainUrl({ x, y, z });
@@ -56,17 +62,9 @@ async function getTileData({ x, y, z }) {
     meshMaxError: getMeshMaxError(z),
   });
 
-  const useColormap = true;
-  const colormapUrl =
-    "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/spectral.png";
-
-  const modules = [combineBands, normalizedDifference];
-
-  const bandsUrls = [
-    getLandsatUrl({ x, y, z, bands: 5, url: MOSAIC_URL }),
-    getLandsatUrl({ x, y, z, bands: 4, url: MOSAIC_URL }),
-    // getLandsatUrl({ x, y, z, bands: 2, url: MOSAIC_URL }),
-  ];
+  const bandsUrls = landsatBands.map((band) =>
+    getLandsatUrl({ x, y, z, bands: band, url: MOSAIC_URL })
+  );
   const imageBands = bandsUrls.map((url) => loadImage(url));
 
   let imagePan;
