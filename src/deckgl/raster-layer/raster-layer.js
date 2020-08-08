@@ -128,7 +128,7 @@ export default class RasterLayer extends BitmapLayer {
     // object
     if (oldProps && oldProps.images) {
       for (const key in oldProps.images) {
-        if (props.images && !key in props.images && key in images) {
+        if (props.images && !(key in props.images) && key in images) {
           delete images[key];
           imagesDirty = true;
         }
@@ -139,7 +139,7 @@ export default class RasterLayer extends BitmapLayer {
     const changedKeys = [];
     for (const key in props.images) {
       // If oldProps.images didn't exist or it existed and this key didn't exist
-      if (!oldProps.images || (oldProps.images && !key in oldProps.images)) {
+      if (!oldProps.images || (oldProps.images && !(key in oldProps.images))) {
         changedKeys.push(key);
         continue;
       }
