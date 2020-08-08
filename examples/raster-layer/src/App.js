@@ -153,3 +153,70 @@ export async function loadImage(url) {
     format: image && image.height === 10 ? GL.RGB : GL.LUMINANCE,
   };
 }
+
+// Scratch work while attempting to use 16 bit textures
+
+// export async function imageUrlsToTextures(gl, urls) {
+//   const images = await Promise.all(urls.map((url) => loadImageUrl(url)));
+//   const textures = images.map((image) => {
+//     if (!image) {
+//       return;
+//     }
+//     const data = new Uint8Array(image);
+//     const texture = new Texture2D(gl, {
+//       width: 256,
+//       height: 256,
+//       data,
+//       parameters: DEFAULT_TEXTURE_PARAMETERS,
+//       // Colormaps are 10 pixels high
+//       // Load colormaps as RGB; all others as LUMINANCE
+//       // format: image && image.height === 10 ? GL.RGB : GL.LUMINANCE,
+//       // format: GL.RED_INTEGER,
+//       format: GL.R8UI,
+//       dataFormat: GL.RED_INTEGER,
+//       type: GL.UNSIGNED_BYTE,
+//       mipmaps: false
+//     });
+//     // console.log(texture);
+//     return texture;
+//   });
+//   return textures;
+// }
+
+// export async function imageUrlsToTextures(gl, urls) {
+//   const images = await Promise.all(urls.map((url) => loadImageUrl(url)));
+//   const textures = images.map((image) => {
+//     if (!image) {
+//       return;
+//     }
+//     const data = new Uint16Array(image);
+//     const texture = new Texture2D(gl, {
+//       width: 256,
+//       height: 256,
+//       data,
+//       parameters: DEFAULT_TEXTURE_PARAMETERS,
+//       // Colormaps are 10 pixels high
+//       // Load colormaps as RGB; all others as LUMINANCE
+//       // format: image && image.height === 10 ? GL.RGB : GL.LUMINANCE,
+//       // format: GL.RED_INTEGER,
+//       format: GL.R16UI,
+//       dataFormat: GL.RED_INTEGER,
+//       type: GL.UNSIGNED_SHORT,
+//       mipmaps: false,
+//     });
+//     // console.log(texture);
+//     return texture;
+//   });
+//   return textures;
+// }
+
+// async function loadImageUrl(url) {
+//   if (!url) {
+//     return null;
+//   }
+//   const res = await fetch(url);
+//   const header = JSON.parse(res.headers.get("x-assets") || "[]");
+//   const imageOptions = { image: { type: "imagebitmap" } };
+//   // return await parse(res.arrayBuffer(), ImageLoader, imageOptions);
+//   return await res.arrayBuffer();
+// }
