@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0] - 2020-08-07
+
+- Add new `images` prop. Enables applications to pass `image` objects (i.e.
+  `ImageData` or `ImageBitmap`) without touching the `gl` context. Previously
+  the application had to pass `Texture2D` objects to the
+  `RasterLayer`/`RasterMeshLayer`.
+
 ## [0.2.3] - 2020-06-27
 
 - Add `imageRgba` module where the input is a 3 or 4 band image.

@@ -37,6 +37,7 @@
     "@deck.gl/mesh-layers": "^8.2.0",
     "@luma.gl/constants": "^8.2.0",
     "@luma.gl/core": "^8.2.0",
+    "@luma.gl/engine": "^8.2.0",
     "@luma.gl/webgl": "^8.2.0"
   },
   "devDependencies": {
