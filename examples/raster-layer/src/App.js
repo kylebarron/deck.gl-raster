@@ -3,7 +3,6 @@ import DeckGL from "@deck.gl/react";
 
 import { PostProcessEffect } from "@deck.gl/core";
 import { TileLayer } from "@deck.gl/geo-layers";
-import { StaticMap } from "react-map-gl";
 
 import {
   RasterLayer,
@@ -87,12 +86,7 @@ export default class App extends React.Component {
         layers={layers}
         effects={[vibranceEffect]}
         controller
-      >
-        <StaticMap
-          mapStyle="https://cdn.jsdelivr.net/gh/nst-guide/osm-liberty-topo@gh-pages/style.json"
-          mapOptions={{ hash: true }}
-        />
-      </DeckGL>
+      />
     );
   }
 }

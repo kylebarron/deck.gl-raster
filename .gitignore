@@ -1,3 +1,7 @@
+build
+docs/examples/raster-layer
+docs/examples/raster-mesh-layer
+
 # Logs
 logs
 *.log
