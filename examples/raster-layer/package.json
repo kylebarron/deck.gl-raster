@@ -1,7 +1,7 @@
 {
   "name": "raster-layer-example",
   "version": "0.1.0",
-  "homepage": "https://kylebarron.dev/examples/raster-layer",
+  "homepage": "https://kylebarron.dev/deck.gl-raster/examples/raster-layer",
   "private": true,
   "dependencies": {
     "@kylebarron/deck.gl-raster": "^0.2.0",
