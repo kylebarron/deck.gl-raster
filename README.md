@@ -19,12 +19,6 @@ not being fit for inclusion in the standard layer library.
 This repository contains deck.gl layers and reusable WebGL modules for rendering
 and computation on rasters, especially satellite imagery.
 
-## Install
-
-```
-yarn add @kylebarron/deck.gl-raster
-```
-
-[Full Documentation][docs_website]
+[Documentation Website][docs_website]
 
 [docs_website]: https://kylebarron.dev/deck.gl-raster
