@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/examples/raster-layer/static/css/main.5ecd60fb.chunk.css",
+    "main.js": "/examples/raster-layer/static/js/main.c8266e8e.chunk.js",
+    "main.js.map": "/examples/raster-layer/static/js/main.c8266e8e.chunk.js.map",
+    "runtime-main.js": "/examples/raster-layer/static/js/runtime-main.e9ac0c1e.js",
+    "runtime-main.js.map": "/examples/raster-layer/static/js/runtime-main.e9ac0c1e.js.map",
+    "static/js/2.14b8d959.chunk.js": "/examples/raster-layer/static/js/2.14b8d959.chunk.js",
+    "static/js/2.14b8d959.chunk.js.map": "/examples/raster-layer/static/js/2.14b8d959.chunk.js.map",
+    "index.html": "/examples/raster-layer/index.html",
+    "precache-manifest.5c4ef51fda87c90285a25fbd46ecac6e.js": "/examples/raster-layer/precache-manifest.5c4ef51fda87c90285a25fbd46ecac6e.js",
+    "service-worker.js": "/examples/raster-layer/service-worker.js",
+    "static/css/main.5ecd60fb.chunk.css.map": "/examples/raster-layer/static/css/main.5ecd60fb.chunk.css.map",
+    "static/js/2.14b8d959.chunk.js.LICENSE.txt": "/examples/raster-layer/static/js/2.14b8d959.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e9ac0c1e.js",
+    "static/js/2.14b8d959.chunk.js",
+    "static/css/main.5ecd60fb.chunk.css",
+    "static/js/main.c8266e8e.chunk.js"
+  ]
+}
