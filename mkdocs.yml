@@ -23,7 +23,7 @@ extra:
 # Layout
 nav:
   - Home: 'index.md'
-  - Overview: 'overview.md'
+  # - Overview: 'overview.md'
   - deck.gl Layers:
     - RasterLayer: 'layers/raster-layer.md'
     - RasterMeshLayer: 'layers/raster-mesh-layer.md'

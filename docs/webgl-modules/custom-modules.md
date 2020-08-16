@@ -38,3 +38,7 @@ export default {
 ```
 
 [luma.gl]: https://luma.gl
+
+## Important Notes
+
+Prop names must be unique.

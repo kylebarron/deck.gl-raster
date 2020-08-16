@@ -2,16 +2,24 @@
 
 ## `combineBands`
 
-Combine satellite image bands into one image for display or further processing.
+Load multiple single-band images for display or further processing.
+
+#### `image` Transformation
+
+Creates an internal `image` object where the number of dimensions is equal to
+the length of the `imageBands` array.
 
 ### Props
 
 #### `imageBands`
 
-- `Array of Texture2D`, required
+- Array of [Image objects][image_object], required
 
-An array of [`Texture2D`][texture2d] objects representing the bands to combine
-into a single image.
+The Image objects represent the bands to combine into a single image.
+
+**Note**: make sure you pass `format: GL.LUMINANCE` along with each image;
+otherwise each single-band image will be loaded onto the GPU with multiple
+bands, wasting precious GPU memory.
 
 To create a true-color image, you would pass the red, green, and blue image
 bands to the `imageBands` prop. To create a false-color image, you would pass
@@ -30,4 +38,19 @@ texture. If you want to calculate NDVI, you need only pass two image textures.
 To create a true-color image you'd need three. The current maximum number of
 imageBands is 4.
 
-[texture2d]: https://luma.gl/docs/api-reference/webgl/texture-2d
+[image_object]: ../../layers/raster-layer#images
+
+## `rgbaImage`
+
+Load single multi-channel image for display or further processing.
+
+#### `image` Transformation
+
+Creates an internal `image` object where the number of dimensions is equal to
+the number of channels in the image. Usually 3 or 4.
+
+### Props
+
+#### `imageRgba`
+
+- [Image object][image_object], required
