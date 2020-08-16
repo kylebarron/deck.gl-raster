@@ -23,16 +23,18 @@ extra:
 # Layout
 nav:
   - Home: 'index.md'
-  - Layers:
+  - Overview: 'overview.md'
+  - deck.gl Layers:
     - RasterLayer: 'layers/raster-layer.md'
     - RasterMeshLayer: 'layers/raster-mesh-layer.md'
-  - WebGL Modules: 
+  - WebGL Modules:
     - Overview: 'webgl-modules/overview.md'
-    - Color: 'webgl-modules/color.md'
     - Create Image: 'webgl-modules/create-image.md'
-    - Pansharpen: 'webgl-modules/pansharpen.md'
-    - Spectral Indices: 'webgl-modules/spectral-indices.md'
-    - Custom Modules: 'webgl-modules/custom-modules.md'
+    - Alter Image:
+      - Color: 'webgl-modules/color.md'
+      - Pansharpen: 'webgl-modules/pansharpen.md'
+      - Spectral Indices: 'webgl-modules/spectral-indices.md'
+      - Custom Modules: 'webgl-modules/custom-modules.md'
   - Colormaps: 'colormaps.md'
 
 # Theme
@@ -43,7 +45,6 @@ theme:
   name: 'material'
   language: 'en'
   palette:
-    scheme: slate
     primary: 'teal'
     accent:  'teal'
   font:
