@@ -4,7 +4,7 @@
   "homepage": "https://kylebarron.dev/deck.gl-raster/examples/raster-layer",
   "private": true,
   "dependencies": {
-    "@kylebarron/deck.gl-raster": "^0.2.0",
+    "@kylebarron/deck.gl-raster": "^0.3.0",
     "@loaders.gl/core": "2.2.2",
     "@loaders.gl/images": "2.2.2",
     "@luma.gl/constants": "^8.2.0",

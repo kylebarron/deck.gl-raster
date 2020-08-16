@@ -1242,12 +1242,12 @@
     "@types/yargs" "^15.0.0"
     chalk "^3.0.0"
 
-"@kylebarron/deck.gl-raster@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@kylebarron/deck.gl-raster/-/deck.gl-raster-0.2.0.tgz#63b83629ade1f92902b1c142574caf9d0805bdf3"
-  integrity sha512-O/DwyZ+7gIqQjdA9evVSLQNvAPmIp17UARTPD5w31UzXL93mtdEPibBlrGG83FOXVkgUDBicIC1BrG7IwpsVyg==
+"@kylebarron/deck.gl-raster@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@kylebarron/deck.gl-raster/-/deck.gl-raster-0.3.0.tgz#48a144c0a9a8d0d385d8b4ec8d213cfa1db18df4"
+  integrity sha512-xUI/B5EJij6ia9ljDbC5VpfQds9NFTJIDYcs2hj5o/Yfpyh/D7zBJkN9cnCoB4+txfV5NgRptyPbrI01oojkqw==
   dependencies:
-    "@luma.gl/constants" "^8.1.0"
+    lodash.isequal "^4.5.0"
 
 "@loaders.gl/3d-tiles@^2.2.3":
   version "2.2.6"
@@ -1374,11 +1374,6 @@
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/@luma.gl/constants/-/constants-8.2.0.tgz#0789c629edbb8b69b7f810ae10c91501b97c634b"
   integrity sha512-ah2PbzTlSGjRIq0YQQcTDAbGdgiRhtE41tvVQGF3BDtARrBuS+ElsPsJbB7sm+wvfjm1mkoLawozrF89pgyY9A==
-
-"@luma.gl/constants@^8.1.0":
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/@luma.gl/constants/-/constants-8.1.0.tgz#ca69f5439ce173c1d8db38e9058612e046e99588"
-  integrity sha512-mKd3FKkvr17/MdrFgtVAMddTiBwgAtAtXx3XCx6bpR1nJg39f7j7MnrFB3omu/twISLWLxv9GqIo+yxuO5hnhw==
 
 "@luma.gl/core@^8.2.0":
   version "8.2.0"
@@ -6788,6 +6783,11 @@ lodash._reinterpolate@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
   integrity sha1-DM8tiRZq8Ds2Y8eWU4t1rG4RTZ0=
+
+lodash.isequal@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+  integrity sha1-QVxEePK8wwEgwizhDtMib30+GOA=
 
 lodash.memoize@^4.1.2:
   version "4.1.2"
