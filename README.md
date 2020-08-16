@@ -1,8 +1,8 @@
 # deck.gl-raster
 
-deck.gl layers and WebGL modules for client-side satellite imagery processing
+deck.gl layers and WebGL modules for client-side satellite imagery processing on the GPU.
 
-![](assets/images/msavi_grca_cfastie.jpg)
+[![](assets/images/msavi_grca_cfastie.jpg)][docs_website]
 
 Landsat [Modified Soil Adjusted Vegetation Index][msavi] over the Grand Canyon and Kaibab Plateau, with the [`cfastie` colormap][cfastie].
 
@@ -17,7 +17,7 @@ such, small variations of the pre-built layers can do amazing new things, while
 not being fit for inclusion in the standard layer library.
 
 This repository contains deck.gl layers and reusable WebGL modules for rendering
-and computation on rasters, especially satellite imagery. 
+and computation on rasters, especially satellite imagery.
 
 ## Install
 
@@ -25,4 +25,6 @@ and computation on rasters, especially satellite imagery.
 yarn add @kylebarron/deck.gl-raster
 ```
 
-[Full Documentation](https://kylebarron.dev/deck.gl-raster)
+[Full Documentation][docs_website]
+
+[docs_website]: https://kylebarron.dev/deck.gl-raster

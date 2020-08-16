@@ -25,8 +25,8 @@ nav:
   - Home: 'index.md'
   # - Overview: 'overview.md'
   - Examples:
-    - RasterLayer: 'examples/raster-layer/index.html'
-    - RasterMeshLayer: 'examples/raster-mesh-layer/index.html'
+    - RasterLayer: 'examples/raster-layer-md.md'
+    - RasterMeshLayer: 'examples/raster-mesh-layer-md.md'
   - deck.gl Layers:
     - RasterLayer: 'layers/raster-layer.md'
     - RasterMeshLayer: 'layers/raster-mesh-layer.md'
