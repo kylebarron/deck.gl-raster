@@ -40,7 +40,7 @@ nav:
 # Theme
 theme:
   icon:
-    logo: 'material/home'
+    logo: 'fontawesome/solid/globe-americas'
     repo: 'fontawesome/brands/github'
   name: 'material'
   language: 'en'
