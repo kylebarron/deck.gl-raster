@@ -86,6 +86,10 @@ export default class App extends React.Component {
         layers={layers}
         effects={[vibranceEffect]}
         controller
+        glOptions={{
+          // Tell browser to use discrete GPU if available
+          powerPreference: "high-performance",
+        }}
       />
     );
   }

@@ -20,6 +20,10 @@ export default class App extends React.Component {
         initialViewState={INITIAL_VIEW_STATE}
         controller={true}
         layers={layers}
+        glOptions={{
+          // Tell browser to use discrete GPU if available
+          powerPreference: "high-performance",
+        }}
       />
     );
   }
