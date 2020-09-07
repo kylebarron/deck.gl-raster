@@ -1,12 +1,12 @@
-import GL from "@luma.gl/constants";
-import { SimpleMeshLayer } from "@deck.gl/mesh-layers";
-import { Model, Geometry, isWebGL2 } from "@luma.gl/core";
-import { project32, phongLighting, picking, log } from "@deck.gl/core";
-import { ProgramManager } from "@luma.gl/engine";
+import GL from '@luma.gl/constants';
+import {SimpleMeshLayer} from '@deck.gl/mesh-layers';
+import {Model, Geometry, isWebGL2} from '@luma.gl/core';
+import {project32, phongLighting, picking, log} from '@deck.gl/core';
+import {ProgramManager} from '@luma.gl/engine';
 
-import { shouldComposeModelMatrix } from "./matrix";
-import { loadImages } from "../images";
-import fs from "./raster-mesh-layer-fragment";
+import {shouldComposeModelMatrix} from './matrix';
+import {loadImages} from '../images';
+import fs from './raster-mesh-layer-fragment';
 
 function validateGeometryAttributes(attributes) {
   log.assert(
@@ -33,23 +33,23 @@ function getGeometry(data) {
       attributes: data,
     });
   }
-  throw Error("Invalid mesh");
+  throw Error('Invalid mesh');
 }
 
 const defaultProps = {
   ...SimpleMeshLayer.defaultProps,
-  modules: { type: "array", value: [], compare: true },
-  images: { type: "object", value: {}, compare: true },
-  moduleProps: { type: "object", value: {}, compare: true },
+  modules: {type: 'array', value: [], compare: true},
+  images: {type: 'object', value: {}, compare: true},
+  moduleProps: {type: 'object', value: {}, compare: true},
 };
 
 export default class RasterMeshLayer extends SimpleMeshLayer {
   initializeState() {
-    const { gl } = this.context;
+    const {gl} = this.context;
     const programManager = ProgramManager.getDefaultProgramManager(gl);
 
-    const fsStr1 = "fs:DECKGL_MUTATE_COLOR(inout vec4 image, in vec2 coord)";
-    const fsStr2 = "fs:DECKGL_CREATE_COLOR(inout vec4 image, in vec2 coord)";
+    const fsStr1 = 'fs:DECKGL_MUTATE_COLOR(inout vec4 image, in vec2 coord)';
+    const fsStr2 = 'fs:DECKGL_CREATE_COLOR(inout vec4 image, in vec2 coord)';
 
     // Only initialize shader hook functions _once globally_
     // Since the program manager is shared across all layers, but many layers
@@ -64,14 +64,14 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
 
     // images is a mapping from keys to Texture2D objects. The keys should match
     // names of uniforms in shader modules
-    this.setState({ images: {} });
+    this.setState({images: {}});
 
     super.initializeState();
   }
 
   getShaders() {
     const transpileToGLSL100 = !isWebGL2(this.context.gl);
-    const { modules = [] } = this.props;
+    const {modules = []} = this.props;
 
     // use object.assign to make sure we don't overwrite existing fields like `vs`, `modules`...
     return Object.assign({}, super.getShaders(), {
@@ -81,8 +81,8 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
     });
   }
 
-  updateState({ props, oldProps, changeFlags }) {
-    super.updateState({ props, oldProps, changeFlags });
+  updateState({props, oldProps, changeFlags}) {
+    super.updateState({props, oldProps, changeFlags});
 
     if (
       props.mesh !== oldProps.mesh ||
@@ -93,7 +93,7 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
         this.state.model.delete();
       }
       if (props.mesh) {
-        this.setState({ model: this.getModel(props.mesh) });
+        this.setState({model: this.getModel(props.mesh)});
 
         const attributes = props.mesh.attributes || props.mesh;
         this.setState({
@@ -104,7 +104,7 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
     }
 
     if (props && props.images) {
-      this.updateImages({ props, oldProps });
+      this.updateImages({props, oldProps});
     }
 
     if (this.state.model) {
@@ -114,9 +114,9 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
     }
   }
 
-  updateImages({ props, oldProps }) {
-    const { images } = this.state;
-    const { gl } = this.context;
+  updateImages({props, oldProps}) {
+    const {images} = this.state;
+    const {gl} = this.context;
 
     const newImages = loadImages({
       gl,
@@ -126,13 +126,13 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
     });
 
     if (newImages) {
-      this.setState({ images: newImages });
+      this.setState({images: newImages});
     }
   }
 
-  draw({ uniforms }) {
-    const { model, images } = this.state;
-    const { moduleProps } = this.props;
+  draw({uniforms}) {
+    const {model, images} = this.state;
+    const {moduleProps} = this.props;
 
     // Render the image
     if (
@@ -144,8 +144,8 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
       return;
     }
 
-    const { viewport } = this.context;
-    const { sizeScale, coordinateSystem, _instanced } = this.props;
+    const {viewport} = this.context;
+    const {sizeScale, coordinateSystem, _instanced} = this.props;
 
     model
       .setUniforms(
@@ -178,7 +178,7 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
   }
 
   getModel(mesh) {
-    const { gl } = this.context;
+    const {gl} = this.context;
 
     const model = new Model(
       gl,
@@ -193,5 +193,5 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
   }
 }
 
-RasterMeshLayer.layerName = "RasterMeshLayer";
+RasterMeshLayer.layerName = 'RasterMeshLayer';
 RasterMeshLayer.defaultProps = defaultProps;

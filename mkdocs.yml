@@ -26,19 +26,19 @@ nav:
   - Overview: 'overview.md'
   - Install: 'get-started.md'
   - Examples:
-    - RasterLayer: 'examples/raster-layer-md.md'
-    - RasterMeshLayer: 'examples/raster-mesh-layer-md.md'
+      - RasterLayer: 'examples/raster-layer-md.md'
+      - RasterMeshLayer: 'examples/raster-mesh-layer-md.md'
   - deck.gl Layers:
-    - RasterLayer: 'layers/raster-layer.md'
-    - RasterMeshLayer: 'layers/raster-mesh-layer.md'
+      - RasterLayer: 'layers/raster-layer.md'
+      - RasterMeshLayer: 'layers/raster-mesh-layer.md'
   - WebGL Modules:
-    - Overview: 'webgl-modules/overview.md'
-    - Create Image: 'webgl-modules/create-image.md'
-    - Alter Image:
-      - Color: 'webgl-modules/color.md'
-      - Pansharpen: 'webgl-modules/pansharpen.md'
-      - Spectral Indices: 'webgl-modules/spectral-indices.md'
-      - Custom Modules: 'webgl-modules/custom-modules.md'
+      - Overview: 'webgl-modules/overview.md'
+      - Create Image: 'webgl-modules/create-image.md'
+      - Alter Image:
+          - Color: 'webgl-modules/color.md'
+          - Pansharpen: 'webgl-modules/pansharpen.md'
+          - Spectral Indices: 'webgl-modules/spectral-indices.md'
+          - Custom Modules: 'webgl-modules/custom-modules.md'
   - Colormaps: 'colormaps.md'
 
 # Theme
@@ -50,7 +50,7 @@ theme:
   language: 'en'
   palette:
     primary: 'teal'
-    accent:  'teal'
+    accent: 'teal'
   font:
     text: 'Nunito Sans'
     code: 'Fira Code'
@@ -64,28 +64,28 @@ theme:
 # This way, I can write in Pandoc's Markdown and have it be supported here.
 # https://pandoc.org/MANUAL.html
 markdown_extensions:
-    - admonition
-    - attr_list
-    - codehilite:
-        guess_lang: false
-    - def_list
-    - footnotes
-    - pymdownx.arithmatex
-    - pymdownx.betterem
-    - pymdownx.caret:
-        insert: false
-    - pymdownx.details
-    - pymdownx.emoji
-    - pymdownx.escapeall:
-        hardbreak: true
-        nbsp: true
-    - pymdownx.magiclink:
-        hide_protocol: true
-        repo_url_shortener: true
-    - pymdownx.smartsymbols
-    - pymdownx.superfences
-    - pymdownx.tasklist:
-        custom_checkbox: true
-    - pymdownx.tilde
-    - toc:
-        permalink: true
+  - admonition
+  - attr_list
+  - codehilite:
+      guess_lang: false
+  - def_list
+  - footnotes
+  - pymdownx.arithmatex
+  - pymdownx.betterem
+  - pymdownx.caret:
+      insert: false
+  - pymdownx.details
+  - pymdownx.emoji
+  - pymdownx.escapeall:
+      hardbreak: true
+      nbsp: true
+  - pymdownx.magiclink:
+      hide_protocol: true
+      repo_url_shortener: true
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+  - toc:
+      permalink: true

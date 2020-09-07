@@ -12,10 +12,10 @@ float modified_soil_adjusted_vegetation_index_calc(vec4 image) {
 `;
 
 export default {
-  name: "modified_soil_adjusted_vegetation_index",
+  name: 'modified_soil_adjusted_vegetation_index',
   fs,
   inject: {
-    "fs:DECKGL_MUTATE_COLOR": `
+    'fs:DECKGL_MUTATE_COLOR': `
     image = vec4(modified_soil_adjusted_vegetation_index_calc(image), 0., 0., 0.);
     `,
   },

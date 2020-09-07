@@ -1,6 +1,6 @@
-import { Texture2D } from "@luma.gl/core";
-import GL from "@luma.gl/constants";
-import isEqual from "lodash.isequal";
+import {Texture2D} from '@luma.gl/core';
+import GL from '@luma.gl/constants';
+import isEqual from 'lodash.isequal';
 
 const DEFAULT_TEXTURE_PARAMETERS = {
   [GL.TEXTURE_MIN_FILTER]: GL.NEAREST,
@@ -9,7 +9,7 @@ const DEFAULT_TEXTURE_PARAMETERS = {
   [GL.TEXTURE_WRAP_T]: GL.CLAMP_TO_EDGE,
 };
 
-export function loadImages({ gl, images, props, oldProps }) {
+export function loadImages({gl, images, props, oldProps}) {
   // Change to `true` if we need to setState with a new `images` object
   let imagesDirty = false;
 

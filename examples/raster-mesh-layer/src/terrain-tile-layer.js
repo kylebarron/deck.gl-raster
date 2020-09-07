@@ -1,34 +1,37 @@
-import GL from "@luma.gl/constants";
-import { COORDINATE_SYSTEM } from "@deck.gl/core";
-import { load, registerLoaders } from "@loaders.gl/core";
-import { TerrainLoader } from "@loaders.gl/terrain";
-import { ImageLoader } from "@loaders.gl/images";
-import { TileLayer } from "@deck.gl/geo-layers";
-import { Matrix4 } from "math.gl";
+import GL from '@luma.gl/constants';
+import {COORDINATE_SYSTEM} from '@deck.gl/core';
+import {load, registerLoaders} from '@loaders.gl/core';
+import {TerrainLoader} from '@loaders.gl/terrain';
+import {ImageLoader} from '@loaders.gl/images';
+import {TileLayer} from '@deck.gl/geo-layers';
+import {Matrix4} from 'math.gl';
 import {
   RasterMeshLayer,
   combineBands,
   pansharpenBrovey,
   normalizedDifference,
   colormap,
-} from "@kylebarron/deck.gl-raster";
+} from '@kylebarron/deck.gl-raster';
 
 import {
   ELEVATION_DECODER,
   getLandsatUrl,
   getTerrainUrl,
   getMeshMaxError,
-} from "./util";
+} from './util';
 
 registerLoaders([ImageLoader]);
 
 const DUMMY_DATA = [1];
 
-const MOSAIC_URL = "dynamodb://us-west-2/landsat8-2019-spring";
+// NOTE: others should change this URL
+// Refer to `cogeo-mosaic` documentation for more information on mosaic backends
+// https://github.com/developmentseed/cogeo-mosaic
+const MOSAIC_URL = 'dynamodb://us-west-2/landsat8-2019-spring';
 
-export function TerrainTileLayer({ minZoom = 0, maxZoom = 17 } = {}) {
+export function TerrainTileLayer({minZoom = 0, maxZoom = 17} = {}) {
   return new TileLayer({
-    id: "terrain-tiles",
+    id: 'terrain-tiles',
     minZoom,
     maxZoom,
     tileSize: 256,
@@ -38,10 +41,7 @@ export function TerrainTileLayer({ minZoom = 0, maxZoom = 17 } = {}) {
   });
 }
 
-async function getTileData({ x, y, z }) {
-  // BAND CONFIGURATION
-  // In a real application the following would come from props
-  const landsatBands = [5, 4];
+async function getTileData({x, y, z, landsatBands = [5, 4]}) {
   const usePan =
     z >= 12 &&
     landsatBands[0] === 4 &&
@@ -49,11 +49,11 @@ async function getTileData({ x, y, z }) {
     landsatBands[2] === 2;
   const useColormap = true;
   const colormapUrl =
-    "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/spectral.png";
+    'https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/spectral.png';
   const modules = [combineBands, normalizedDifference];
 
   // Load terrain
-  const terrainUrl = getTerrainUrl({ x, y, z });
+  const terrainUrl = getTerrainUrl({x, y, z});
   const bounds = [0, 1, 1, 0];
   const terrain = loadTerrain({
     terrainImage: terrainUrl,
@@ -63,13 +63,13 @@ async function getTileData({ x, y, z }) {
   });
 
   const bandsUrls = landsatBands.map((band) =>
-    getLandsatUrl({ x, y, z, bands: band, url: MOSAIC_URL })
+    getLandsatUrl({x, y, z, bands: band, url: MOSAIC_URL})
   );
   const imageBands = bandsUrls.map((url) => loadImage(url));
 
   let imagePan;
   if (usePan) {
-    const panUrl = getLandsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL });
+    const panUrl = getLandsatUrl({x, y, z, bands: 8, url: MOSAIC_URL});
     imagePan = loadImage(panUrl);
     modules.push(pansharpenBrovey);
   }
@@ -99,13 +99,13 @@ async function getTileData({ x, y, z }) {
 }
 
 function renderSubLayers(props) {
-  const { data, tile } = props;
+  const {data, tile} = props;
 
   if (!data) {
     return null;
   }
 
-  const { images, modules, terrain } = data;
+  const {images, modules, terrain} = data;
 
   return [
     new RasterMeshLayer(props, {

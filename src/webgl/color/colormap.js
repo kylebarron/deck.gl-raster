@@ -1,5 +1,5 @@
 function getUniforms(opts = {}) {
-  const { imageColormap } = opts;
+  const {imageColormap} = opts;
 
   if (!imageColormap) {
     return;
@@ -24,11 +24,11 @@ vec4 colormap_apply(sampler2D colormap, vec4 image) {
 `;
 
 export default {
-  name: "colormap",
+  name: 'colormap',
   fs,
   getUniforms,
   inject: {
-    "fs:DECKGL_MUTATE_COLOR": `
+    'fs:DECKGL_MUTATE_COLOR': `
     image = colormap_apply(bitmapTexture_colormap, image);
     `,
   },

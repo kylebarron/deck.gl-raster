@@ -1,8 +1,8 @@
-import React from "react";
-import DeckGL from "@deck.gl/react";
+import React from 'react';
+import DeckGL from '@deck.gl/react';
 
-import { PostProcessEffect } from "@deck.gl/core";
-import { TileLayer } from "@deck.gl/geo-layers";
+import {PostProcessEffect} from '@deck.gl/core';
+import {TileLayer} from '@deck.gl/geo-layers';
 
 import {
   RasterLayer,
@@ -11,13 +11,13 @@ import {
   modifiedSoilAdjustedVegetationIndex,
   normalizedDifference,
   colormap,
-} from "@kylebarron/deck.gl-raster";
+} from '@kylebarron/deck.gl-raster';
 
-import { load } from "@loaders.gl/core";
-import { ImageLoader } from "@loaders.gl/images";
+import {load} from '@loaders.gl/core';
+import {ImageLoader} from '@loaders.gl/images';
 
-import { vibrance } from "@luma.gl/shadertools";
-import GL from "@luma.gl/constants";
+import {vibrance} from '@luma.gl/shadertools';
+import GL from '@luma.gl/constants';
 
 const initialViewState = {
   longitude: -112.1861,
@@ -25,26 +25,31 @@ const initialViewState = {
   zoom: 11.5,
   pitch: 0,
   bearing: 0,
+  // My landsat tile server doesn't support very low zooms
+  minZoom: 6,
 };
 
-const MOSAIC_URL = "dynamodb://us-west-2/landsat8-2019-spring";
+// NOTE: others should change this URL
+// Refer to `cogeo-mosaic` documentation for more information on mosaic backends
+// https://github.com/developmentseed/cogeo-mosaic
+const MOSAIC_URL = 'dynamodb://us-west-2/landsat8-2019-spring';
 
 function colorStr(nBands) {
-  const colorBands = "RGB".slice(0, nBands);
+  const colorBands = 'RGB'.slice(0, nBands);
   let colorStr = `gamma ${colorBands} 3.5, sigmoidal ${colorBands} 15 0.35`;
 
   if (nBands === 3) {
-    colorStr += ", saturation 1.7";
+    colorStr += ', saturation 1.7';
   }
   return colorStr;
 }
 
 function landsatUrl(options) {
-  const { bands, url, x, y, z } = options;
+  const {bands, url, x, y, z} = options;
   const bandsArray = Array.isArray(bands) ? bands : [bands];
   const params = {
     url,
-    bands: bandsArray.join(","),
+    bands: bandsArray.join(','),
     color_ops: colorStr(bandsArray.length),
   };
   const searchParams = new URLSearchParams(params);
@@ -61,15 +66,15 @@ export default class App extends React.Component {
   render() {
     const layers = [
       new TileLayer({
-        minZoom: 0,
+        minZoom: 7,
         maxZoom: 12,
         tileSize: 256,
         getTileData,
         renderSubLayers: (props) => {
           const {
-            bbox: { west, south, east, north },
+            bbox: {west, south, east, north},
           } = props.tile;
-          const { modules, images, ...moduleProps } = props.data;
+          const {modules, images, ...moduleProps} = props.data;
           return new RasterLayer(props, {
             images,
             modules,
@@ -88,35 +93,37 @@ export default class App extends React.Component {
         controller
         glOptions={{
           // Tell browser to use discrete GPU if available
-          powerPreference: "high-performance",
+          powerPreference: 'high-performance',
         }}
       />
     );
   }
 }
 
-async function getTileData({ x, y, z }) {
-  // BAND CONFIGURATION
-  // In a real application the following would come from props
-  const landsatBands = [5, 4];
+async function getTileData({
+  x,
+  y,
+  z,
+  landsatBands = [5, 4],
+  useColormap = true,
+}) {
   const usePan =
     z >= 12 &&
     landsatBands[0] === 4 &&
     landsatBands[1] === 3 &&
     landsatBands[2] === 2;
-  const useColormap = true;
   const colormapUrl =
-    "https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/cfastie.png";
+    'https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/cfastie.png';
   const modules = [combineBands, normalizedDifference];
 
   const bandsUrls = landsatBands.map((band) =>
-    landsatUrl({ x, y, z, bands: band, url: MOSAIC_URL })
+    landsatUrl({x, y, z, bands: band, url: MOSAIC_URL})
   );
   const imageBands = bandsUrls.map((url) => loadImage(url));
 
   let imagePan;
   if (usePan) {
-    const panUrl = landsatUrl({ x, y, z, bands: 8, url: MOSAIC_URL });
+    const panUrl = landsatUrl({x, y, z, bands: 8, url: MOSAIC_URL});
     imagePan = loadImage(panUrl);
     modules.push(pansharpenBrovey);
   }

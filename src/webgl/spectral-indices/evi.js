@@ -14,10 +14,10 @@ float enhanced_vegetation_index_calc(vec4 image) {
 `;
 
 export default {
-  name: "enhanced_vegetation_index",
+  name: 'enhanced_vegetation_index',
   fs,
   inject: {
-    "fs:DECKGL_MUTATE_COLOR": `
+    'fs:DECKGL_MUTATE_COLOR': `
     image = vec4(enhanced_vegetation_index_calc(image), 0., 0., 0.);
     `,
   },

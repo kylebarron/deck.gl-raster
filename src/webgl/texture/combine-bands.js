@@ -1,5 +1,5 @@
 function getUniforms(opts = {}) {
-  const { imageBands } = opts;
+  const {imageBands} = opts;
   if (!imageBands || imageBands.length === 0) {
     return;
   }
@@ -27,11 +27,11 @@ uniform sampler2D bitmapTexture_a;
 `;
 
 export default {
-  name: "combine-bands",
+  name: 'combine-bands',
   fs,
   getUniforms,
   inject: {
-    "fs:DECKGL_CREATE_COLOR": `
+    'fs:DECKGL_CREATE_COLOR': `
     float r_band = texture2D(bitmapTexture_r, coord).r;
     float g_band = texture2D(bitmapTexture_g, coord).r;
     float b_band = texture2D(bitmapTexture_b, coord).r;

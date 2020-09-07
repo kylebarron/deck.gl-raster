@@ -1,10 +1,10 @@
 function getUniforms(opts = {}) {
-  const { imagePan, panWeight = 0.2 } = opts;
-  
+  const {imagePan, panWeight = 0.2} = opts;
+
   if (!imagePan) {
     return;
   }
-  
+
   return {
     bitmapTexture_pan: imagePan,
     panWeight,
@@ -33,11 +33,11 @@ vec4 pansharpen_brovey_calc(vec4 rgb, float pan, float weight) {
 `;
 
 export default {
-  name: "pansharpen_brovey",
+  name: 'pansharpen_brovey',
   fs,
   getUniforms,
   inject: {
-    "fs:DECKGL_MUTATE_COLOR": `
+    'fs:DECKGL_MUTATE_COLOR': `
     float pan_band = texture2D(bitmapTexture_pan, coord).r;
     image = pansharpen_brovey_calc(image, pan_band, panWeight);
     `,

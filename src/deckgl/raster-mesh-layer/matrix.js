@@ -1,5 +1,4 @@
-import { COORDINATE_SYSTEM } from "@deck.gl/core";
-
+import {COORDINATE_SYSTEM} from '@deck.gl/core';
 
 // only apply composeModelMatrix when in cartesian or meter_offsets coordinate system
 // with `composeModelMatrix` enabled, the rotation part of the layer's modelMatrix will be composed to instance's transformations
