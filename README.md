@@ -1,6 +1,6 @@
 # deck.gl-raster
 
-![gzipped size](https://img.badgesize.io/https://unpkg.com/@kylebarron/deck.gl-raster@0.3.0/dist/deck.gl-raster.min.js.svg?compression=gzip)
+![gzipped size](https://img.badgesize.io/https://unpkg.com/@kylebarron/deck.gl-raster/dist/dist.min.js.svg?compression=gzip)
 ![NPM](https://img.shields.io/npm/l/@kylebarron/deck.gl-raster)
 
 deck.gl layers and WebGL modules for client-side satellite imagery processing on the GPU.
