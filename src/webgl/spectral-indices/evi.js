@@ -1,7 +1,12 @@
-const fs = `\
 // Calculate enhanced vegetation index
+// Expected to be ordered:
+// red: Landsat 8 band 5
+// green: Landsat 8 band 4
+// blue: Landsat 8 band 2
+//
 // EVI = 2.5 * ((Band 5 – Band 4) / (Band 5 + 6 * Band 4 – 7.5 * Band 2 + 1))
 // https://www.usgs.gov/land-resources/nli/landsat/landsat-enhanced-vegetation-index
+const fs = `\
 float enhanced_vegetation_index_calc(vec4 image) {
   float band5 = image.r;
   float band4 = image.g;

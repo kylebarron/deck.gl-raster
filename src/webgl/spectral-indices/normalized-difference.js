@@ -1,5 +1,5 @@
-const fs = `\
 // Calculate standard normalized difference
+const fs = `\
 float normalized_difference_calc(vec4 image) {
   return ((image.r - image.g) / (image.r + image.g));
 }
