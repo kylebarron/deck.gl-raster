@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d79f18ac0f86f618b4309e91909ce6fd",
+    "revision": "0547534bf90a3a9d067141ea2e595c0a",
     "url": "/deck.gl-raster/examples/raster-layer/index.html"
   },
   {
-    "revision": "8f38eb8c1c25d0496b0f",
+    "revision": "f912651849c311dadd4a",
     "url": "/deck.gl-raster/examples/raster-layer/static/css/main.5ecd60fb.chunk.css"
   },
   {
-    "revision": "0943b5b6ad714abb3caa",
-    "url": "/deck.gl-raster/examples/raster-layer/static/js/2.14b8d959.chunk.js"
+    "revision": "53fa3489a8850acd348e",
+    "url": "/deck.gl-raster/examples/raster-layer/static/js/2.7ba37cac.chunk.js"
   },
   {
     "revision": "0fb0e672f1308cb5b7677cdb93fc42ab",
-    "url": "/deck.gl-raster/examples/raster-layer/static/js/2.14b8d959.chunk.js.LICENSE.txt"
+    "url": "/deck.gl-raster/examples/raster-layer/static/js/2.7ba37cac.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "8f38eb8c1c25d0496b0f",
-    "url": "/deck.gl-raster/examples/raster-layer/static/js/main.a6fa1bd3.chunk.js"
+    "revision": "f912651849c311dadd4a",
+    "url": "/deck.gl-raster/examples/raster-layer/static/js/main.11ed7ba2.chunk.js"
   },
   {
     "revision": "842cf3b6e99d3b3758b9",

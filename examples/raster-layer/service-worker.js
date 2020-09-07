@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/deck.gl-raster/examples/raster-layer/precache-manifest.329c7e4a063dc9272f4319a2c05a64c8.js"
+  "/deck.gl-raster/examples/raster-layer/precache-manifest.b2f0c24dd59456c00f9444439a8590b1.js"
 );
 
 self.addEventListener('message', (event) => {
