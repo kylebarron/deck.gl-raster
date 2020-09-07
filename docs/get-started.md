@@ -16,7 +16,7 @@ applications that use other deck.gl layers.
 You should also be able to load necessary modules as scripts:
 
 ```html
-<script src="https://unpkg.com/@kylebarron/deck.gl-raster@^0.3.0/dist/deck.gl-raster.min.js"></script>
+<script src="https://unpkg.com/@kylebarron/deck.gl-raster@^0.3.1/dist/dist.min.js"></script>
 <script src="https://unpkg.com/@deck.gl/core@^8.2.0/dist.min.js"></script>
 <script src="https://unpkg.com/@deck.gl/layers@^8.2.0/dist.min.js"></script>
 <script src="https://unpkg.com/@deck.gl/mesh-layers@^8.2.0/dist.min.js"></script>
