@@ -29,7 +29,7 @@ const DUMMY_DATA = [1];
 // https://github.com/developmentseed/cogeo-mosaic
 const MOSAIC_URL = 'dynamodb://us-west-2/landsat8-2019-spring';
 
-export function TerrainTileLayer({minZoom = 0, maxZoom = 17} = {}) {
+export function TerrainTileLayer({minZoom = 7, maxZoom = 12} = {}) {
   return new TileLayer({
     id: 'terrain-tiles',
     minZoom,

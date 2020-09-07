@@ -9,7 +9,7 @@ const INITIAL_VIEW_STATE = {
   bearing: 140,
   pitch: 60,
   // My landsat tile server doesn't support very low zooms
-  minZoom: 6,
+  minZoom: 7,
   maxPitch: 80,
 };
 
