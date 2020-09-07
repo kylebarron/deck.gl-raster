@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.3.1] - 2020-09-07
+
+- Remove comments from GLSL strings for reduced bundle size.
+- Update web documentation.
+- Add prettier config for more standardize code format.
+
 ## [0.3.0] - 2020-08-07
 
 - Add new `images` prop. Enables applications to pass `image` objects (i.e.

@@ -2,9 +2,9 @@
   "name": "@kylebarron/deck.gl-raster",
   "description": "A collection of custom Deck.gl layers",
   "license": "MIT",
-  "version": "0.3.0",
-  "main": "./dist/deck.gl-raster.js",
-  "unpkg": "./dist/deck.gl-raster.min.js",
+  "version": "0.3.1",
+  "main": "./dist.js",
+  "unpkg": "./dist.min.js",
   "module": "./src/index.js",
   "publishConfig": {
     "access": "public"

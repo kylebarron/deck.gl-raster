@@ -30,6 +30,6 @@ const config = (file, plugins = []) => ({
 });
 
 export default [
-  config('dist/deck.gl-raster.js'),
-  config('dist/deck.gl-raster.min.js', [terser()]),
+  config('dist/dist.js'),
+  config('dist/dist.min.js', [terser()]),
 ];
