@@ -1,3 +1,8 @@
+// The basic string format consists of 3 parts:
+// - a character describing the byteorder of the data (<: little-endian, >: big-endian, |: not-relevant)
+// - a character code giving the basic type of the array
+// - an integer providing the number of bytes the type uses.
+// https://numpy.org/doc/stable/reference/arrays.interface.html
 const DTYPES = {
   '<u1': {
     name: 'uint8',
@@ -18,16 +23,6 @@ const DTYPES = {
     name: 'uint16',
     size: 16,
     arrayConstructor: Uint16Array,
-  },
-  '|u2': {
-    name: 'uint16',
-    size: 16,
-    arrayConstructor: Uint16Array,
-  },
-  '|i2': {
-    name: 'int16',
-    size: 16,
-    arrayConstructor: Int16Array,
   },
   '<i2': {
     name: 'int16',
