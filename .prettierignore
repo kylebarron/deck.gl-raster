@@ -1,0 +1,8 @@
+assets
+build
+dist
+docs/examples/raster-layer/static/
+docs/examples/raster-mesh-layer/static/
+examples/raster-layer/build/
+examples/raster-mesh-layer/build/
+node_modules

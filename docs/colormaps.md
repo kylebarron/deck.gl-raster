@@ -11,12 +11,23 @@ To use them, you can load the PNG via the jsdelivr CDN, e.g.:
 https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/{colormap_name}.png
 ```
 
+Note that the colormap name below must be **lower case** in the URL, e.g. for
+the yellow-orange-red colormap, use:
+
+```
+https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/ylorrd.png
+```
+
+The image you load should look like:
+
+![](https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/ylorrd.png)
+
 ## Included Colormaps
 
 ![](https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/custom.png)
 ![](https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/perceptually_uniform_sequential.png)
 ![](https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/sequential.png)
-![](https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/sequential_(2).png)
+![](<https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/sequential_(2).png>)
 ![](https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/diverging.png)
 ![](https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/cyclic.png)
 ![](https://cdn.jsdelivr.net/gh/cogeotiff/rio-tiler@master/docs/img/qualitative.png)

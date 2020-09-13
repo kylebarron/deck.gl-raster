@@ -1,15 +1,10 @@
-const fs = `\
-// Calculate standard normalized difference
-float normalized_difference_calc(vec4 image) {
-  return ((image.r - image.g) / (image.r + image.g));
-}
-`;
+import fs from './normalized-difference.fs.glsl';
 
 export default {
-  name: "normalized_difference",
+  name: 'normalized_difference',
   fs,
   inject: {
-    "fs:DECKGL_MUTATE_COLOR": `
+    'fs:DECKGL_MUTATE_COLOR': `
     image = vec4(normalized_difference_calc(image), 0., 0., 0.);
     `,
   },

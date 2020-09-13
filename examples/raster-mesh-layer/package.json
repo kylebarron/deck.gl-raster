@@ -1,9 +1,10 @@
 {
-  "name": "bands-simple-mesh-layer",
+  "name": "raster-mesh-layer-example",
   "version": "0.1.0",
+  "homepage": "https://kylebarron.dev/deck.gl-raster/examples/raster-mesh-layer",
   "private": true,
   "dependencies": {
-    "@kylebarron/deck.gl-raster": "^0.2.0",
+    "@kylebarron/deck.gl-raster": "^0.3.0",
     "@loaders.gl/core": "^2.2.6",
     "@loaders.gl/images": "^2.2.6",
     "@loaders.gl/terrain": "^2.2.6",
@@ -16,7 +17,6 @@
     "deck.gl": "^8.2.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-map-gl": "^5.2.5",
     "react-scripts": "3.4.1"
   },
   "scripts": {

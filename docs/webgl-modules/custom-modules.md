@@ -27,10 +27,10 @@ float average_calc(vec4 image) {
 `;
 
 export default {
-  name: "average",
+  name: 'average',
   fs,
   inject: {
-    "fs:DECKGL_MUTATE_COLOR": `
+    'fs:DECKGL_MUTATE_COLOR': `
     image = vec4(average_calc(image), 0., 0., 0.);
     `,
   },
@@ -38,3 +38,7 @@ export default {
 ```
 
 [luma.gl]: https://luma.gl
+
+## Important Notes
+
+Prop names must be unique.

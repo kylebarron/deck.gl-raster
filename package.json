@@ -2,10 +2,9 @@
   "name": "@kylebarron/deck.gl-raster",
   "description": "A collection of custom Deck.gl layers",
   "license": "MIT",
-  "version": "0.2.3",
-  "main": "./dist/deck.gl-raster.js",
-  "unpkg": "./dist/deck.gl-raster.min.js",
-  "module": "./src/index.js",
+  "version": "0.3.1",
+  "main": "./dist/dist.js",
+  "unpkg": "./dist/dist.min.js",
   "publishConfig": {
     "access": "public"
   },
@@ -26,7 +25,12 @@
   ],
   "sideEffects": false,
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "build-examples": "cd examples/raster-layer && yarn build && cd ../raster-mesh-layer && yarn build",
+    "build-docs": "yarn build-examples && yarn clean-docs && cp -r examples/raster-layer/build docs/examples/raster-layer && cp -r examples/raster-mesh-layer/build docs/examples/raster-mesh-layer && mkdocs build",
+    "clean-docs": "rm -rf docs/examples/raster-layer docs/examples/raster-mesh-layer",
+    "deploy-docs": "yarn build-docs && mkdocs gh-deploy",
+    "format": "prettier src/ --write"
   },
   "dependencies": {
     "lodash.isequal": "^4.5.0"
@@ -37,10 +41,13 @@
     "@deck.gl/mesh-layers": "^8.2.0",
     "@luma.gl/constants": "^8.2.0",
     "@luma.gl/core": "^8.2.0",
+    "@luma.gl/engine": "^8.2.0",
     "@luma.gl/webgl": "^8.2.0"
   },
   "devDependencies": {
+    "prettier": "^2.1.1",
     "rollup": "^2.7.2",
+    "rollup-plugin-glsl": "^1.3.0",
     "rollup-plugin-terser": "^5.3.0"
   }
 }
