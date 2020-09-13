@@ -15,6 +15,8 @@ function getUniforms(opts = {}) {
 export default {
   name: 'colormap',
   fs,
+  fs1: fs,
+  fs2: fs,
   getUniforms,
   inject: {
     'fs:DECKGL_MUTATE_COLOR': `

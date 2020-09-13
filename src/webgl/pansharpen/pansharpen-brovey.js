@@ -13,9 +13,12 @@ function getUniforms(opts = {}) {
   };
 }
 
+// TODO: update pansharpening texture to support usampler
 export default {
   name: 'pansharpen_brovey',
   fs,
+  fs1: fs,
+  fs2: fs,
   getUniforms,
   inject: {
     'fs:DECKGL_MUTATE_COLOR': `

@@ -9,13 +9,22 @@ function getUniforms(opts = {}) {
   };
 }
 
-const fs = `\
+const fs1 = `\
 uniform sampler2D bitmapTexture_rgba;
+`;
+
+const fs2 = `\
+precision highp float;
+precision highp int;
+precision highp usampler2D;
+
+uniform usampler2D bitmapTexture_rgba;
 `;
 
 export default {
   name: 'rgba-image',
-  fs,
+  fs1,
+  fs2,
   getUniforms,
   inject: {
     'fs:DECKGL_CREATE_COLOR': `

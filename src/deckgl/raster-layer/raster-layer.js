@@ -1,9 +1,13 @@
 import {BitmapLayer} from '@deck.gl/layers';
 import {project32, picking} from '@deck.gl/core';
 import {ProgramManager} from '@luma.gl/engine';
+import {isWebGL2} from '@luma.gl/core';
 
 import {loadImages} from '../images';
-import fs from './raster-layer.fs.glsl';
+import fsWebGL1 from './raster-layer-webgl1.fs.glsl';
+import fsWebGL2 from './raster-layer-webgl2.fs.glsl';
+import vsWebGL1 from './raster-layer-webgl1.vs.glsl';
+import vsWebGL2 from './raster-layer-webgl2.vs.glsl';
 
 const defaultProps = {
   ...BitmapLayer.defaultProps,
@@ -68,11 +72,20 @@ export default class RasterLayer extends BitmapLayer {
   }
 
   getShaders() {
-    const {modules} = this.props;
+    const {gl} = this.context;
+    const {modules = []} = this.props;
+    const webgl2 = isWebGL2(gl);
+
+    // Choose webgl version for module
+    for (const module of modules) {
+      module.fs = webgl2 ? module.fs2 : module.fs1;
+    }
+
     return {
       ...super.getShaders(),
       ...{
-        fs,
+        vs: webgl2 ? vsWebGL2 : vsWebGL1,
+        fs: webgl2 ? fsWebGL2 : fsWebGL1,
         modules: [project32, picking, ...modules],
       },
     };
