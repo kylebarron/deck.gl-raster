@@ -18,6 +18,7 @@ import {ImageLoader} from '@loaders.gl/images';
 
 import {vibrance} from '@luma.gl/shadertools';
 import GL from '@luma.gl/constants';
+import {parse} from './load-numpy';
 
 const initialViewState = {
   longitude: -112.1861,
@@ -50,10 +51,10 @@ function landsatUrl(options) {
   const params = {
     url,
     bands: bandsArray.join(','),
-    color_ops: colorStr(bandsArray.length),
+    // color_ops: colorStr(bandsArray.length),
   };
   const searchParams = new URLSearchParams(params);
-  let baseUrl = `https://us-west-2-lambda.kylebarron.dev/landsat/tiles/${z}/${x}/${y}.jpg?`;
+  let baseUrl = `https://qt0cox2qw1.execute-api.us-west-2.amazonaws.com/tiles/${z}/${x}/${y}.npy?`;
   baseUrl += searchParams.toString();
   return baseUrl;
 }
@@ -104,14 +105,14 @@ async function getTileData({
   x,
   y,
   z,
-  landsatBands = [5, 4],
+  landsatBands = ["B5", "B4"],
   useColormap = true,
 }) {
   const usePan =
     z >= 12 &&
-    landsatBands[0] === 4 &&
-    landsatBands[1] === 3 &&
-    landsatBands[2] === 2;
+    landsatBands[0] === "B4" &&
+    landsatBands[1] === "B3" &&
+    landsatBands[2] === "B2";
   const colormapUrl =
     'https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/cfastie.png';
   const modules = [combineBands, normalizedDifference];
@@ -119,12 +120,12 @@ async function getTileData({
   const bandsUrls = landsatBands.map((band) =>
     landsatUrl({x, y, z, bands: band, url: MOSAIC_URL})
   );
-  const imageBands = bandsUrls.map((url) => loadImage(url));
+  const imageBands = bandsUrls.map((url) => loadNpyArray(url));
 
   let imagePan;
   if (usePan) {
     const panUrl = landsatUrl({x, y, z, bands: 8, url: MOSAIC_URL});
-    imagePan = loadImage(panUrl);
+    imagePan = loadNpyArray(panUrl);
     modules.push(pansharpenBrovey);
   }
 
@@ -156,5 +157,48 @@ export async function loadImage(url) {
   return {
     data: image,
     format: image && image.height === 10 ? GL.RGB : GL.LUMINANCE,
+  };
+}
+
+const DTYPE_GL_MAPPING = {
+  'uint8': {
+    format: GL.R8UI,
+    dataFormat: GL.RED_INTEGER,
+    type: GL.UNSIGNED_BYTE,
+    TypedArray: Uint8Array,
+  },
+  'uint16': {
+    format: GL.R16UI,
+    dataFormat: GL.RED_INTEGER,
+    type: GL.UNSIGNED_SHORT,
+    TypedArray: Uint16Array,
+  },
+  'uint32': {
+    format: GL.R32UI,
+    dataFormat: GL.RED_INTEGER,
+    type: GL.UNSIGNED_INT,
+    TypedArray: Uint32Array,
+  },
+};
+
+async function loadNpyArray(url) {
+  const resp = await fetch(url);
+  const {dtype, data, header} = parse(await resp.arrayBuffer());
+  const {shape} = header;
+  const {format, dataFormat, type} = DTYPE_GL_MAPPING[dtype];
+
+  // TODO: check height-width or width-height
+  // Regardless, images usually square
+  // TODO: handle cases of 256x256x1 instead of 1x256x256
+  const [z, height, width] = shape;
+
+  return {
+    data,
+    width,
+    height,
+    format,
+    dataFormat,
+    type,
+    mipmaps: false,
   };
 }
