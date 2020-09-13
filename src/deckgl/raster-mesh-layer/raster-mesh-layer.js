@@ -6,7 +6,7 @@ import {ProgramManager} from '@luma.gl/engine';
 
 import {shouldComposeModelMatrix} from './matrix';
 import {loadImages} from '../images';
-import fs from './raster-mesh-layer-fragment';
+import fs from './raster-mesh-layer.fs.glsl';
 
 function validateGeometryAttributes(attributes) {
   log.assert(

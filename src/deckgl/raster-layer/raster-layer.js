@@ -3,7 +3,7 @@ import {project32, picking} from '@deck.gl/core';
 import {ProgramManager} from '@luma.gl/engine';
 
 import {loadImages} from '../images';
-import fs from './raster-layer-fragment';
+import fs from './raster-layer.fs.glsl';
 
 const defaultProps = {
   ...BitmapLayer.defaultProps,

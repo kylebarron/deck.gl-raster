@@ -1,4 +1,5 @@
 import {terser} from 'rollup-plugin-terser';
+import glsl from 'rollup-plugin-glsl';
 
 const config = (file, plugins = []) => ({
   input: 'src/index.js',
@@ -17,7 +18,14 @@ const config = (file, plugins = []) => ({
       '@luma.gl/webgl': 'luma',
     },
   },
-  plugins,
+  plugins: [
+    ...plugins,
+    glsl({
+      include: 'src/**/*.glsl',
+      sourceMap: true,
+      compress: true
+    }),
+  ],
   external: [
     '@deck.gl/core',
     '@deck.gl/layers',

@@ -1,9 +1,4 @@
-// Calculate standard normalized difference
-const fs = `\
-float normalized_difference_calc(vec4 image) {
-  return ((image.r - image.g) / (image.r + image.g));
-}
-`;
+import fs from './normalized-difference.fs.glsl';
 
 export default {
   name: 'normalized_difference',
