@@ -29,7 +29,8 @@
     "build-examples": "cd examples/raster-layer && yarn build && cd ../raster-mesh-layer && yarn build",
     "build-docs": "yarn build-examples && yarn clean-docs && cp -r examples/raster-layer/build docs/examples/raster-layer && cp -r examples/raster-mesh-layer/build docs/examples/raster-mesh-layer && mkdocs build",
     "clean-docs": "rm -rf docs/examples/raster-layer docs/examples/raster-mesh-layer",
-    "deploy-docs": "yarn build-docs && mkdocs gh-deploy"
+    "deploy-docs": "yarn build-docs && mkdocs gh-deploy",
+    "format": "prettier src/ --write"
   },
   "dependencies": {
     "lodash.isequal": "^4.5.0"
