@@ -8,7 +8,6 @@ import {
   RasterLayer,
   combineBands,
   pansharpenBrovey,
-  modifiedSoilAdjustedVegetationIndex,
   normalizedDifference,
   colormap,
 } from '@kylebarron/deck.gl-raster';
@@ -72,10 +71,16 @@ export default class App extends React.Component {
         tileSize: 256,
         getTileData,
         renderSubLayers: (props) => {
+          const {data, tile} = props;
           const {
             bbox: {west, south, east, north},
-          } = props.tile;
-          const {modules, images, ...moduleProps} = props.data;
+          } = tile;
+
+          if (!data) {
+            return null;
+          }
+
+          const {modules, images, ...moduleProps} = data;
           return new RasterLayer(props, {
             images,
             modules,
@@ -105,14 +110,14 @@ async function getTileData({
   x,
   y,
   z,
-  landsatBands = ["B5", "B4"],
+  landsatBands = ['B5', 'B4'],
   useColormap = true,
 }) {
   const usePan =
     z >= 12 &&
-    landsatBands[0] === "B4" &&
-    landsatBands[1] === "B3" &&
-    landsatBands[2] === "B2";
+    landsatBands[0] === 'B4' &&
+    landsatBands[1] === 'B3' &&
+    landsatBands[2] === 'B2';
   const colormapUrl =
     'https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/cfastie.png';
   const modules = [combineBands, normalizedDifference];
@@ -146,6 +151,10 @@ async function getTileData({
     imagePan: await imagePan,
   };
 
+  if (images.imageBands.some((x) => !x)) {
+    return null;
+  }
+
   return {
     images,
     modules,
@@ -161,19 +170,19 @@ export async function loadImage(url) {
 }
 
 const DTYPE_GL_MAPPING = {
-  'uint8': {
+  uint8: {
     format: GL.R8UI,
     dataFormat: GL.RED_INTEGER,
     type: GL.UNSIGNED_BYTE,
     TypedArray: Uint8Array,
   },
-  'uint16': {
+  uint16: {
     format: GL.R16UI,
     dataFormat: GL.RED_INTEGER,
     type: GL.UNSIGNED_SHORT,
     TypedArray: Uint16Array,
   },
-  'uint32': {
+  uint32: {
     format: GL.R32UI,
     dataFormat: GL.RED_INTEGER,
     type: GL.UNSIGNED_INT,
@@ -183,6 +192,10 @@ const DTYPE_GL_MAPPING = {
 
 async function loadNpyArray(url) {
   const resp = await fetch(url);
+  if (!resp.ok) {
+    return null;
+  }
+
   const {dtype, data, header} = parse(await resp.arrayBuffer());
   const {shape} = header;
   const {format, dataFormat, type} = DTYPE_GL_MAPPING[dtype];
