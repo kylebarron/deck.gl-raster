@@ -77,8 +77,10 @@ export default class RasterLayer extends BitmapLayer {
     const webgl2 = isWebGL2(gl);
 
     // Choose webgl version for module
+    // If fs2 or fs1 keys exist, prefer them, but fall back to fs, so that
+    // version-independent modules don't need to care
     for (const module of modules) {
-      module.fs = webgl2 ? module.fs2 : module.fs1;
+      module.fs = webgl2 ? module.fs2 || module.fs : module.fs1 || module.fs;
     }
 
     return {
