@@ -1,4 +1,3 @@
-// #define epsilon 0.00000001
 const float epsilon = 0.00000001;
 
 uniform float sigmoidal_contrast;
@@ -45,6 +44,7 @@ vec4 sigmoidalContrast(vec4 arr, float contrast, float bias) {
   float alpha = bias;
   float beta = contrast;
 
+  // alpha must be >= 0
   alpha = alpha - epsilon <= 0. ? epsilon : alpha;
 
   if (beta > 0.) {
