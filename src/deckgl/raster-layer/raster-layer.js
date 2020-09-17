@@ -83,11 +83,9 @@ export default class RasterLayer extends BitmapLayer {
 
     return {
       ...super.getShaders(),
-      ...{
-        vs: webgl2 ? vsWebGL2 : vsWebGL1,
-        fs: webgl2 ? fsWebGL2 : fsWebGL1,
-        modules: [project32, picking, ...modules],
-      },
+      vs: webgl2 ? vsWebGL2 : vsWebGL1,
+      fs: webgl2 ? fsWebGL2 : fsWebGL1,
+      modules: [project32, picking, ...modules],
     };
   }
 

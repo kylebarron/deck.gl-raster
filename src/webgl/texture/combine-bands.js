@@ -27,9 +27,9 @@ uniform sampler2D bitmapTexture_a;
 `;
 
 const fs2 = `\
-precision highp float;
-precision highp int;
-precision highp usampler2D;
+precision mediump float;
+precision mediump int;
+precision mediump usampler2D;
 
 uniform usampler2D bitmapTexture_r;
 uniform usampler2D bitmapTexture_g;
