@@ -1,5 +1,5 @@
 import {BitmapLayer} from '@deck.gl/layers';
-import {project32, picking} from '@deck.gl/core';
+import {project32} from '@deck.gl/core';
 import {ProgramManager} from '@luma.gl/engine';
 import {isWebGL2} from '@luma.gl/core';
 
@@ -85,7 +85,7 @@ export default class RasterLayer extends BitmapLayer {
       ...super.getShaders(),
       vs: webgl2 ? vsWebGL2 : vsWebGL1,
       fs: webgl2 ? fsWebGL2 : fsWebGL1,
-      modules: [project32, picking, ...modules],
+      modules: [project32, ...modules],
     };
   }
 
