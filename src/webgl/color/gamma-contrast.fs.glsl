@@ -1,4 +1,4 @@
-const float epsilon = 0.00000001;
+#define epsilon 0.00000001
 
 uniform float gamma_r;
 uniform float gamma_g;
@@ -23,7 +23,7 @@ uniform float gamma_a;
 // NOTE: gamma must be >= 0
 float gammaContrast(float arr, float g) {
   // Gamma must be > 0
-  g = g - epsilon <= 0. ? epsilon : g;
+  g = clamp(g, epsilon, g);
 
   return pow(arr, 1.0 / g);
 }
