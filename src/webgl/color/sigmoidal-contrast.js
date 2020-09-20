@@ -1,11 +1,15 @@
 import fs from './sigmoidal-contrast.fs.glsl';
 
 function getUniforms(opts = {}) {
-  const {sigmoidalContrast = 0, sigmoidalBias = 0.5} = opts;
+  const {sigmoidalContrast, sigmoidalBias} = opts;
+
+  if (!sigmoidalContrast && !sigmoidalBias) {
+    return;
+  }
 
   return {
-    sigmoidal_contrast: sigmoidalContrast,
-    sigmoidal_bias: sigmoidalBias
+    sigmoidal_contrast: sigmoidalContrast || 0,
+    sigmoidal_bias: sigmoidalBias || 0.5,
   };
 }
 

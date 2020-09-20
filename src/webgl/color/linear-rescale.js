@@ -1,11 +1,15 @@
 import fs from './linear-rescale.fs.glsl';
 
 function getUniforms(opts = {}) {
-  const {linearRescaleScaler = 1, linearRescaleOffset = 0} = opts;
+  const {linearRescaleScaler, linearRescaleOffset} = opts;
+
+  if (!linearRescaleScaler && !linearRescaleOffset) {
+    return;
+  }
 
   return {
-    linearRescaleScaler,
-    linearRescaleOffset,
+    linearRescaleScaler: linearRescaleScaler || 1,
+    linearRescaleOffset: linearRescaleOffset || 0,
   };
 }
 
