@@ -3,59 +3,59 @@
 // \x93NUMPY
 const NPY_MAGIC = new Uint8Array([147, 78, 85, 77, 80, 89]);
 
+function systemIsLittleEndian() {
+  const a = new Uint32Array([0x12345678]);
+  const b = new Uint8Array(a.buffer, a.byteOffset, a.byteLength);
+  return !(b[0] == 0x12);
+}
+
+const LITTLE_ENDIAN_OS = systemIsLittleEndian();
+
 // The basic string format consists of 3 parts:
 // - a character describing the byteorder of the data (<: little-endian, >: big-endian, |: not-relevant)
 // - a character code giving the basic type of the array
 // - an integer providing the number of bytes the type uses.
 // https://numpy.org/doc/stable/reference/arrays.interface.html
 const DTYPES = {
-  '<u1': {
+  u1: {
     name: 'uint8',
     arrayConstructor: Uint8Array,
   },
-  '|u1': {
-    name: 'uint8',
-    arrayConstructor: Uint8Array,
-  },
-  '|i1': {
+  i1: {
     name: 'int8',
     arrayConstructor: Int8Array,
   },
-  '<u2': {
+  u2: {
     name: 'uint16',
     arrayConstructor: Uint16Array,
   },
-  '<i2': {
+  i2: {
     name: 'int16',
     arrayConstructor: Int16Array,
   },
-  '<u4': {
+  u4: {
     name: 'uint32',
     arrayConstructor: Int32Array,
   },
-  '<i4': {
+  i4: {
     name: 'int32',
     arrayConstructor: Int32Array,
   },
-  // '<u8': {
-  //   name: 'uint64',
-  //   arrayConstructor: BigUint64Array,
-  // },
-  // '<i8': {
-  //   name: 'int64',
-  //   arrayConstructor: BigInt64Array,
-  // },
-  '<f4': {
+  f4: {
     name: 'float32',
     arrayConstructor: Float32Array,
   },
-  '<f8': {
+  f8: {
     name: 'float64',
     arrayConstructor: Float64Array,
   },
 };
 
 export function parseNpy(arrayBuffer) {
+  if (!arrayBuffer) {
+    return null;
+  }
+
   const view = new DataView(arrayBuffer);
 
   const magic = new Uint8Array(arrayBuffer, 0, 6);
@@ -76,8 +76,8 @@ export function parseNpy(arrayBuffer) {
     offset += 2;
   }
 
-  // TODO: major versions 1 and 2 use ASCII (in practice latin-1)
-  const decoder = new TextDecoder('utf-8');
+  const encoding = majorVersion <= 2 ? 'latin1' : 'utf-8';
+  const decoder = new TextDecoder(encoding);
   const headerArray = new Uint8Array(arrayBuffer, offset, headerLength);
   const headerText = decoder.decode(headerArray);
   offset += headerLength;
@@ -90,8 +90,28 @@ export function parseNpy(arrayBuffer) {
       .replace(/,*\),*/g, ']')
   );
 
-  const dtype = DTYPES[header.descr];
+  const npy_dtype = header.descr;
+  const dtype = DTYPES[npy_dtype.slice(1, 3)];
+  if (!dtype) {
+    console.warn(`Decoding of npy dtype not implemented: ${npy_dtype}`);
+    return null;
+  }
+
   const data = new dtype['arrayConstructor'](arrayBuffer, offset);
+
+  // Swap endianness if needed
+  if (
+    (npy_dtype[0] === '>' && LITTLE_ENDIAN_OS) ||
+    (npy_dtype[0] === '<' && !LITTLE_ENDIAN_OS)
+  ) {
+    throw new Error(
+      'Data is wrong endianness, byte swapping not yet implemented.'
+    );
+  }
+
+  if (header && header.fortran_order) {
+    console.warn('Data is in Fortran order.');
+  }
 
   return {
     dtype: dtype.name,
