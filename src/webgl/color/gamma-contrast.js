@@ -3,7 +3,7 @@ import fs from './gamma-contrast.fs.glsl';
 function getUniforms(opts = {}) {
   const {gammaValue, gammaR, gammaG, gammaB, gammaA} = opts;
 
-  if (!gammaValue || (!gammaR && !gammaG && !gammaB && !gammaA)) {
+  if (!gammaValue && (!gammaR && !gammaG && !gammaB && !gammaA)) {
     return;
   }
 
