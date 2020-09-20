@@ -10,6 +10,8 @@ import {
   pansharpenBrovey,
   normalizedDifference,
   colormap,
+  _parseNpy,
+  WEBGL2_DTYPES,
 } from '@kylebarron/deck.gl-raster';
 
 import {load} from '@loaders.gl/core';
@@ -17,7 +19,6 @@ import {ImageLoader} from '@loaders.gl/images';
 
 import {vibrance} from '@luma.gl/shadertools';
 import GL from '@luma.gl/constants';
-import {parse} from './load-numpy';
 
 const initialViewState = {
   longitude: -112.1861,
@@ -169,36 +170,15 @@ export async function loadImage(url) {
   };
 }
 
-const DTYPE_GL_MAPPING = {
-  uint8: {
-    format: GL.R8UI,
-    dataFormat: GL.RED_INTEGER,
-    type: GL.UNSIGNED_BYTE,
-    TypedArray: Uint8Array,
-  },
-  uint16: {
-    format: GL.R16UI,
-    dataFormat: GL.RED_INTEGER,
-    type: GL.UNSIGNED_SHORT,
-    TypedArray: Uint16Array,
-  },
-  uint32: {
-    format: GL.R32UI,
-    dataFormat: GL.RED_INTEGER,
-    type: GL.UNSIGNED_INT,
-    TypedArray: Uint32Array,
-  },
-};
-
 async function loadNpyArray(url) {
   const resp = await fetch(url);
   if (!resp.ok) {
     return null;
   }
 
-  const {dtype, data, header} = parse(await resp.arrayBuffer());
+  const {dtype, data, header} = _parseNpy(await resp.arrayBuffer());
   const {shape} = header;
-  const {format, dataFormat, type} = DTYPE_GL_MAPPING[dtype];
+  const {format, dataFormat, type} = WEBGL2_DTYPES[dtype];
 
   // TODO: check height-width or width-height
   // Regardless, images usually square
