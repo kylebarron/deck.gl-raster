@@ -1,12 +1,15 @@
 import GL from '@luma.gl/constants';
 import {SimpleMeshLayer} from '@deck.gl/mesh-layers';
 import {Model, Geometry, isWebGL2} from '@luma.gl/core';
-import {project32, phongLighting, picking, log} from '@deck.gl/core';
+import {project32, phongLighting, log} from '@deck.gl/core';
 import {ProgramManager} from '@luma.gl/engine';
 
 import {shouldComposeModelMatrix} from './matrix';
 import {loadImages} from '../images';
-import fs from './raster-mesh-layer.fs.glsl';
+import fsWebGL1 from './raster-mesh-layer-webgl1.fs.glsl';
+import fsWebGL2 from './raster-mesh-layer-webgl2.fs.glsl';
+import vsWebGL1 from './raster-mesh-layer-webgl1.vs.glsl';
+import vsWebGL2 from './raster-mesh-layer-webgl2.vs.glsl';
 
 function validateGeometryAttributes(attributes) {
   log.assert(
@@ -70,15 +73,28 @@ export default class RasterMeshLayer extends SimpleMeshLayer {
   }
 
   getShaders() {
-    const transpileToGLSL100 = !isWebGL2(this.context.gl);
+    const {gl} = this.context;
     const {modules = []} = this.props;
+    const webgl2 = isWebGL2(gl);
 
-    // use object.assign to make sure we don't overwrite existing fields like `vs`, `modules`...
-    return Object.assign({}, super.getShaders(), {
-      fs,
-      transpileToGLSL100,
-      modules: [project32, phongLighting, picking, ...modules],
-    });
+    // Choose webgl version for module
+    // If fs2 or fs1 keys exist, prefer them, but fall back to fs, so that
+    // version-independent modules don't need to care
+    for (const module of modules) {
+      module.fs = webgl2 ? module.fs2 || module.fs : module.fs1 || module.fs;
+
+      // Sampler type is always float for WebGL1
+      if (!webgl2 && module.defines) {
+        module.defines.SAMPLER_TYPE = 'sampler2D';
+      }
+    }
+
+    return {
+      ...super.getShaders(),
+      vs: webgl2 ? vsWebGL2 : vsWebGL1,
+      fs: webgl2 ? fsWebGL2 : fsWebGL1,
+      modules: [project32, phongLighting, ...modules],
+    };
   }
 
   updateState({props, oldProps, changeFlags}) {
