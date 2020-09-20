@@ -1,4 +1,4 @@
-# Overview
+# Use Cases
 
 This page provides a high-level overview of the goals of `deck.gl-raster`, how
 it works, and provides context for the rest of the documentation.
@@ -21,6 +21,7 @@ imagery, which doesn't need any special client-side effort.
 So why care? I believe client-side rendering brings huge potential to
 **_analytic_** uses of satellite imagery.
 
+- **Accessibility to non-developers.** Exposing satellite image analysis through a web browser enables access by non-technical users, who don't want to figure out how to use and install GDAL, QGIS, etc, but who still want to explore the full richness of multi-spectral data.
 - **Fast, flexible analysis.** With existing server-side rendering approaches, every time a user wants to change the spectral index or colormap, the user needs to fetch a new set of images and wait for the server's response. With client-side GPU rendering, those changes can be much faster.
 - **Less network bandwidth.** If every change in the visualization requires a new set of imagery, the user must download much more data, which also becomes more expensive to serve. By downloading satellite bands _separately_, individual bands can be cached. If a user switches from true-color imagery to a false-color infrared composite, the user only needs to download _one_ new band, as the other two bands in the composite are already cached.
 - **Extensibility.** Many image processing algorithms are straightforward to port to GPU code.

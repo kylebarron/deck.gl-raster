@@ -23,22 +23,25 @@ extra:
 # Layout
 nav:
   - Home: 'index.md'
-  - Overview: 'overview.md'
+  - Overview:
+    - Use Cases: 'overview/use-cases.md'
+    - Loading Data: 'overview/loading-data.md'
   - Install: 'get-started.md'
   - Examples:
       - RasterLayer: 'examples/raster-layer-md.md'
       - RasterMeshLayer: 'examples/raster-mesh-layer-md.md'
-  - deck.gl Layers:
-      - RasterLayer: 'layers/raster-layer.md'
-      - RasterMeshLayer: 'layers/raster-mesh-layer.md'
-  - WebGL Modules:
-      - Overview: 'webgl-modules/overview.md'
-      - Create Image: 'webgl-modules/create-image.md'
-      - Alter Image:
-          - Color: 'webgl-modules/color.md'
-          - Pansharpen: 'webgl-modules/pansharpen.md'
-          - Spectral Indices: 'webgl-modules/spectral-indices.md'
-          - Custom Modules: 'webgl-modules/custom-modules.md'
+  - API:
+      - deck.gl Layers:
+          - RasterLayer: 'layers/raster-layer.md'
+          - RasterMeshLayer: 'layers/raster-mesh-layer.md'
+      - WebGL Modules:
+          - Overview: 'webgl-modules/overview.md'
+          - Create Image: 'webgl-modules/create-image.md'
+          - Alter Image:
+              - Color: 'webgl-modules/color.md'
+              - Pansharpen: 'webgl-modules/pansharpen.md'
+              - Spectral Indices: 'webgl-modules/spectral-indices.md'
+              - Custom Modules: 'webgl-modules/custom-modules.md'
   - Colormaps: 'colormaps.md'
 
 # Theme
