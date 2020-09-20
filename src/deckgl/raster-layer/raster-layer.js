@@ -81,6 +81,11 @@ export default class RasterLayer extends BitmapLayer {
     // version-independent modules don't need to care
     for (const module of modules) {
       module.fs = webgl2 ? module.fs2 || module.fs : module.fs1 || module.fs;
+
+      // Sampler type is always float for WebGL1
+      if (!webgl2 && module.defines) {
+        module.defines.SAMPLER_TYPE = 'sampler2D'
+      }
     }
 
     return {

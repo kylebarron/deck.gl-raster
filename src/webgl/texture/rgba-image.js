@@ -18,7 +18,11 @@ precision mediump float;
 precision mediump int;
 precision mediump usampler2D;
 
-uniform usampler2D bitmapTexture_rgba;
+#ifdef SAMPLER_TYPE
+  uniform SAMPLER_TYPE bitmapTexture_rgba;
+#else
+  uniform sampler2D bitmapTexture_rgba;
+#endif
 `;
 
 export default {
@@ -26,9 +30,12 @@ export default {
   fs1,
   fs2,
   getUniforms,
+  defines: {
+    SAMPLER_TYPE: 'sampler2D',
+  },
   inject: {
     'fs:DECKGL_CREATE_COLOR': `
-    image = texture2D(bitmapTexture_rgba, coord);
+    image = float(texture2D(bitmapTexture_rgba, coord));
     `,
   },
 };
