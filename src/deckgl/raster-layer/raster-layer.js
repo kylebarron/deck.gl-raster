@@ -142,9 +142,9 @@ export default class RasterLayer extends BitmapLayer {
     if (this.state.images) {
       for (const image of Object.values(this.state.images)) {
         if (Array.isArray(image)) {
-          image.map((x) => x.delete());
+          image.map((x) => x && x.delete());
         } else {
-          image.delete();
+          image && image.delete();
         }
       }
     }
