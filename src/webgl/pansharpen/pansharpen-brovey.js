@@ -1,4 +1,5 @@
-import fs from './pansharpen-brovey.fs.glsl';
+import fs1 from './pansharpen-brovey-webgl1.fs.glsl';
+import fs2 from './pansharpen-brovey-webgl2.fs.glsl';
 
 function getUniforms(opts = {}) {
   const {imagePan, panWeight = 0.2} = opts;
@@ -13,16 +14,17 @@ function getUniforms(opts = {}) {
   };
 }
 
-// TODO: update pansharpening texture to support usampler
 export default {
   name: 'pansharpen_brovey',
-  fs,
-  fs1: fs,
-  fs2: fs,
+  fs1,
+  fs2,
+  defines: {
+    SAMPLER_TYPE: 'sampler2D',
+  },
   getUniforms,
   inject: {
     'fs:DECKGL_MUTATE_COLOR': `
-    float pan_band = texture2D(bitmapTexture_pan, coord).r;
+    float pan_band = float(texture2D(bitmapTexture_pan, coord).r);
     image = pansharpen_brovey_calc(image, pan_band, panWeight);
     `,
   },
