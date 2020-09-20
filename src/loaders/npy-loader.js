@@ -59,10 +59,12 @@ export function parseNpy(arrayBuffer) {
   const view = new DataView(arrayBuffer);
 
   const magic = new Uint8Array(arrayBuffer, 0, 6);
-  // TODO: Assert magic equals npy magic
+  if (!arrayEqual(magic, NPY_MAGIC)) {
+    console.warn('NPY Magic not matched!');
+  }
 
   const majorVersion = view.getUint8(6);
-  const minorVersion = view.getUint8(7);
+  // const minorVersion = view.getUint8(7);
 
   let offset = 8;
   let headerLength;
@@ -96,4 +98,13 @@ export function parseNpy(arrayBuffer) {
     data,
     header,
   };
+}
+
+function arrayEqual(a, b) {
+  for (let i = 0; i < a.length; i++) {
+    if (a[i] !== b[i]) {
+      return false;
+    }
+  }
+  return true;
 }
