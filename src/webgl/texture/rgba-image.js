@@ -9,17 +9,33 @@ function getUniforms(opts = {}) {
   };
 }
 
-const fs = `\
+const fs1 = `\
 uniform sampler2D bitmapTexture_rgba;
+`;
+
+const fs2 = `\
+precision mediump float;
+precision mediump int;
+precision mediump usampler2D;
+
+#ifdef SAMPLER_TYPE
+  uniform SAMPLER_TYPE bitmapTexture_rgba;
+#else
+  uniform sampler2D bitmapTexture_rgba;
+#endif
 `;
 
 export default {
   name: 'rgba-image',
-  fs,
+  fs1,
+  fs2,
   getUniforms,
+  defines: {
+    SAMPLER_TYPE: 'sampler2D',
+  },
   inject: {
     'fs:DECKGL_CREATE_COLOR': `
-    image = texture2D(bitmapTexture_rgba, coord);
+    image = vec4(texture2D(bitmapTexture_rgba, coord));
     `,
   },
 };

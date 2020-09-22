@@ -1,9 +1,13 @@
 import {BitmapLayer} from '@deck.gl/layers';
-import {project32, picking} from '@deck.gl/core';
+import {project32} from '@deck.gl/core';
 import {ProgramManager} from '@luma.gl/engine';
+import {isWebGL2} from '@luma.gl/core';
 
 import {loadImages} from '../images';
-import fs from './raster-layer.fs.glsl';
+import fsWebGL1 from './raster-layer-webgl1.fs.glsl';
+import fsWebGL2 from './raster-layer-webgl2.fs.glsl';
+import vsWebGL1 from './raster-layer-webgl1.vs.glsl';
+import vsWebGL2 from './raster-layer-webgl2.vs.glsl';
 
 const defaultProps = {
   ...BitmapLayer.defaultProps,
@@ -68,13 +72,27 @@ export default class RasterLayer extends BitmapLayer {
   }
 
   getShaders() {
-    const {modules} = this.props;
+    const {gl} = this.context;
+    const {modules = []} = this.props;
+    const webgl2 = isWebGL2(gl);
+
+    // Choose webgl version for module
+    // If fs2 or fs1 keys exist, prefer them, but fall back to fs, so that
+    // version-independent modules don't need to care
+    for (const module of modules) {
+      module.fs = webgl2 ? module.fs2 || module.fs : module.fs1 || module.fs;
+
+      // Sampler type is always float for WebGL1
+      if (!webgl2 && module.defines) {
+        module.defines.SAMPLER_TYPE = 'sampler2D'
+      }
+    }
+
     return {
       ...super.getShaders(),
-      ...{
-        fs,
-        modules: [project32, picking, ...modules],
-      },
+      vs: webgl2 ? vsWebGL2 : vsWebGL1,
+      fs: webgl2 ? fsWebGL2 : fsWebGL1,
+      modules: [project32, ...modules],
     };
   }
 
@@ -124,9 +142,9 @@ export default class RasterLayer extends BitmapLayer {
     if (this.state.images) {
       for (const image of Object.values(this.state.images)) {
         if (Array.isArray(image)) {
-          image.map((x) => x.delete());
+          image.map((x) => x && x.delete());
         } else {
-          image.delete();
+          image && image.delete();
         }
       }
     }

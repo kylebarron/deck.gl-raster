@@ -8,7 +8,7 @@ function getUniforms(opts = {}) {
   }
 
   return {
-    bitmapTexture_colormap: imageColormap,
+    u_colormap_texture: imageColormap,
   };
 }
 
@@ -18,7 +18,7 @@ export default {
   getUniforms,
   inject: {
     'fs:DECKGL_MUTATE_COLOR': `
-    image = colormap_apply(bitmapTexture_colormap, image);
+    image = colormap(u_colormap_texture, image);
     `,
   },
 };

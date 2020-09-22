@@ -1,4 +1,3 @@
-export default `#version 300 es
 #define SHADER_NAME raster-mesh-layer-fs
 
 precision highp float;
@@ -8,13 +7,11 @@ uniform bool hasTexture;
 uniform bool flatShading;
 uniform float opacity;
 
-in vec2 vTexCoord;
-in vec3 cameraPosition;
-in vec3 normals_commonspace;
-in vec4 position_commonspace;
-in vec4 vColor;
-
-out vec4 fragColor;
+varying vec2 vTexCoord;
+varying vec3 cameraPosition;
+varying vec3 normals_commonspace;
+varying vec4 position_commonspace;
+varying vec4 vColor;
 
 void main(void) {
   geometry.uv = vTexCoord;
@@ -40,8 +37,7 @@ void main(void) {
   }
 
   vec3 lightColor = lighting_getLightColor(image.rgb, cameraPosition, position_commonspace.xyz, normal);
-  fragColor = vec4(lightColor, opacity);
+  gl_FragColor = vec4(lightColor, opacity);
 
-  DECKGL_FILTER_COLOR(fragColor, geometry);
+  DECKGL_FILTER_COLOR(gl_FragColor, geometry);
 }
-`;
