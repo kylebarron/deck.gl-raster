@@ -35,7 +35,7 @@ export default {
   },
   inject: {
     'fs:DECKGL_CREATE_COLOR': `
-    image = float(texture2D(bitmapTexture_rgba, coord));
+    image = vec4(texture2D(bitmapTexture_rgba, coord));
     `,
   },
 };
