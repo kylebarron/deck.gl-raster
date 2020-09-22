@@ -8,9 +8,13 @@ import {
   RasterLayer,
   combineBands,
   pansharpenBrovey,
-  modifiedSoilAdjustedVegetationIndex,
   normalizedDifference,
   colormap,
+  _parseNpy,
+  WEBGL2_DTYPES,
+  linearRescale,
+  gammaContrast,
+  sigmoidalContrast
 } from '@kylebarron/deck.gl-raster';
 
 import {load} from '@loaders.gl/core';
@@ -50,10 +54,10 @@ function landsatUrl(options) {
   const params = {
     url,
     bands: bandsArray.join(','),
-    color_ops: colorStr(bandsArray.length),
+    // color_ops: colorStr(bandsArray.length),
   };
   const searchParams = new URLSearchParams(params);
-  let baseUrl = `https://us-west-2-lambda.kylebarron.dev/landsat/tiles/${z}/${x}/${y}.jpg?`;
+  let baseUrl = `https://qt0cox2qw1.execute-api.us-west-2.amazonaws.com/tiles/${z}/${x}/${y}.npy?`;
   baseUrl += searchParams.toString();
   return baseUrl;
 }
@@ -71,10 +75,16 @@ export default class App extends React.Component {
         tileSize: 256,
         getTileData,
         renderSubLayers: (props) => {
+          const {data, tile} = props;
           const {
             bbox: {west, south, east, north},
-          } = props.tile;
-          const {modules, images, ...moduleProps} = props.data;
+          } = tile;
+
+          if (!data) {
+            return null;
+          }
+
+          const {modules, images, ...moduleProps} = data;
           return new RasterLayer(props, {
             images,
             modules,
@@ -89,7 +99,7 @@ export default class App extends React.Component {
       <DeckGL
         initialViewState={initialViewState}
         layers={layers}
-        effects={[vibranceEffect]}
+        // effects={[vibranceEffect]}
         controller
         glOptions={{
           // Tell browser to use discrete GPU if available
@@ -104,27 +114,27 @@ async function getTileData({
   x,
   y,
   z,
-  landsatBands = [5, 4],
-  useColormap = true,
+  landsatBands = ['B4', 'B3', 'B2'],
+  useColormap = false,
 }) {
-  const usePan =
-    z >= 12 &&
-    landsatBands[0] === 4 &&
-    landsatBands[1] === 3 &&
-    landsatBands[2] === 2;
+  const usePan = false;
+    // z >= 12 &&
+    // landsatBands[0] === 'B4' &&
+    // landsatBands[1] === 'B3' &&
+    // landsatBands[2] === 'B2';
   const colormapUrl =
     'https://cdn.jsdelivr.net/gh/kylebarron/deck.gl-raster/assets/colormaps/cfastie.png';
-  const modules = [combineBands, normalizedDifference];
+  const modules = [combineBands];
 
   const bandsUrls = landsatBands.map((band) =>
     landsatUrl({x, y, z, bands: band, url: MOSAIC_URL})
   );
-  const imageBands = bandsUrls.map((url) => loadImage(url));
+  const imageBands = bandsUrls.map((url) => loadNpyArray(url));
 
   let imagePan;
   if (usePan) {
-    const panUrl = landsatUrl({x, y, z, bands: 8, url: MOSAIC_URL});
-    imagePan = loadImage(panUrl);
+    const panUrl = landsatUrl({x, y, z, bands: 'B8', url: MOSAIC_URL});
+    imagePan = loadNpyArray(panUrl);
     modules.push(pansharpenBrovey);
   }
 
@@ -145,9 +155,29 @@ async function getTileData({
     imagePan: await imagePan,
   };
 
+  if (images.imageBands.some((x) => !x)) {
+    return null;
+  }
+
+  combineBands.defines.SAMPLER_TYPE = 'usampler2D';
+  pansharpenBrovey.defines.SAMPLER_TYPE = 'usampler2D';
+  modules.push(linearRescale)
+  modules.push(sigmoidalContrast)
+  modules.push(gammaContrast);
+
   return {
     images,
     modules,
+    // panWeight: 1,
+    linearRescaleScaler: 1 / 65535,
+    // linearRescaleScaler: 1 / 3000,
+    gammaR: 1,
+    gammaG: 1,
+    gammaB: 1,
+    sigmoidalContrast: 15,
+    sigmoidalBias: 0.35,
+    // sigmoidalContrast: 0,
+    // sigmoidalBias: 0.5,
   };
 }
 
@@ -156,5 +186,31 @@ export async function loadImage(url) {
   return {
     data: image,
     format: image && image.height === 10 ? GL.RGB : GL.LUMINANCE,
+  };
+}
+
+async function loadNpyArray(url) {
+  const resp = await fetch(url);
+  if (!resp.ok) {
+    return null;
+  }
+
+  const {dtype, data, header} = _parseNpy(await resp.arrayBuffer());
+  const {shape} = header;
+  const {format, dataFormat, type} = WEBGL2_DTYPES[dtype];
+
+  // TODO: check height-width or width-height
+  // Regardless, images usually square
+  // TODO: handle cases of 256x256x1 instead of 1x256x256
+  const [z, height, width] = shape;
+
+  return {
+    data,
+    width,
+    height,
+    format,
+    dataFormat,
+    type,
+    mipmaps: false,
   };
 }
