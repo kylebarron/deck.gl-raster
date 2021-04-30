@@ -45,6 +45,8 @@
     "@luma.gl/webgl": "^8.2.0"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^18.0.0",
+    "@rollup/plugin-node-resolve": "^11.2.1",
     "prettier": "^2.1.1",
     "rollup": "^2.7.2",
     "rollup-plugin-glsl": "^1.3.0",

@@ -1,3 +1,5 @@
+import resolve from '@rollup/plugin-node-resolve';
+import commonjs from '@rollup/plugin-commonjs';
 import {terser} from 'rollup-plugin-terser';
 import glsl from 'rollup-plugin-glsl';
 
@@ -19,6 +21,8 @@ const config = (file, plugins = []) => ({
     },
   },
   plugins: [
+    resolve(),
+    commonjs(),
     ...plugins,
     glsl({
       include: 'src/**/*.glsl',
