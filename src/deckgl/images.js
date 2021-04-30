@@ -79,8 +79,11 @@ function loadTexture(gl, imageData) {
   }
 
   let textureParams = {
-    parameters: DEFAULT_TEXTURE_PARAMETERS,
     ...imageData,
+    parameters: {
+      ...DEFAULT_TEXTURE_PARAMETERS,
+      ...imageData.parameters,
+    },
   };
 
   if (!isWebGL2(gl)) {
