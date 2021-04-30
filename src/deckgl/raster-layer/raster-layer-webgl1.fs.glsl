@@ -33,7 +33,7 @@ void main(void) {
 
   DECKGL_MUTATE_COLOR(image, vTexCoord);
 
-  gl_FragColor = apply_opacity(color_tint(color_desaturate(image.rgb)), opacity);
+  gl_FragColor = apply_opacity(color_tint(color_desaturate(image.rgb)), image.a * opacity);
 
   geometry.uv = vTexCoord;
   DECKGL_FILTER_COLOR(gl_FragColor, geometry);
