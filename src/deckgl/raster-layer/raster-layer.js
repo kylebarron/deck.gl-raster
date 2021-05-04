@@ -43,7 +43,7 @@ export default class RasterLayer extends BitmapLayer {
   }
 
   draw({uniforms}) {
-    const {model, images} = this.state;
+    const {model, images, coordinateConversion, bounds} = this.state;
     const {desaturate, transparentColor, tintColor, moduleProps} = this.props;
 
     // Render the image
@@ -62,6 +62,8 @@ export default class RasterLayer extends BitmapLayer {
           desaturate,
           transparentColor: transparentColor.map((x) => x / 255),
           tintColor: tintColor.slice(0, 3).map((x) => x / 255),
+          coordinateConversion,
+          bounds
         })
       )
       .updateModuleSettings({
@@ -122,7 +124,9 @@ export default class RasterLayer extends BitmapLayer {
           attributeManager.invalidate(key);
         }
       }
-      this.setState({mesh});
+      this.setState({mesh, ...this._getCoordinateUniforms()});
+    } else if (props._imageCoordinateSystem !== oldProps._imageCoordinateSystem) {
+      this.setState(this._getCoordinateUniforms());
     }
   }
 
