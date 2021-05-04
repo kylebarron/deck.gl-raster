@@ -16,3 +16,6 @@ export {default as enhancedVegetationIndex} from './spectral-indices/evi';
 export {default as modifiedSoilAdjustedVegetationIndex} from './spectral-indices/msavi';
 export {default as normalizedDifference} from './spectral-indices/normalized-difference';
 export {default as soilAdjustedVegetationIndex} from './spectral-indices/savi';
+
+// Vector operations
+export {default as vectorLength} from './vector/vector-length';
