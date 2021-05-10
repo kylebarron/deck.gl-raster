@@ -1,6 +1,7 @@
 import {BitmapLayer} from '@deck.gl/layers';
 import {ProgramManager} from '@luma.gl/engine';
 import {isWebGL2} from '@luma.gl/core';
+import isEqual from 'lodash.isequal';
 
 import {loadImages} from '../images';
 import fsWebGL1 from './raster-layer-webgl1.fs.glsl';
@@ -100,7 +101,8 @@ export default class RasterLayer extends BitmapLayer {
 
   updateState({props, oldProps, changeFlags}) {
     // setup model first
-    if (changeFlags.extensionsChanged) {
+    const modulesChanged = props && props.modules && oldProps && !isEqual(props.modules, oldProps.modules);
+    if (changeFlags.extensionsChanged || modulesChanged) {
       const {gl} = this.context;
       if (this.state.model) {
         this.state.model.delete();
