@@ -99,7 +99,7 @@ export default class RasterLayer extends BitmapLayer {
 
   updateState({props, oldProps, changeFlags}) {
     // setup model first
-    const modulesChanged = props && props.modules && (oldProps && !isEqual(props.modules, oldProps.modules) || !oldProps);
+    const modulesChanged = props && props.modules && oldProps && !isEqual(props.modules, oldProps.modules);
     if (changeFlags.extensionsChanged || modulesChanged) {
       const {gl} = this.context;
       if (this.state.model) {
