@@ -15,7 +15,7 @@ const config = (file, plugins = []) => ({
       '@deck.gl/layers': 'deck',
       '@deck.gl/mesh-layers': 'deck',
       '@luma.gl/core': 'luma',
-      '@luma.gl/constants': 'luma',
+      '@luma.gl/constants': 'luma.GL',
       '@luma.gl/engine': 'luma',
       '@luma.gl/webgl': 'luma',
     },
